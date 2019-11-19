@@ -10,18 +10,18 @@ import { FuseConfig } from '@fuse/types';
 
 export const fuseConfig: FuseConfig = {
     // Color themes can be defined in src/app/app.theme.scss
-    colorTheme      : 'theme-default',
+    colorTheme      : 'theme-green-light',
     customScrollbars: true,
     layout          : {
         style    : 'vertical-layout-1',
         width    : 'fullwidth',
         navbar   : {
-            primaryBackground  : 'fuse-navy-700',
-            secondaryBackground: 'fuse-navy-900',
+            primaryBackground  : 'fuse-navy-50', // fuse-navy-700
+            secondaryBackground: 'brown', // fuse-navy-900
             folded             : false,
             hidden             : false,
             position           : 'left',
-            variant            : 'vertical-style-1'
+            variant            : 'vertical-style-2' // vertical-style-1
         },
         toolbar  : {
             customBackgroundColor: false,
@@ -31,7 +31,7 @@ export const fuseConfig: FuseConfig = {
         },
         footer   : {
             customBackgroundColor: true,
-            background           : 'fuse-navy-900',
+            background           : 'brown', // fuse-navy-900
             hidden               : false,
             position             : 'below-fixed'
         },

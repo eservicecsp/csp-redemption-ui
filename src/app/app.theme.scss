@@ -125,6 +125,41 @@ body.theme-default {
 }
 
 // -----------------------------------------------------------------------------------------------------
+// @ Define a green light theme
+// -----------------------------------------------------------------------------------------------------
+
+// Define the primary, accent and warn palettes
+$green-light-theme-primary-palette: mat-palette($fuse-navy, 600, 400, 700);
+$green-light-theme-accent-palette: mat-palette($mat-lime, 600, 400, 700);
+$green-light-theme-warn-palette: mat-palette($mat-red);
+
+// Create the Material theme object
+$green-light-theme: mat-light-theme($green-light-theme-primary-palette, $green-light-theme-accent-palette, $green-light-theme-warn-palette);
+
+// Add ".theme-green-light" class to the body to activate this theme.
+// Class name must start with "theme-" !!!
+body.theme-green-light {
+
+    // Generate the Angular Material theme
+    @include angular-material-theme($green-light-theme);
+
+    // Apply the theme to the Fuse Core
+    @include fuse-core-theme($green-light-theme);
+
+    // Apply the theme to the user components
+    @include components-theme($green-light-theme);
+
+    // Generate Fuse color classes for primary, accent and warn colors
+    $palettes: (
+        primary: $green-light-theme-primary-palette,
+        accent: $green-light-theme-accent-palette,
+        warn: $green-light-theme-warn-palette
+    );
+
+    @include fuse-color-classes($palettes);
+}
+
+// -----------------------------------------------------------------------------------------------------
 // @ Define a yellow light theme
 // -----------------------------------------------------------------------------------------------------
 
