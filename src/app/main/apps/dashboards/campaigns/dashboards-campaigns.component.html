@@ -4,7 +4,49 @@
     <div class="center" fusePerfectScrollbar>
 
         <!-- HEADER -->
-        <div class="header accent p-24 pb-0" fxLayout="column" fxLayoutAlign="space-between">
+        <div class="header accent p-24 pb-0" fxLayout="row" fxLayoutAlign="space-between">
+            <div fxLayout="column" fxLayoutAlign="space-between start">
+                <div fxLayout="row" fxLayoutAlign="space-between start">
+
+                    <span class="mat-display-1 my-0 my-sm-24 welcome-message"
+                        [@animate]="{value:'*',params:{x:'50px'}}">Welcome back, {{firstName}}!
+                    </span>
+                    
+                </div>
+
+                <div fxLayout="row">
+
+                    <div class="selected-campaign">{{selectedCampaign.name}}</div>
+
+                    <button mat-icon-button class="campaign-selector" [matMenuTriggerFor]="campaignsMenu"
+                            aria-label="Select campaign">
+                        <mat-icon>more_horiz</mat-icon>
+                    </button>
+
+                    <mat-menu #campaignsMenu="matMenu">
+                        <button mat-menu-item *ngFor="let campaign of campaigns" (click)="selectedCampaign = campaign">
+                            <span>{{campaign.name}}</span>
+                        </button>
+                    </mat-menu>
+                </div>
+
+            </div>
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+                <!-- ADD BUTTON -->
+                <button mat-raised-button
+                    [routerLink]="'/apps/campaigns/'"
+                    class="add-product-button fuse-white mt-24 mt-md-0">
+
+                    <span>CREATED CAMPAIGN</span>
+
+                </button>
+                <!-- / ADD BUTTON -->
+
+            </div>
+            
+        </div>
+        <!-- <div class="header accent p-24 pb-0" fxLayout="column" fxLayoutAlign="space-between">
 
             <div fxLayout="row" fxLayoutAlign="space-between start">
 
@@ -29,7 +71,7 @@
                     </button>
                 </mat-menu>
             </div>
-        </div>
+        </div> -->
         <!-- / HEADER -->
 
         <!-- CONTENT -->

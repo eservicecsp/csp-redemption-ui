@@ -51,38 +51,34 @@ export class AuthenticationGuard implements CanActivate{
         this._authenticationService.authorize().then(response => {
             if (response.isSuccess)
             {
-                // Add customize nav item that opens the bar programmatically
-                const menu20100 = {
-                    id: '20100',
-                    title: 'Staffs',
-                    translate: 'NAV.STAFF.TITLE',
-                    type: 'item',
-                    icon: 'account_circle',
-                    children: [],
-                    url: 'configurations/staffs',
-                    badge: null
-                };
-                const is20100Exist = this._fuseNavigationService.getNavigationItem('20100');
-                if (is20100Exist)
-                {
-                    if (response.roleMenus.filter(x => x.id === 20100) === undefined || response.roleMenus.filter(x => x.id === 20100).length === 0)
+                this._authenticationService.getHeaderFunctions().then(parentsResponse => {
+                    if (parentsResponse.isSuccess)
                     {
-                        this._fuseNavigationService.removeNavigationItem(menu20100.id);
-                    }
-                }
-                else
-                {
-                    if (response.roleMenus.filter(x => x.id === 20100).length !== 0)
-                    {
-                        this._fuseNavigationService.addNavigationItem(menu20100, 'end');
-                    }
-                }
+                        if (parentsResponse.functions.length > 0)
+                        {
+                            parentsResponse.functions.forEach(parent => {
+                                this._fuseNavigationService.removeNavigationItem(parent.id.toString());
+                            });
+                        }
 
-                const menu20000 = this._fuseNavigationService.getNavigationItem('20000');
-                console.log(menu20000.children)
-                if (menu20000.children === undefined || menu20000.children.length === 0){
-                    this._fuseNavigationService.removeNavigationItem(menu20000.id);
-                }
+                        if (response.navigations.length > 0){
+                            response.navigations.forEach(group => {
+                                const _group = this._fuseNavigationService.getNavigationItem(group.id);
+                                if (!_group)
+                                {
+                                    const navItem = group;
+                                    this._fuseNavigationService.addNavigationItem(navItem, 'end');
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        
+                    }
+
+                    
+                });
             }
         });
         

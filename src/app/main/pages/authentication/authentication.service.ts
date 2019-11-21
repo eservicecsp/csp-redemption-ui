@@ -128,6 +128,16 @@ export class AuthenticationService{
         });
     }
 
+    getHeaderFunctions(): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/functions?type=parent')
+            .subscribe(response => {
+                resolve(response);
+            }, reject);
+        });
+    }
+
     // register(data: any): Promise<any>
     // {
     //     return new Promise((resolve, reject) => {

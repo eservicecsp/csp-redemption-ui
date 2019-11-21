@@ -2,14 +2,44 @@
     <!-- HEADER -->
     <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
 
-        <div fxLayout="column" fxLayoutAlign="center start">
-            <div fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="secondary-text s-18">home</mat-icon>
-                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
-                <span class="secondary-text">Campaigns</span>
+        <!-- <div fxLayout="column" fxLayoutAlign="center start">
+
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Campaigns
+                </span>
             </div>
-            <div class="h2 mt-16">Campaigns</div>
+
+        </div> -->
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/dashboards/campaigns'">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <!-- <div class="product-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+            </div> -->
+
+            <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <div class="h2">
+                    Campaigns
+                </div>
+                <div class="subtitle secondary-text">
+                    <span>Created New Campaign</span>
+                </div>
+            </div>
         </div>
+        <!-- / APP TITLE -->
 
         <!-- <div fxLayout="column" fxLayoutAlign="center start">
             <div fxLayout="row" fxLayoutAlign="start center">
@@ -47,8 +77,8 @@
                         <img src="assets/images/cards/card1.jpg">
 
                         <div class="p-16">
-                            <div class="h1">Packaging</div>
-                            <div class="h4 secondary-text">What is the big reasons for marketing your business</div>
+                            <div class="h1">Enrollment & Member</div>
+                            <div class="h4 secondary-text">What is the big reasons for having automation campaign your business</div>
                         </div>
 
                         <div class="p-16 pt-0 line-height-1.75">
@@ -69,6 +99,39 @@
             </div>
             <!-- / CARD 1 -->
             
+            <!-- CARD 2 -->
+            <div class="card">
+
+                <!-- PREVIEW -->
+                <div class="card-preview">
+
+                    <div class="fuse-card">
+
+                        <img src="assets/images/cards/card3.jpg">
+
+                        <div class="p-16">
+                            <div class="h1">Collecting</div>
+                            <div class="h4 secondary-text">Create your business collecting campaign</div>
+                        </div>
+
+                        <div class="p-16 pt-0 line-height-1.75">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                            Dolor labore aperiam architecto a et animi ex deleniti exercitationem sapiente repellat incidunt aliquam modi, rerum atque nisi error cumque at adipisci.
+                        </div>
+
+                        <div class="p-8 pt-0" fxLayout="row" fxLayoutAlign="start center">
+                            <button mat-button color="accent">CREATE</button>
+                            <button mat-button color="accent">MORE</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- / PREVIEW -->
+
+            </div>
+            <!-- / CARD 2 -->
+
         </div>
     </div>
     <!-- / CONTENT -->
