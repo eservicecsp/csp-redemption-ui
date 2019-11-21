@@ -91,6 +91,8 @@ $typography: mat-typography-config(
 
 // Configurations
 @import "src/app/main/configurations/staffs/staffs.theme";
+@import "src/app/main/configurations/products/products.theme";
+@import "src/app/main/configurations/dealers/dealers.theme";
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
@@ -109,6 +111,8 @@ $typography: mat-typography-config(
 
     // Configurations
     @include configurations-staffs-theme($theme);
+    @include configurations-products-theme($theme);
+    @include configurations-dealers-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------

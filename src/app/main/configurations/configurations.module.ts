@@ -23,6 +23,10 @@ import { MatProgressBarModule, MatToolbarModule, MatDialogModule, MatTooltipModu
 import { AuthenticationGuard } from '../pages/authentication/authentication.guard';
 import { ConfigurationsStaffsComponent } from './staffs/staffs.component';
 import { ConfigurationsStaffsService } from './staffs/staffs.service';
+import { ConfigurationsDealersComponent } from './dealers/dealers.component';
+import { ConfigurationsDealersService } from './dealers/dealers.service';
+import { ConfigurationsProductsComponent } from './products/products.component';
+import { ConfigurationsProductsService } from './products/products.service';
 
 
 const routes: Routes = [
@@ -35,12 +39,34 @@ const routes: Routes = [
         canActivate: [
             AuthenticationGuard
         ]
-    }
+    },
+    {
+        path     : 'dealers',
+        component: ConfigurationsDealersComponent,
+        resolve  : {
+            data: ConfigurationsDealersService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
+        path     : 'products',
+        component: ConfigurationsProductsComponent,
+        resolve  : {
+            data: ConfigurationsProductsService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
 ];
 
 @NgModule({
     declarations: [
         ConfigurationsStaffsComponent,
+        ConfigurationsDealersComponent,
+        ConfigurationsProductsComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -69,6 +95,8 @@ const routes: Routes = [
     ],
     providers   : [
         ConfigurationsStaffsService,
+        ConfigurationsProductsService,
+        ConfigurationsDealersService,
         AuthenticationGuard
     ]
 })
