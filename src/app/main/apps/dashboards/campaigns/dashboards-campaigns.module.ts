@@ -53,7 +53,7 @@ const routes: Routes = [
         ChartsModule,
         NgxChartsModule,
         AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyB9cU9b16CEijybjkgbij1fkwYdLYi1gzw'
+            apiKey: ''
         }),
 
         FuseSharedModule,
