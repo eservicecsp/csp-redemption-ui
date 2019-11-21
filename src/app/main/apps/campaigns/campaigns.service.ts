@@ -17,10 +17,10 @@ export class CampaignsService
     createOrder(data: any): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.post(`${environment.apiBaseUrl}/api/orders/create`, data)
-                .subscribe((response: any) => {
-                    resolve(response);
-                }, reject);
+            // this._httpClient.post(`${environment.apiBaseUrl}/api/orders/create`, data)
+            //     .subscribe((response: any) => {
+            //         resolve(response);
+            //     }, reject);
         });
     }
 }

@@ -11,7 +11,7 @@ export class ConfigurationsStaffsService implements Resolve<any>
     staffs: any[];
     onStaffsChanged: BehaviorSubject<any>;
 
-    companyId: number;
+    brandId: number;
 
     /**
      * Constructor
@@ -26,7 +26,7 @@ export class ConfigurationsStaffsService implements Resolve<any>
         // Set the defaults
         this.onStaffsChanged = new BehaviorSubject({});
 
-        this.companyId = this._authenticationService.getRawAccessToken('companyId');
+        this.brandId = this._authenticationService.getRawAccessToken('brandId');
     }
 
     /**
@@ -41,7 +41,7 @@ export class ConfigurationsStaffsService implements Resolve<any>
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this.getStaffs(this.companyId)
+                this.getStaffs(this.brandId)
             ]).then(
                 () => {
                     resolve();
@@ -56,10 +56,10 @@ export class ConfigurationsStaffsService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getStaffs(companyId): Promise<any>
+    getStaffs(brandId): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.get(environment.apiBaseUrl + '/staffs?companyId=' + companyId)
+            this._httpClient.get(environment.apiBaseUrl + '/staffs?brandId=' + brandId)
                 .subscribe((response: any) => {
                     this.staffs = response.staffs;
                     this.onStaffsChanged.next(this.staffs);

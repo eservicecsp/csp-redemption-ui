@@ -11,7 +11,7 @@ export class ConsumersService implements Resolve<any>
     consumers: any[];
     onConsumersChanged: BehaviorSubject<any>;
 
-    companyId: number;
+    brandId: number;
     
     /**
      * Constructor
@@ -26,7 +26,7 @@ export class ConsumersService implements Resolve<any>
         // Set the defaults
         this.onConsumersChanged = new BehaviorSubject({});
 
-        this.companyId = this._authenticationService.getRawAccessToken('companyId');
+        this.brandId = this._authenticationService.getRawAccessToken('brandId');
     }
 
     /**
@@ -41,7 +41,7 @@ export class ConsumersService implements Resolve<any>
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this.getConsumers(this.companyId)
+                this.getConsumers(this.brandId)
             ]).then(
                 () => {
                     resolve();
@@ -56,17 +56,17 @@ export class ConsumersService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getConsumers(companyId): Promise<any>
+    getConsumers(brandId): Promise<any>
     {
         return new Promise((resolve, reject) => {
             this.consumers = [];
             resolve(this.consumers);
-            // this._httpClient.get(environment.apiBaseUrl + '/consumers?companyId=' + companyId)
-            //     .subscribe((response: any) => {
-            //         this.consumers = response.consumers;
-            //         this.onConsumersChanged.next(this.consumers);
-            //         resolve(response);
-            //     }, reject);
+            this._httpClient.get(environment.apiBaseUrl + '/consumers?brandId=' + brandId)
+                .subscribe((response: any) => {
+                    this.consumers = response.consumers;
+                    this.onConsumersChanged.next(this.consumers);
+                    resolve(response);
+                }, reject);
         });
     }
 }
