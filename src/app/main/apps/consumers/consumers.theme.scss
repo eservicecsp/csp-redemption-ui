@@ -1,0 +1,39 @@
+@mixin consumers-theme($theme) {
+
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    consumers {
+
+        .header {
+
+            .search-wrapper {
+                background: map-get($background, card);
+
+                .search {
+
+                    .mat-icon {
+                        color: map-get($foreground, icon);
+                    }
+
+                    input {
+                        background: map-get($background, card);
+                        color: map-get($foreground, text);
+                    }
+                }
+            }
+        }
+    }
+
+    // .my-drop-zone {
+    //     background: map-get($background, card) !important; 
+    //     color: #ffffff !important;
+    // }
+    .my-drop-zone { 
+        border: dotted 3px lightgray; 
+        padding: 48px;
+        height: 120px;
+    }
+    .nv-file-over { border: dotted 3px red; } 
+    .another-file-over-class { border: dotted 3px green; }    
+}

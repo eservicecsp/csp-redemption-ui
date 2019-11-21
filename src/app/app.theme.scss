@@ -81,12 +81,34 @@ $typography: mat-typography-config(
 @import "src/app/layout/components/chat-panel/chat-panel.theme";
 @import "src/app/layout/components/toolbar/toolbar.theme";
 
+// Pages
+@import "src/app/main/pages/authentication/login/login.theme";
+
+// Apps
+@import "src/app/main/apps/campaigns/campaigns.theme";
+@import "src/app/main/apps/dashboards/campaigns/dashboards-campaigns.theme";
+@import "src/app/main/apps/consumers/consumers.theme";
+
+// Configurations
+@import "src/app/main/configurations/staffs/staffs.theme";
+
 // Define a mixin for easier access
 @mixin components-theme($theme) {
 
     // Layout components
     @include chat-panel-theme($theme);
     @include toolbar-theme($theme);
+
+    // Pages
+    @include login-theme($theme);
+
+    // Apps
+    @include campaigns-theme($theme);
+    @include dashboards-campaigns-theme($theme);
+    @include consumers-theme($theme);
+
+    // Configurations
+    @include configurations-staffs-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------

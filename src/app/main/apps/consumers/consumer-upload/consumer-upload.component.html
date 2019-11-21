@@ -1,0 +1,152 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+        <!-- <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
+            <img [src]="contact.avatar" class="avatar contact-avatar huge m-0"
+                    [alt]="contact.name"/>
+            <div class="contact-name mt-8">Upload files</div>
+        </mat-toolbar-row> -->
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+
+        <!-- <div class="">
+            Or upload your file(s) here
+            <label for="uploader">Browser</label>
+            <input #uploader type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
+        </div> -->
+        <button mat-raised-button (click)="fileInput.click()" class="mb-12">
+            <span>Select file</span>
+            <input #fileInput type="file" 
+                ng2FileSelect 
+                [uploader]="uploader" 
+                multiple type="file"
+                style="display:none;" 
+                [accept]="allowedMimeType.toString()"/>
+        </button>
+
+        <div ng2FileDrop
+            [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+            (fileOver)="fileOverBase($event)"
+            [uploader]="uploader"
+            class="my-drop-zone mb-12">
+            Drop your file(s) here!
+        </div>
+
+        <p>Queue length: {{ uploader?.queue?.length }}</p>
+
+        <table class="upload-table simple">
+            <thead>
+            <tr>
+                <th width="50%">Name</th>
+                <th>Size</th>
+                <th>Progress</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody *ngIf="uploader.queue.length; else tableNoData">
+                <tr *ngFor="let item of uploader.queue">
+                    <td><strong>{{ item?.file?.name }}</strong></td>
+                    <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                    <td *ngIf="uploader.options.isHTML5">
+                        <div class="progress" style="margin-bottom: 0;">
+                            <!-- <mat-progress-bar
+                                class=""
+                                color="accent"
+                                mode="determinate"
+                                [value]="item.progress">
+                            </mat-progress-bar> -->
+                            <mat-progress-spinner
+                                class=""
+                                color="accent"
+                                mode="determinate"
+                                diameter="30"
+                                [value]="item.progress">
+                            </mat-progress-spinner>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <span *ngIf="item.isSuccess">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">check</mat-icon>
+                        </span>
+                        <span *ngIf="item.isCancel">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">block</mat-icon>
+                        </span>
+                        <span *ngIf="item.isError">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon">close</mat-icon>
+                        </span>
+                    </td>
+                    <td nowrap>
+                        <button mat-icon-button type="button"
+                            matTooltip="Upload"
+                            (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                            <mat-icon aria-hidden="false" aria-label="cloud_upload">cloud_upload</mat-icon>
+                        </button>
+                        <button mat-icon-button type="button"
+                            matTooltip="Cancel"
+                            (click)="item.cancel()" [disabled]="!item.isUploading">
+                            <mat-icon aria-hidden="false" aria-label="cloud_upload">cancel</mat-icon> 
+                        </button>
+                        <button mat-icon-button type="button"
+                            matTooltip="Remove"
+                            (click)="item.remove()">
+                            <mat-icon aria-hidden="false" aria-label="cloud_upload">delete</mat-icon> 
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <ng-template #tableNoData>
+                <p [ngStyle]="{padding: '0 1.2rem'}">Queue is empty</p>
+            </ng-template>
+        </table>
+
+        Queue progress:
+        <div class="progress">
+            <mat-progress-bar
+                class=""
+                color="accent"
+                mode="determinate"
+                [value]="uploader.progress">
+            </mat-progress-bar>
+            <!-- <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div> -->
+        </div>
+
+        <!-- <button mat-raised-button type="button" class="btn btn-success btn-s"
+                (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+            <span class="glyphicon glyphicon-upload"></span> Upload all
+        </button>
+        <button mat-raised-button type="button" class="btn btn-warning btn-s"
+                (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+        </button>
+        <button mat-raised-button type="button" class="btn btn-danger btn-s"
+                (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+            <span class="glyphicon glyphicon-trash"></span> Remove all
+        </button> -->
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" style="bottom:0" fxLayout="row" fxLayoutAlign="start center" >
+        <button mat-raised-button type="button" class="upload-button"
+                (click)="uploader.uploadAll()" 
+                [disabled]="!uploader.getNotUploadedItems().length">
+            <span class="glyphicon glyphicon-upload"></span> Upload all
+        </button>
+        <button mat-raised-button type="button" class="upload-button"
+                (click)="uploader.cancelAll()" 
+                [disabled]="!uploader.isUploading">
+            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+        </button>
+        <button mat-raised-button type="button" class="upload-button"
+                (click)="uploader.clearQueue()" 
+                [disabled]="!uploader.queue.length">
+            <span class="glyphicon glyphicon-trash"></span> Remove all
+        </button>
+    </div>
+</div>

@@ -34,7 +34,7 @@ export const locale = {
                 BADGE: '25'
             },
             CONSUMER        : {
-                TITLE: 'ผู้บริโภค',
+                TITLE: 'ฐานข้อมูลลูกค้า',
                 BADGE: '25'
             },
             STAFF        : {

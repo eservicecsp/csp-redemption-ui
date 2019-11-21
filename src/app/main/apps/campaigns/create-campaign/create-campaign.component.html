@@ -1,0 +1,162 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <!-- <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">User Interface</span>
+            </div>
+            <div class="h1 mt-16">Create</div> -->
+            <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/campaigns'">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <!-- <div class="h2" *ngIf="pageType ==='edit'">
+                    Create Packaging
+                </div> -->
+                <div class="h2">
+                    New Campaign - Packaging
+                </div>
+                <div class="subtitle secondary-text">
+                    <span>{{currentDate | date: 'yyyy-MM-dd'}}</span>
+                </div>
+                <!-- <div class="h2">Create Packaging</div>
+                <div class="h4 mb-24 secondary-text">{{currentDate | date: 'yyyy-MM-dd'}}</div> -->
+            </div>
+        </div>
+
+        <button mat-raised-button type="button" (click)="generateQrCode()">
+            Create
+        </button>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <!-- <div class="h1">
+            Reactive Forms
+        </div>
+
+        <p class="pt-16 pb-32">
+            Angular reactive forms facilitate a reactive style of programming that favors explicit management of the
+            data flowing between a non-UI data model (typically retrieved from a server) and a UI-oriented form model
+            that retains the states and values of the HTML controls on screen. Reactive forms offer the ease of using
+            reactive patterns, testing, and validation.
+        </p> -->
+
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+
+            <!-- REACTIVE FORM EXAMPLE -->
+
+            <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                  fxFlex="1 0 auto" name="form" [formGroup]="form">
+
+                <!-- <div class="h2">Create Packaging</div>
+                <div class="h4 mb-24 secondary-text">{{currentDate | date: 'yyyy-MM-dd'}}</div> -->
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>Name</mat-label>
+                        <input matInput #name formControlName="name" maxlength="300" required>
+                        <mat-hint align="end">{{name.value.length}} / 300</mat-hint>
+                        <mat-error>Name. is required!</mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>Url (Auto-Generate)</mat-label>
+                        <input matInput formControlName="url" [readonly]="true">
+                        <mat-icon matSuffix>url</mat-icon>
+                    </mat-form-field>
+
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>Quantity</mat-label>
+                        <input matInput type="number" formControlName="quantity">
+                        <mat-error>Quantity is required!</mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description"></textarea>
+                        <!-- <mat-error>Quantity is required!</mat-error> -->
+                    </mat-form-field>
+
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                        <mat-label>Start Date</mat-label>
+                        <input matInput [matDatepicker]="dpStartDate" placeholder="Start Date" formControlName="startDate" disabled>
+                        <mat-datepicker-toggle matSuffix [for]="dpStartDate"></mat-datepicker-toggle>
+                        <mat-datepicker #dpStartDate disabled="false"></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50">
+                        <mat-label>End Date</mat-label>
+                        <input matInput [matDatepicker]="dpEndDate" placeholder="End Date" formControlName="endDate" disabled>
+                        <mat-datepicker-toggle matSuffix [for]="dpEndDate"></mat-datepicker-toggle>
+                        <mat-datepicker #dpEndDate disabled="false"></mat-datepicker>
+                    </mat-form-field>
+
+                </div>
+
+                <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>Start No.</mat-label>
+                        <input matInput type="number" formControlName="startNo" required>
+                        <mat-error>Start No. is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label>End No.</mat-label>
+                        <input matInput type="number" formControlName="endNo" required>
+                        <mat-error>End No. is required!</mat-error>
+                    </mat-form-field>
+
+                </div> -->
+
+                <button mat-raised-button color="primary" type="button" (click)="generateQrCode()">
+                    Preview
+                </button>
+                <button mat-raised-button color="accent" type="button" 
+                    (click)="create()" 
+                    [disabled]="form.invalid"
+                    class="mt-12">
+                    Create
+                </button>
+            </form>
+
+            <!-- / REACTIVE FORM EXAMPLE -->
+
+            <div class="mat-card form-errors-model p-24 mat-elevation-z4" *ngIf="urlValue">
+                <div class="h2 mb-24">Your QR Code</div>
+                <!-- <pre><code>{{form.getRawValue() | json}}</code></pre> -->
+                <qr-code [value]="urlValue" [size]="256"></qr-code>
+            </div>
+
+        </div>
+    </div>
+    <!-- / CONTENT -->
+
+</div>
+
+

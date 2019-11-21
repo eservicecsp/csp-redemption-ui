@@ -9,6 +9,7 @@ import { FuseSearchBarModule, FuseShortcutsModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { ToolbarComponent } from 'app/layout/components/toolbar/toolbar.component';
+import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,9 @@ import { ToolbarComponent } from 'app/layout/components/toolbar/toolbar.componen
     ],
     exports     : [
         ToolbarComponent
+    ],
+    providers: [
+        AuthenticationService
     ]
 })
 export class ToolbarModule

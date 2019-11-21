@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -18,11 +18,25 @@ import { fuseConfig } from 'app/fuse-config';
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { SampleModule } from 'app/main/sample/sample.module';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { MatDialogModule } from '@angular/material';
 
 const appRoutes: Routes = [
     {
+        path        : 'pages',
+        loadChildren: './main/pages/pages.module#PagesModule'
+    },
+    {
+        path        : 'configurations',
+        loadChildren: './main/configurations/configurations.module#ConfigurationsModule'
+    },
+    {
+        path        : 'apps',
+        loadChildren: './main/apps/apps.module#AppsModule'
+    },
+    {
         path      : '**',
-        redirectTo: 'sample'
+        redirectTo: 'apps/dashboards/campaigns'
     }
 ];
 
@@ -44,6 +58,7 @@ const appRoutes: Routes = [
         // Material
         MatButtonModule,
         MatIconModule,
+        MatDialogModule,
 
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
@@ -58,6 +73,9 @@ const appRoutes: Routes = [
     ],
     bootstrap   : [
         AppComponent
+    ],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     ]
 })
 export class AppModule

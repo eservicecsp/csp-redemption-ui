@@ -8,6 +8,8 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { navigation } from 'app/navigation/navigation';
+import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector     : 'toolbar',
@@ -26,6 +28,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
     selectedLanguage: any;
     userStatusOptions: any[];
 
+    firstName: string;
+    lastName: string;
+
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -35,11 +40,15 @@ export class ToolbarComponent implements OnInit, OnDestroy
      * @param {FuseConfigService} _fuseConfigService
      * @param {FuseSidebarService} _fuseSidebarService
      * @param {TranslateService} _translateService
+     * @param {AuthenticationService} _authenticationService
+     * @param {Router} _router
      */
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
-        private _translateService: TranslateService
+        private _translateService: TranslateService,
+        private _authenticationService: AuthenticationService,
+        private _router: Router,
     )
     {
         // Set the defaults
@@ -85,6 +94,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
         ];
 
         this.navigation = navigation;
+
+        this.firstName = this._authenticationService.getRawAccessToken('firstName');
+        this.lastName = this._authenticationService.getRawAccessToken('lastName');
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -159,5 +171,14 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         // Use the selected language for translations
         this._translateService.use(lang.id);
+    }
+
+    /**
+     * Logout
+     */
+    logout(): void
+    {
+        this._authenticationService.logout();
+        this._router.navigate(['pages/auth/login']);
     }
 }

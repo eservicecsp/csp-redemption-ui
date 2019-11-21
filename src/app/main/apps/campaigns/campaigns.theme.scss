@@ -1,0 +1,20 @@
+@mixin campaigns-theme($theme) {
+
+    $foreground: map-get($theme, foreground);
+
+    campaigns{
+
+        .content {
+
+            &.source {
+
+                .cards {
+
+                    .card {
+                        border-bottom-color: map-get($foreground, divider);
+                    }
+                }
+            }
+        }
+    }
+}
