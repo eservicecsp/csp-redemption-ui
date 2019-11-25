@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 
 import { fuseAnimations } from '@fuse/animations';
 import { CampaignsService } from '../campaigns.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
@@ -24,9 +24,24 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
     // Private
     private _unsubscribeAll: Subject<any>;
     
+    campaignType: number;
+    campaignName: string;
+
     form: FormGroup;
     urlValue: string;
     currentDate = new Date();
+
+    collectingForm = this._formBuilder.group({
+        Id: [0],
+        name : [undefined, Validators.required],
+        description : [undefined],
+        url: [undefined, Validators.required],
+        quantity : [0, Validators.required],
+        startDate : [undefined, Validators.required],
+        endDate : [undefined, Validators.required],
+        createdBy: [0],
+        peices: this._formBuilder.array([])
+    });
 
     userId: number;
 
@@ -47,6 +62,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
 
         this.userId = this._authenticationService.getRawAccessToken('userId');
     }
+
     ngOnInit(): void 
     {
         const campaignId = this._datepipe.transform(new Date(), 'yyyyMMddHHmmssSSS');
@@ -75,10 +91,58 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             startDate : ['', Validators.required],
             endDate : ['', Validators.required],
             createdBy: [this.userId]
-        });
-
+        });       
         
+        this._campaignsService.onCampaignTypeChanged.subscribe(campaignType => {
+            this.campaignType = campaignType;
+            switch (this.campaignType){
+                case 1: {
+                    this.campaignName = 'Enrollment & Member';
+                    break;
+                }
+                case 2: {
+                    this.campaignName = 'Collecting';
+
+                    this.collectingForm.reset({
+                        createdBy: this.userId
+                    });
+                    this.addPeice();
+
+                    break;
+                }
+                case 3: {
+                    this.campaignName = 'Point & Reward';
+                    break;
+                }
+                default: {
+                    this._router.navigate(['apps/campaigns']);
+                }
+            }
+        });
     }
+
+    get peices(): FormArray {
+        return this.collectingForm.get('peices') as FormArray;
+    }
+
+    addPeice(): void
+    {
+        const noFC = this._formBuilder.control(0);
+        const quantityFC = this._formBuilder.control(0);
+
+        this.peices.push(
+            this._formBuilder.group({
+                no: noFC,
+                quantity: quantityFC,
+            })
+        );
+    }
+
+    deletePeice(index: number): void
+    {
+        this.peices.removeAt(index);
+    }
+
     ngOnDestroy(): void 
     {
         // Unsubscribe from all subscriptions
@@ -94,10 +158,14 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
 
     }
 
-    create(): void
+    createCampaign(): void
     {
-        const data = this.form.value;
-        console.log(data);
+        console.log();
+        
+        // const data = this.form.value;
+        // console.log(data);
+
+
         // data.userId = this.userId;
         // this._campaignsService.createOrder(data).then(response => {
         //     if (response.isSuccess === false){

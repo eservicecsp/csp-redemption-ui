@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 
 import { fuseAnimations } from '@fuse/animations';
 import { Router } from '@angular/router';
+import { CampaignsService } from './campaigns.service';
 
 @Component({
     selector   : 'campaigns',
@@ -20,7 +21,8 @@ export class CampaignsComponent implements OnInit, OnDestroy
     private _unsubscribeAll: Subject<any>;
 
     constructor(
-        private _router: Router
+        private _router: Router,
+        private _campaignsService: CampaignsService,
     )
     {
         // Set the private defaults
@@ -38,8 +40,9 @@ export class CampaignsComponent implements OnInit, OnDestroy
         this._unsubscribeAll.complete();
     }
 
-    create(): void
+    createCampaign(campaignType: number): void
     {
+        this._campaignsService.onCampaignTypeChanged.next(campaignType);
         this._router.navigate(['/apps/campaigns/create']);
     }
 }
