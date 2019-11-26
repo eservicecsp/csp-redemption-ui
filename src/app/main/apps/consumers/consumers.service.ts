@@ -41,7 +41,7 @@ export class ConsumersService implements Resolve<any>
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this.getConsumers(this.brandId)
+                //this.getConsumers(this.brandId)
             ]).then(
                 () => {
                     resolve();
@@ -66,6 +66,17 @@ export class ConsumersService implements Resolve<any>
                     this.consumers = response.consumers;
                     this.onConsumersChanged.next(this.consumers);
                     resolve(response);
+                }, reject);
+        });
+    }
+
+    getdata(event): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(environment.apiBaseUrl + '/Consumers', event)
+                .subscribe((response: any) => {
+                    this.consumers = response;
+                    resolve(this.consumers);
                 }, reject);
         });
     }

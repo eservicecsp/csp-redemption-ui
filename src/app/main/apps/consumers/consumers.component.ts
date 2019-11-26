@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
@@ -11,8 +11,9 @@ import { FuseUtils } from '@fuse/utils';
 import { ConsumersService } from './consumers.service';
 import { takeUntil } from 'rxjs/internal/operators';
 import { FileUploader } from 'ng2-file-upload';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConsumerUploadDialogComponent } from './consumer-upload/consumer-upload.component';
+import { FormControl } from '@angular/forms';
 // import { ConfigurationsConsumerUploadComponent } from '../consumer-upload/consumer-upload.component';
 
 @Component({
@@ -24,8 +25,17 @@ import { ConsumerUploadDialogComponent } from './consumer-upload/consumer-upload
 })
 export class ConsumersComponent implements OnInit
 {
-    dataSource: FilesDataSource | null;
-    displayedColumns = ['id', 'fullName', 'gender', 'dob', 'mobile',  'email'];
+    dataSource: any;
+    pageEvent: PageEvent;
+    length = 0;
+    pageIndex = 0;
+    pageSize = 5;
+    previousPageIndex = 0;
+    pageSizeOptions: number[] = [5, 10, 25, 100];
+    sortActive: string;
+    sortDirection: string;
+    searchInput: FormControl;
+    displayedColumns = ['id', 'fullName',  'birthDate', 'phone',  'email'];
 
     @ViewChild(MatPaginator, {static: true})
     paginator: MatPaginator;
@@ -48,6 +58,8 @@ export class ConsumersComponent implements OnInit
     {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+
+        this.searchInput = new FormControl('');
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -59,7 +71,17 @@ export class ConsumersComponent implements OnInit
      */
     ngOnInit(): void
     {
-        this.dataSource = new FilesDataSource(this._ConsumersService, this.paginator, this.sort);
+        this.Mapdata();
+        this.searchInput.valueChanges
+        .pipe(
+            takeUntil(this._unsubscribeAll),
+            debounceTime(300),
+            distinctUntilChanged()
+        )
+        .subscribe(searchText => {
+            this.Mapdata();
+        });
+        // this.dataSource = new FilesDataSource(this._ConsumersService, this.paginator, this.sort);
 
         fromEvent(this.filter.nativeElement, 'keyup')
             .pipe(
@@ -135,6 +157,38 @@ export class ConsumersComponent implements OnInit
                         break;
                 }
             });
+    }
+
+    public Mapdata(): void{
+        // const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this._matDialog.open(ProgressSpinnerDialogComponent, {
+        //     panelClass: 'transparent',
+        //     disableClose: true
+        //   });
+        const data = {
+            sortActive: this.sort.active ? this.sort.active : null,
+            sortDirection: this.sort['_direction'] ? this.sort['_direction'] : null,
+            length: this.pageEvent ? this.pageEvent.length : 0,
+            pageIndex: this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex,
+            pageSize: this.pageEvent ? this.pageEvent.pageSize : this.pageSize,
+            previousPageIndex: this.pageEvent ? this.pageEvent.previousPageIndex : this.previousPageIndex,
+            //BrandId: 1,
+            filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
+        };
+        this._ConsumersService.getdata(data).then(res => {
+            this.dataSource  = res.data;
+            console.log(this.dataSource );
+
+            this.length = res.length;
+            this.paginator.length = res.length;
+            this.paginator.pageIndex = this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex;
+            this.paginator.pageSize = this.pageEvent ? this.pageEvent.pageSize : this.pageSize;
+            if (this.length <= ( data.pageIndex * data.pageSize)){
+                this.paginator.length = res.length;
+                this.paginator.pageIndex = 0;
+                this.paginator.pageSize  = data.pageSize;
+            }
+           // dialogRef.close();
+        });
     }
 
 }
