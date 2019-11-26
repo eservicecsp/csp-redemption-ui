@@ -68,10 +68,10 @@ export class DashboardsCampaignsService implements Resolve<any>
         });
     }
 
-    getCampaignById(id: number): Promise<any>
+    getCampaignSummaryById(id: number): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.get(environment.apiBaseUrl + '/campaigns/' + id)
+            this._httpClient.get(environment.apiBaseUrl + '/campaigns/' + id + '/summary')
             .subscribe((response: any) => {
                 if (response.isSuccess)
                 {

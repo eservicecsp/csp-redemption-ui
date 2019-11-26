@@ -232,7 +232,7 @@ export class DashboardsCampaignsComponent implements OnInit
         if (this.campaigns && this.campaigns.length > 0)
         {
             this.selectedCampaign = this.campaigns[0];
-            this.getCampaignById();
+            this.getCampaignSummaryById();
         }
     }
 
@@ -347,12 +347,12 @@ export class DashboardsCampaignsComponent implements OnInit
     {
         // this.tabGroup.selectedIndex = 0;
         this.selectedCampaign = campaign;
-        this.getCampaignById();
+        this.getCampaignSummaryById();
     } 
 
-    getCampaignById(): void
+    getCampaignSummaryById(): void
     {
-        this._dashboardsCampaignsService.getCampaignById(this.selectedCampaign.id).then(response => {
+        this._dashboardsCampaignsService.getCampaignSummaryById(this.selectedCampaign.id).then(response => {
 
         }, error => {
 
