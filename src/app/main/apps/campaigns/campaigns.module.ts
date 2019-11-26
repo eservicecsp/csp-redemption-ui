@@ -28,7 +28,10 @@ const routes = [
         component: CampaignsComponent,
         canActivate: [
             AuthenticationGuard
-        ]
+        ],
+        resolve  : {
+            data: CampaignsService
+        },
     }
 ];
 

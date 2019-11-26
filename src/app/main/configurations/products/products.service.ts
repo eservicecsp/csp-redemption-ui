@@ -41,7 +41,7 @@ export class ConfigurationsProductsService implements Resolve<any>
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this.getProducts(this.companyId)
+                this.getProducts()
             ]).then(
                 () => {
                     resolve();
@@ -56,17 +56,21 @@ export class ConfigurationsProductsService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getProducts(companyId): Promise<any>
+    getProducts(): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this.products = [];
-            resolve(this.products);
-            // this._httpClient.get(environment.apiBaseUrl + '/products?companyId=' + companyId)
-            //     .subscribe((response: any) => {
-            //         this.products = response.products;
-            //         this.onProductsChanged.next(this.products);
-            //         resolve(response);
-            //     }, reject);
+            this._httpClient.get(environment.apiBaseUrl + '/products')
+                .subscribe((response: any) => {
+                    if (response.isSuccess)
+                    {
+                        this.products = response.products;
+                        this.onProductsChanged.next(this.products);
+                        resolve(response);
+                    }
+                    else{
+                        reject(response);
+                    }
+                }, reject);
         });
     }
 }

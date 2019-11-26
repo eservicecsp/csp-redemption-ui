@@ -21,7 +21,7 @@ import { takeUntil } from 'rxjs/internal/operators';
 export class ConfigurationsProductsComponent implements OnInit
 {
     dataSource: FilesDataSource | null;
-    displayedColumns = ['id', 'nameTh', 'nameEn', 'description', 'productType', 'unit', 'active'];
+    displayedColumns = ['id', 'name', 'description', 'createdBy'];
 
     @ViewChild(MatPaginator, {static: true})
     paginator: MatPaginator;

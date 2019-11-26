@@ -24,7 +24,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
     // Private
     private _unsubscribeAll: Subject<any>;
     
-    campaignType: number;
+    campaignType: any;
     campaignName: string;
 
     form: FormGroup;
@@ -95,14 +95,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
         
         this._campaignsService.onCampaignTypeChanged.subscribe(campaignType => {
             this.campaignType = campaignType;
-            switch (this.campaignType){
+            this.campaignName = campaignType.title;
+            switch (this.campaignType.id){
                 case 1: {
-                    this.campaignName = 'Enrollment & Member';
-                    break;
-                }
-                case 2: {
-                    this.campaignName = 'Collecting';
-
+                    // Collecting
                     this.collectingForm.reset({
                         createdBy: this.userId
                     });
@@ -110,8 +106,12 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
 
                     break;
                 }
+                case 2: {
+                    // Point & Reward
+                    break;
+                }
                 case 3: {
-                    this.campaignName = 'Point & Reward';
+                    // Point & Reward
                     break;
                 }
                 default: {

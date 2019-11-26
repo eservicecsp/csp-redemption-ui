@@ -41,7 +41,7 @@ export class ConfigurationsDealersService implements Resolve<any>
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this.getDealers(this.companyId)
+                this.getDealers()
             ]).then(
                 () => {
                     resolve();
@@ -56,17 +56,21 @@ export class ConfigurationsDealersService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getDealers(dealerId): Promise<any>
+    getDealers(): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this.dealers = [];
-            resolve(this.dealers);
-            // this._httpClient.get(environment.apiBaseUrl + '/company?dealerId=' + dealerId)
-            //     .subscribe((response: any) => {
-            //         this.dealers = response.dealers;
-            //         this.onDealersChanged.next(this.dealers);
-            //         resolve(response);
-            //     }, reject);
+            this._httpClient.get(environment.apiBaseUrl + '/dealers')
+                .subscribe((response: any) => {
+                    if (response.isSuccess)
+                    {
+                        this.dealers = response.dealers;
+                        this.onDealersChanged.next(this.dealers);
+                        resolve(response);
+                    }
+                    else{
+                        reject(response);
+                    }
+                }, reject);
         });
     }
 }

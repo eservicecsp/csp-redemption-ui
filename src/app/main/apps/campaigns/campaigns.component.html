@@ -65,107 +65,40 @@
 
     <!-- CONTENT -->
     <div class="content">
+
         <div class="cards">
-            <!-- CARD 1 -->
-            <div class="card">
+           
+                <div *ngFor="let campaignType of campaignTypes" class="card">
 
-                <!-- PREVIEW -->
-                <div class="card-preview">
-
-                    <div class="fuse-card">
-
-                        <img src="assets/images/cards/card1.jpg">
-
-                        <div class="p-16">
-                            <div class="h1">Enrollment & Member</div>
-                            <div class="h4 secondary-text">What is the big reasons for having automation campaign in your business</div>
+                    <div class="card-preview">
+        
+                        <div class="fuse-card">
+                            
+                            <div *ngIf="campaignType.imagePath">
+                                <img src="{{campaignType.imagePath}}">
+                            </div>
+        
+                            <div class="p-16">
+                                <div class="h1">{{campaignType.title}}</div>
+                                <div class="h4 secondary-text">{{campaignType.subTitle}}</div>
+                            </div>
+        
+                            <div class="p-16 pt-0 line-height-1.75">
+                                {{campaignType.description}}
+                            </div>
+        
+                            <div class="p-8 pt-0" fxLayout="row" fxLayoutAlign="start center">
+                                <button mat-button color="accent" (click)="createCampaign(campaignType)">CREATE</button>
+                            </div>
+        
                         </div>
-
-                        <div class="p-16 pt-0 line-height-1.75">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident quod expedita rem quasi corrupti natus, 
-                            minima omnis exercitationem ex iusto. Consectetur odit laborum repellendus rerum provident exercitationem autem, minima reprehenderit!.
-                        </div>
-
-                        <div class="p-8 pt-0" fxLayout="row" fxLayoutAlign="start center">
-                            <button mat-button color="accent" (click)="createCampaign(1)">CREATE</button>
-                            <!-- <button mat-button color="accent">MORE</button> -->
-                        </div>
-
+        
                     </div>
-
+                    
                 </div>
-                <!-- / PREVIEW -->
-
-            </div>
-            <!-- / CARD 1 -->
-            
-            <!-- CARD 2 -->
-            <div class="card">
-
-                <!-- PREVIEW -->
-                <div class="card-preview">
-
-                    <div class="fuse-card">
-
-                        <img src="assets/images/cards/card3.jpg">
-
-                        <div class="p-16">
-                            <div class="h1">Collecting</div>
-                            <div class="h4 secondary-text">Create your collecting campaign</div>
-                        </div>
-
-                        <div class="p-16 pt-0 line-height-1.75">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                            Dolor labore aperiam architecto a et animi ex deleniti exercitationem sapiente repellat incidunt aliquam modi, rerum atque nisi error cumque at adipisci.
-                        </div>
-
-                        <div class="p-8 pt-0" fxLayout="row" fxLayoutAlign="start center">
-                            <button mat-button color="accent" (click)="createCampaign(2)">CREATE</button>
-                            <!-- <button mat-button color="accent">MORE</button> -->
-                        </div>
-
-                    </div>
-
-                </div>
-                <!-- / PREVIEW -->
-
-            </div>
-            <!-- / CARD 2 -->
-
-            <!-- CARD 3 -->
-            <div class="card">
-
-                <!-- PREVIEW -->
-                <div class="card-preview">
-
-                    <div class="fuse-card">
-
-                        <img src="assets/images/cards/card2.jpg">
-
-                        <div class="p-16">
-                            <div class="h1">Point & Reward</div>
-                            <div class="h4 secondary-text">Create your point and reward campaign</div>
-                        </div>
-
-                        <div class="p-16 pt-0 line-height-1.75">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. In deserunt magni magnam voluptates quas soluta quidem consequuntur harum explicabo, 
-                            odit quo similique ex doloribus cumque. Earum at tempore dolorum quia?
-                        </div>
-
-                        <div class="p-8 pt-0" fxLayout="row" fxLayoutAlign="start center">
-                            <button mat-button color="accent" (click)="createCampaign(3)">CREATE</button>
-                            <!-- <button mat-button color="accent">MORE</button> -->
-                        </div>
-
-                    </div>
-
-                </div>
-                <!-- / PREVIEW -->
-
-            </div>
-            <!-- / CARD 3 -->
 
         </div>
+
     </div>
     <!-- / CONTENT -->
     

@@ -74,56 +74,28 @@
                     </ng-container> -->
     
                     <!-- Name Column -->
-                    <ng-container matColumnDef="nameTh">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Name TH</mat-header-cell>
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
                         <mat-cell *matCellDef="let product">
-                            <p class="text-truncate">{{product.nameTh}}</p>
+                            <p class="text-truncate">{{product.name}}</p>
                         </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="nameEn">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Name EN</mat-header-cell>
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
                         <mat-cell *matCellDef="let product">
-                            <p class="text-truncate">{{product.nameEn}}</p>
+                            <p class="text-truncate">{{product.description}}</p>
                         </mat-cell>
                     </ng-container>
-    
+
                     <!-- Category Column -->
-                    <ng-container matColumnDef="description">
-                        <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Description</mat-header-cell>
+                    <ng-container matColumnDef="createdBy">
+                        <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Created By</mat-header-cell>
                         <mat-cell *matCellDef="let product" fxHide fxShow.gt-md>
                             <p class="text-truncate">
-                                {{product.description}}
+                                {{product.createdBy}}
                             </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                    <!-- Price Column -->
-                    <ng-container matColumnDef="productType">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Product Type</mat-header-cell>
-                        <mat-cell *matCellDef="let product" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">
-                                {{product.productType.nameEn}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="unit">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Unit</mat-header-cell>
-                        <mat-cell *matCellDef="let product" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">
-                                {{product.unit.name}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-    
-                    <!-- Active Column -->
-                    <ng-container matColumnDef="active">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
-                        <mat-cell *matCellDef="let product" fxHide fxShow.gt-xs>
-                            <mat-icon *ngIf="product.active" class="active-icon green-600 s-16">check</mat-icon>
-                            <mat-icon *ngIf="!product.active" class="active-icon red-500 s-16">close</mat-icon>
                         </mat-cell>
                     </ng-container>
     
@@ -131,8 +103,7 @@
     
                     <mat-row *matRowDef="let product; columns: displayedColumns;"
                              class="product"
-                             matRipple
-                             [routerLink]="'/configurations/products/'+product.id+'/'+product.handle">
+                             matRipple>
                              <!-- [routerLink]="'/configurations/products/'+product.id+'/'+product.handle"> -->
                     </mat-row>
     
