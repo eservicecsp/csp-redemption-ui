@@ -8,6 +8,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
+import { MatTabChangeEvent } from '@angular/material';
 
 @Component({
     selector     : 'dashboards-campaigns',
@@ -226,8 +227,13 @@ export class DashboardsCampaignsComponent implements OnInit
         private _authenticationService: AuthenticationService
     )
     {
-        
         this.firstName = this._authenticationService.getRawAccessToken('firstName');
+        this.campaigns = this._dashboardsCampaignsService.campaigns;
+        if (this.campaigns && this.campaigns.length > 0)
+        {
+            this.selectedCampaign = this.campaigns[0];
+            this.getCampaignById();
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -239,8 +245,6 @@ export class DashboardsCampaignsComponent implements OnInit
      */
     ngOnInit(): void
     {
-        this.campaigns = this._dashboardsCampaignsService.campaigns;
-        this.selectedCampaign = this.campaigns[0];
         this.widgets = this._dashboardsCampaignsService.widgets;
     }
 
@@ -321,6 +325,38 @@ export class DashboardsCampaignsComponent implements OnInit
     toggleSidebar(name): void
     {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+
+    tabChanged(tabChangeEvent: MatTabChangeEvent): void
+    {
+        if (tabChangeEvent.index === 0) 
+        {
+
+        }
+        else if (tabChangeEvent.index === 1) 
+        {
+
+        }
+        else if (tabChangeEvent.index === 2)
+        {
+
+        }
+    }
+
+    selectedCampaignChanged(campaign): void
+    {
+        // this.tabGroup.selectedIndex = 0;
+        this.selectedCampaign = campaign;
+        this.getCampaignById();
+    } 
+
+    getCampaignById(): void
+    {
+        this._dashboardsCampaignsService.getCampaignById(this.selectedCampaign.id).then(response => {
+
+        }, error => {
+
+        });
     }
 }
 

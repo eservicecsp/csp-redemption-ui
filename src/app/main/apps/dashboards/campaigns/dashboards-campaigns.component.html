@@ -24,7 +24,7 @@
                     </button>
 
                     <mat-menu #campaignsMenu="matMenu">
-                        <button mat-menu-item *ngFor="let campaign of campaigns" (click)="selectedCampaign = campaign">
+                        <button mat-menu-item *ngFor="let campaign of campaigns" (click)="selectedCampaignChanged(campaign)">
                             <span>{{campaign.name}}</span>
                         </button>
                     </mat-menu>
