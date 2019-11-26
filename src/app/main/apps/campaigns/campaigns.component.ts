@@ -17,6 +17,8 @@ import { CampaignsService } from './campaigns.service';
 })
 export class CampaignsComponent implements OnInit, OnDestroy
 {
+    campaignTypes: any[];
+
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -27,10 +29,13 @@ export class CampaignsComponent implements OnInit, OnDestroy
     {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+
+        this.campaignTypes = this._campaignsService.campaignTypes;
     }
+
     ngOnInit(): void 
     {
-        // throw new Error("Method not implemented.");
+        console.log(this.campaignTypes);
     }
 
     ngOnDestroy(): void 

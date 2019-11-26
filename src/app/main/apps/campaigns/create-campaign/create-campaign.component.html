@@ -50,7 +50,7 @@
         </p> -->
 
         <!-- CAMPAIGN TYPE = ENROLLEMENT AND MEMBER -->
-        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" *ngIf="campaignType === 1">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" *ngIf="campaignType.id === 3">
 
             <!-- REACTIVE FORM EXAMPLE -->
 
@@ -157,7 +157,7 @@
         </div>
 
         <!-- CAMPAIGN TYPE = COLLECTING -->
-        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" *ngIf="campaignType === 2">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" *ngIf="campaignType.id === 1">
             <!-- REACTIVE FORM EXAMPLE -->
 
             <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start"
@@ -262,7 +262,7 @@
         </div>
 
         <!-- CAMPAIGN TYPE = POINT AND REWARD -->
-        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" *ngIf="campaignType === 3">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" *ngIf="campaignType.id === 2">
             POINT AND REWARD CONTENT
         </div>
     </div>

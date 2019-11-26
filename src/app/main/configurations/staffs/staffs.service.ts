@@ -41,7 +41,7 @@ export class ConfigurationsStaffsService implements Resolve<any>
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this.getStaffs(this.brandId)
+                this.getStaffs()
             ]).then(
                 () => {
                     resolve();
@@ -56,10 +56,10 @@ export class ConfigurationsStaffsService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getStaffs(brandId): Promise<any>
+    getStaffs(): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.get(environment.apiBaseUrl + '/staffs?brandId=' + brandId)
+            this._httpClient.get(environment.apiBaseUrl + '/staffs')
                 .subscribe((response: any) => {
                     this.staffs = response.staffs;
                     this.onStaffsChanged.next(this.staffs);
