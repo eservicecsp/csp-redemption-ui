@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import * as shape from 'd3-shape';
 
 import { fuseAnimations } from '@fuse/animations';
@@ -10,6 +10,7 @@ import { AuthenticationService } from 'app/main/pages/authentication/authenticat
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
 import { MatTabChangeEvent, PageEvent, MatPaginator, MatSort } from '@angular/material';
 import { FormControl } from '@angular/forms';
+import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
     selector     : 'dashboards-campaigns',
@@ -226,23 +227,33 @@ export class DashboardsCampaignsComponent implements OnInit
     tranPageSizeOptions: number[] = [5, 10, 25, 100];
     tranSortActive: string;
     tranSortDirection: string;
-    tranSearchInput: FormControl;
+    searchInput: FormControl;
     tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token',  'point', 'status',  'message', 'createDate'];
     @ViewChild(MatPaginator, {static: true})
     paginator: MatPaginator;
     @ViewChild(MatSort, {static: true})
     sort: MatSort;
 
-    // qrCode
-    // qrDataSource: any;
-    // qrPageEvent: PageEvent;
-    // qrLength = 0;
-    // qrPageIndex = 0;
-    // qrPageSize = 5;
-    // qrPreviousPageIndex = 0;
-    // qrPageSizeOptions: number[] = [5, 10, 25, 100];
-    // qrSortActive: string;
-    // qrSortDirection: string;
+    @ViewChild('qrMatSort', {static: true}) qrMatSort: MatSort;
+
+    // @ViewChild(MatSort, {static: true})
+    // qrMatSort: MatSort;
+    @ViewChild('filter', {static: true})
+    filter: ElementRef;
+
+    private _unsubscribeAll: Subject<any>;
+
+    //qrCode
+    qrDataSource: any;
+    qrPageEvent: PageEvent;
+    qrLength = 0;
+    qrPageIndex = 0;
+    qrPageSize = 5;
+    qrPreviousPageIndex = 0;
+    qrPageSizeOptions: number[] = [5, 10, 25, 100];
+    qrSortActive: string;
+    qrSortDirection: string;
+    
     // qrSearchInput: FormControl;
     qrDisplayed = ['token', 'peice', 'point', 'fullName', 'email',  'phone', 'createDate'];
 
@@ -260,7 +271,10 @@ export class DashboardsCampaignsComponent implements OnInit
         private _authenticationService: AuthenticationService
     )
     {
-        this.tranSearchInput = new FormControl(''); 
+        this._unsubscribeAll = new Subject();
+        this.searchInput = new FormControl(''); 
+
+        
         this.firstName = this._authenticationService.getRawAccessToken('firstName');
         this.campaigns = this._dashboardsCampaignsService.campaigns;
         if (this.campaigns && this.campaigns.length > 0)
@@ -280,6 +294,23 @@ export class DashboardsCampaignsComponent implements OnInit
     ngOnInit(): void
     {
         this.widgets = this._dashboardsCampaignsService.widgets;
+
+        this.searchInput.valueChanges
+        .pipe(
+            takeUntil(this._unsubscribeAll),
+            debounceTime(300),
+            distinctUntilChanged()
+        )
+        .subscribe(searchText => {
+            if (this.index === 3) // Transaction
+            {
+                this.GetTransactions();
+            }
+            else if (this.index === 4) // qrcode
+            {
+                this.Getqrcode();
+            }
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -399,7 +430,7 @@ export class DashboardsCampaignsComponent implements OnInit
             pageSize: this.tranPageEvent ? this.tranPageEvent.pageSize : this.tranPageSize,
             previousPageIndex: this.tranPageEvent ? this.tranPageEvent.previousPageIndex : this.tranPreviousPageIndex,
             campaignId: this.selectedCampaign.id,
-            //filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
+            filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
         };
         this._dashboardsCampaignsService.getTransactionByCampaignId(data).then(res => {
             this.DataSource  = res.data;
@@ -422,22 +453,22 @@ export class DashboardsCampaignsComponent implements OnInit
         //     disableClose: true
         //   });
         const data = {
-            sortActive: this.sort.active ? this.sort.active : null,
-            sortDirection: this.sort['_direction'] ? this.sort['_direction'] : null,
-            length: this.tranPageEvent ? this.tranPageEvent.length : 0,
-            pageIndex: this.tranPageEvent ? this.tranPageEvent.pageIndex : this.tranPageIndex,
-            pageSize: this.tranPageEvent ? this.tranPageEvent.pageSize : this.tranPageSize,
-            previousPageIndex: this.tranPageEvent ? this.tranPageEvent.previousPageIndex : this.tranPreviousPageIndex,
+            sortActive: this.qrMatSort.active ? this.qrMatSort.active : null,
+            sortDirection: this.qrMatSort['_direction'] ? this.qrMatSort['_direction'] : null,
+            length: this.qrPageEvent ? this.qrPageEvent.length : 0,
+            pageIndex: this.qrPageEvent ? this.qrPageEvent.pageIndex : this.qrPageIndex,
+            pageSize: this.qrPageEvent ? this.qrPageEvent.pageSize : this.qrPageSize,
+            previousPageIndex: this.qrPageEvent ? this.qrPageEvent.previousPageIndex : this.qrPreviousPageIndex,
             campaignId: this.selectedCampaign.id,
-            //filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
+            filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
         };
         this._dashboardsCampaignsService.getQrCodeByCampaignId(data).then(res => {
             this.DataSource  = res.data;
-            this.tranLength = res.length;
+            this.qrLength = res.length;
             this.paginator.length = res.length;
-            this.paginator.pageIndex = this.tranPageEvent ? this.tranPageEvent.pageIndex : this.tranPageIndex;
-            this.paginator.pageSize = this.tranPageEvent ? this.tranPageEvent.pageSize : this.tranPageSize;
-            if (this.tranLength <= ( data.pageIndex * data.pageSize)){
+            this.paginator.pageIndex = this.qrPageEvent ? this.qrPageEvent.pageIndex : this.qrPageIndex;
+            this.paginator.pageSize = this.qrPageEvent ? this.qrPageEvent.pageSize : this.qrPageSize;
+            if (this.qrLength <= ( data.pageIndex * data.pageSize)){
                 this.paginator.length = res.length;
                 this.paginator.pageIndex = 0;
                 this.paginator.pageSize  = data.pageSize;

@@ -33,15 +33,32 @@
             </div>
             <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
 
+                <!-- SEARCH -->
+                <!-- *ngIf="index === 3 || index === 4" -->
+                <div >
+                    <div class="search-wrapper mx-32 mx-md-0">
+                        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon>search</mat-icon>
+                            <input #filter placeholder="Search for a data" [formControl]="searchInput">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- / SEARCH -->
+
                 <!-- ADD BUTTON -->
-                <button mat-raised-button
-                    [routerLink]="'/apps/campaigns/'"
-                    class="add-product-button fuse-white mt-24 mt-md-0">
-
-                    <span>CREATE CAMPAIGN</span>
-
-                </button>
+                <div *ngIf="index !== 3 && index !== 4">
+                        <button mat-raised-button
+                        [routerLink]="'/apps/campaigns/'"
+                        class="add-product-button fuse-white mt-24 mt-md-0">
+    
+                        <span>CREATE CAMPAIGN</span>
+    
+                    </button>
+                </div>
+                
                 <!-- / ADD BUTTON -->
+
 
             </div>
             
@@ -533,9 +550,9 @@
 
                 <mat-tab label="Qr Code">
                         <div class="content-card">
-                            <mat-table class="transactions-table"
+                            <mat-table class="qrCode-table"
                             #table [dataSource]="DataSource"
-                            matSort
+                            matSort #qrMatSort="matSort"
                             (matSortChange)="Getqrcode()"
                             [@animateStagger]="{value:'50'}"
                             fusePerfectScrollbar>
@@ -611,10 +628,10 @@
             
                         <mat-paginator #paginator
                                             showFirstLastButtons
-                                            [length]="tranLength"
-                                            [pageIndex]="tranPageIndex"
-                                            [pageSize]="tranPageSize"
-                                            [pageSizeOptions]="tranPageSizeOptions"
+                                            [length]="qrLength"
+                                            [pageIndex]="qrPageIndex"
+                                            [pageSize]="qrPageSize"
+                                            [pageSizeOptions]="qrPageSizeOptions"
                                             (page)="qrPageEvent = $event"
                                             (page)="Getqrcode()"
                                         >
