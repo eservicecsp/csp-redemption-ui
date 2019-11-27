@@ -35,6 +35,10 @@ const appRoutes: Routes = [
         loadChildren: './main/apps/apps.module#AppsModule'
     },
     {
+        path        : 'redeem',
+        loadChildren: './main/redeem/redeem.module#RedeemModule'
+    },
+    {
         path      : '**',
         redirectTo: 'apps/dashboards/campaigns'
     }
