@@ -75,8 +75,14 @@ export class ConsumersService implements Resolve<any>
         return new Promise((resolve, reject) => {
             this._httpClient.post(environment.apiBaseUrl + '/Consumers', event)
                 .subscribe((response: any) => {
-                    this.consumers = response;
-                    resolve(this.consumers);
+                    if (response.isSuccess)
+                    {
+                        this.consumers = response;
+                        resolve(this.consumers);
+                    }
+                    else{
+                        reject(response);
+                    }
                 }, reject);
         });
     }

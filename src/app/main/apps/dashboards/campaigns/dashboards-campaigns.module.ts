@@ -20,6 +20,7 @@ import { AuthenticationGuard } from 'app/main/pages/authentication/authenticatio
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
 
 import { AgmCoreModule } from '@agm/core';
+import { MatPaginatorModule, MatSortModule } from '@angular/material';
 
 const routes: Routes = [
     {
@@ -49,6 +50,8 @@ const routes: Routes = [
         MatSelectModule,
         MatTableModule,
         MatTabsModule,
+        MatPaginatorModule,
+        MatSortModule,
 
         ChartsModule,
         NgxChartsModule,

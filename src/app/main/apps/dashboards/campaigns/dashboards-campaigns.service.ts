@@ -84,6 +84,39 @@ export class DashboardsCampaignsService implements Resolve<any>
         });
         
     }
+    getTransactionByCampaignId(data): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(environment.apiBaseUrl + '/campaigns/transaction', data)
+            .subscribe((response: any) => {
+                if (response.isSuccess)
+                {
+                    resolve(response);
+                }
+                else{
+                    reject(response);
+                }
+            }, reject);
+        });
+        
+    }
+
+    getQrCodeByCampaignId(data): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(environment.apiBaseUrl + '/campaigns/qrcode', data)
+            .subscribe((response: any) => {
+                if (response.isSuccess)
+                {
+                    resolve(response);
+                }
+                else{
+                    reject(response);
+                }
+            }, reject);
+        });
+        
+    }
 
     /**
      * Get widgets

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as shape from 'd3-shape';
@@ -8,7 +8,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
-import { MatTabChangeEvent } from '@angular/material';
+import { MatTabChangeEvent, PageEvent, MatPaginator, MatSort } from '@angular/material';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector     : 'dashboards-campaigns',
@@ -21,6 +22,7 @@ export class DashboardsCampaignsComponent implements OnInit
 {
     campaigns: any[];
     selectedCampaign: any;
+    index = 0;
 
     firstName: string;
 
@@ -214,6 +216,37 @@ export class DashboardsCampaignsComponent implements OnInit
 
     dateNow = Date.now();
 
+    // Transaction
+    tranDataSource: any;
+    tranPageEvent: PageEvent;
+    tranLength = 0;
+    tranPageIndex = 0;
+    tranPageSize = 5;
+    tranPreviousPageIndex = 0;
+    tranPageSizeOptions: number[] = [5, 10, 25, 100];
+    tranSortActive: string;
+    tranSortDirection: string;
+    tranSearchInput: FormControl;
+    tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token',  'point', 'status',  'message', 'createDate'];
+    @ViewChild(MatPaginator, {static: true})
+    paginator: MatPaginator;
+    @ViewChild(MatSort, {static: true})
+    sort: MatSort;
+
+    // qrCode
+    qrDataSource: any;
+    qrPageEvent: PageEvent;
+    qrLength = 0;
+    qrPageIndex = 0;
+    qrPageSize = 5;
+    qrPreviousPageIndex = 0;
+    qrPageSizeOptions: number[] = [5, 10, 25, 100];
+    qrSortActive: string;
+    qrSortDirection: string;
+    qrSearchInput: FormControl;
+    qrDisplayed = ['token', 'peice', 'point', 'fullName', 'email',  'phone', 'createDate'];
+
+
     /**
      * Constructor
      *
@@ -227,6 +260,7 @@ export class DashboardsCampaignsComponent implements OnInit
         private _authenticationService: AuthenticationService
     )
     {
+        this.tranSearchInput = new FormControl(''); 
         this.firstName = this._authenticationService.getRawAccessToken('firstName');
         this.campaigns = this._dashboardsCampaignsService.campaigns;
         if (this.campaigns && this.campaigns.length > 0)
@@ -329,23 +363,92 @@ export class DashboardsCampaignsComponent implements OnInit
 
     tabChanged(tabChangeEvent: MatTabChangeEvent): void
     {
-        if (tabChangeEvent.index === 0) 
+        this.index = tabChangeEvent.index;
+        if (this.index === 0) 
         {
 
         }
-        else if (tabChangeEvent.index === 1) 
+        else if (this.index === 1) 
         {
 
         }
-        else if (tabChangeEvent.index === 2)
+        else if (this.index === 2)
         {
 
+        }
+        else if (this.index === 3) // Transaction
+        {
+            this.GetTransactions();
+        }
+        else if (this.index === 4) // qrcode
+        {
+            this.Getqrcode();
         }
     }
 
+    public GetTransactions(): void{
+        // const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this._matDialog.open(ProgressSpinnerDialogComponent, {
+        //     panelClass: 'transparent',
+        //     disableClose: true
+        //   });
+        const data = {
+            sortActive: this.sort.active ? this.sort.active : null,
+            sortDirection: this.sort['_direction'] ? this.sort['_direction'] : null,
+            length: this.tranPageEvent ? this.tranPageEvent.length : 0,
+            pageIndex: this.tranPageEvent ? this.tranPageEvent.pageIndex : this.tranPageIndex,
+            pageSize: this.tranPageEvent ? this.tranPageEvent.pageSize : this.tranPageSize,
+            previousPageIndex: this.tranPageEvent ? this.tranPageEvent.previousPageIndex : this.tranPreviousPageIndex,
+            campaignId: this.selectedCampaign.id,
+            //filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
+        };
+        this._dashboardsCampaignsService.getTransactionByCampaignId(data).then(res => {
+            this.tranDataSource  = res.data;
+            this.tranLength = res.length;
+            this.paginator.length = res.length;
+            this.paginator.pageIndex = this.tranPageEvent ? this.tranPageEvent.pageIndex : this.tranPageIndex;
+            this.paginator.pageSize = this.tranPageEvent ? this.tranPageEvent.pageSize : this.tranPageSize;
+            if (this.tranLength <= ( data.pageIndex * data.pageSize)){
+                this.paginator.length = res.length;
+                this.paginator.pageIndex = 0;
+                this.paginator.pageSize  = data.pageSize;
+            }
+           // dialogRef.close();
+        });
+    }
+
+    public Getqrcode(): void{
+        // const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this._matDialog.open(ProgressSpinnerDialogComponent, {
+        //     panelClass: 'transparent',
+        //     disableClose: true
+        //   });
+        const data = {
+            sortActive: this.sort.active ? this.sort.active : null,
+            sortDirection: this.sort['_direction'] ? this.sort['_direction'] : null,
+            length: this.tranPageEvent ? this.tranPageEvent.length : 0,
+            pageIndex: this.tranPageEvent ? this.tranPageEvent.pageIndex : this.tranPageIndex,
+            pageSize: this.tranPageEvent ? this.tranPageEvent.pageSize : this.tranPageSize,
+            previousPageIndex: this.tranPageEvent ? this.tranPageEvent.previousPageIndex : this.tranPreviousPageIndex,
+            campaignId: this.selectedCampaign.id,
+            //filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
+        };
+        this._dashboardsCampaignsService.getQrCodeByCampaignId(data).then(res => {
+            this.tranDataSource  = res.data;
+            this.tranLength = res.length;
+            this.paginator.length = res.length;
+            this.paginator.pageIndex = this.tranPageEvent ? this.tranPageEvent.pageIndex : this.tranPageIndex;
+            this.paginator.pageSize = this.tranPageEvent ? this.tranPageEvent.pageSize : this.tranPageSize;
+            if (this.tranLength <= ( data.pageIndex * data.pageSize)){
+                this.paginator.length = res.length;
+                this.paginator.pageIndex = 0;
+                this.paginator.pageSize  = data.pageSize;
+            }
+           // dialogRef.close();
+        });
+    }
     selectedCampaignChanged(campaign): void
     {
         // this.tabGroup.selectedIndex = 0;
+        this.index = 0;
         this.selectedCampaign = campaign;
         this.getCampaignSummaryById();
     } 

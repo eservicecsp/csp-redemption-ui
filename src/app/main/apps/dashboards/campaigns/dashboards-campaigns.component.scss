@@ -60,4 +60,35 @@
             }
         }
     }
+    .transactions-table {
+        .mat-column-id {
+            flex: 0 1 100px;
+        }
+
+        .mat-column-fullName {
+            flex: 0 1 250px;
+        }
+        .mat-column-email {
+            flex: 0 1 250px;
+        }
+        .mat-column-phone {
+            flex: 0 1 150px;
+        }
+        .mat-column-token {
+            flex: 0 1 250px;
+        }
+        .mat-column-point {
+            flex: 0 1 150px;
+        }
+        .mat-column-status {
+            flex: 0 1 150px;
+        }
+        .mat-column-message {
+            flex: 0 1 450px;
+        }
+        .mat-column-createDate {
+            flex: 0 1 200px;
+        }
+
+    }
 }
