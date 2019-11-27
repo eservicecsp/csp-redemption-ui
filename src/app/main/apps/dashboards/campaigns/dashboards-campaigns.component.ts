@@ -217,7 +217,7 @@ export class DashboardsCampaignsComponent implements OnInit
     dateNow = Date.now();
 
     // Transaction
-    tranDataSource: any;
+    DataSource: any;
     tranPageEvent: PageEvent;
     tranLength = 0;
     tranPageIndex = 0;
@@ -234,16 +234,16 @@ export class DashboardsCampaignsComponent implements OnInit
     sort: MatSort;
 
     // qrCode
-    qrDataSource: any;
-    qrPageEvent: PageEvent;
-    qrLength = 0;
-    qrPageIndex = 0;
-    qrPageSize = 5;
-    qrPreviousPageIndex = 0;
-    qrPageSizeOptions: number[] = [5, 10, 25, 100];
-    qrSortActive: string;
-    qrSortDirection: string;
-    qrSearchInput: FormControl;
+    // qrDataSource: any;
+    // qrPageEvent: PageEvent;
+    // qrLength = 0;
+    // qrPageIndex = 0;
+    // qrPageSize = 5;
+    // qrPreviousPageIndex = 0;
+    // qrPageSizeOptions: number[] = [5, 10, 25, 100];
+    // qrSortActive: string;
+    // qrSortDirection: string;
+    // qrSearchInput: FormControl;
     qrDisplayed = ['token', 'peice', 'point', 'fullName', 'email',  'phone', 'createDate'];
 
 
@@ -402,7 +402,7 @@ export class DashboardsCampaignsComponent implements OnInit
             //filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
         };
         this._dashboardsCampaignsService.getTransactionByCampaignId(data).then(res => {
-            this.tranDataSource  = res.data;
+            this.DataSource  = res.data;
             this.tranLength = res.length;
             this.paginator.length = res.length;
             this.paginator.pageIndex = this.tranPageEvent ? this.tranPageEvent.pageIndex : this.tranPageIndex;
@@ -432,7 +432,7 @@ export class DashboardsCampaignsComponent implements OnInit
             //filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
         };
         this._dashboardsCampaignsService.getQrCodeByCampaignId(data).then(res => {
-            this.tranDataSource  = res.data;
+            this.DataSource  = res.data;
             this.tranLength = res.length;
             this.paginator.length = res.length;
             this.paginator.pageIndex = this.tranPageEvent ? this.tranPageEvent.pageIndex : this.tranPageIndex;

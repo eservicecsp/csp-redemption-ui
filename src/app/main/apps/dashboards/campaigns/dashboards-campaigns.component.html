@@ -432,7 +432,7 @@
                 <mat-tab label="Transactions">
                     <div class="content-card">
                         <mat-table class="transactions-table"
-                        #table [dataSource]="tranDataSource"
+                        #table [dataSource]="DataSource"
                         matSort
                         (matSortChange)="GetTransactions()"
                         [@animateStagger]="{value:'50'}"
@@ -534,7 +534,7 @@
                 <mat-tab label="Qr Code">
                         <div class="content-card">
                             <mat-table class="transactions-table"
-                            #table [dataSource]="qrDisplayed"
+                            #table [dataSource]="DataSource"
                             matSort
                             (matSortChange)="Getqrcode()"
                             [@animateStagger]="{value:'50'}"
@@ -588,11 +588,11 @@
                         <ng-container matColumnDef="createDate">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Redemption date </mat-header-cell>
                             <mat-cell *matCellDef="let qr">
-                                <div *ngIf="qr.createdDate">
+                                <div *ngIf="qr.scanDate">
                                     <p class="text-truncate" >
-                                        {{qr.createdDate | date : 'dd-MM-yyyy'}} 
+                                        {{qr.scanDate | date : 'dd-MM-yyyy'}} 
                                         <br/>
-                                        {{qr.createdDate | date : 'HH:mm:ss'}} 
+                                        {{qr.scanDate | date : 'HH:mm:ss'}} 
                                     </p>
                                 </div>
                             </mat-cell>
@@ -602,8 +602,8 @@
         
                         <mat-header-row *matHeaderRowDef="qrDisplayed; sticky:true"></mat-header-row>
         
-                        <mat-row *matRowDef="let consumer; columns: qrDisplayed;"
-                                class="consumer"
+                        <mat-row *matRowDef="let qr; columns: qrDisplayed;"
+                                class="qr"
                                 matRipple>
                         </mat-row>
         
@@ -611,10 +611,10 @@
             
                         <mat-paginator #paginator
                                             showFirstLastButtons
-                                            [length]="qrLength"
-                                            [pageIndex]="qrPageIndex"
-                                            [pageSize]="qrPageSize"
-                                            [pageSizeOptions]="qrPageSizeOptions"
+                                            [length]="tranLength"
+                                            [pageIndex]="tranPageIndex"
+                                            [pageSize]="tranPageSize"
+                                            [pageSizeOptions]="tranPageSizeOptions"
                                             (page)="qrPageEvent = $event"
                                             (page)="Getqrcode()"
                                         >
