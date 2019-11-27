@@ -94,6 +94,10 @@ $typography: mat-typography-config(
 @import "src/app/main/configurations/products/products.theme";
 @import "src/app/main/configurations/dealers/dealers.theme";
 
+// Redeem
+@import "src/app/main/redeem/collecting/collecting.theme";
+@import "src/app/main/redeem/collecting-register/collecting-register.theme";
+
 // Define a mixin for easier access
 @mixin components-theme($theme) {
 
@@ -113,6 +117,10 @@ $typography: mat-typography-config(
     @include configurations-staffs-theme($theme);
     @include configurations-products-theme($theme);
     @include configurations-dealers-theme($theme);
+
+    // Redeem
+    @include redeem-collecting-theme($theme);
+    @include redeem-collecting-register-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------
