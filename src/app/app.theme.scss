@@ -83,6 +83,7 @@ $typography: mat-typography-config(
 
 // Pages
 @import "src/app/main/pages/authentication/login/login.theme";
+@import "src/app/main/pages/authentication/register/register.theme";
 
 // Apps
 @import "src/app/main/apps/campaigns/campaigns.theme";
@@ -109,6 +110,7 @@ $typography: mat-typography-config(
 
     // Pages
     @include login-theme($theme);
+    @include register-theme($theme);
 
     // Apps
     @include campaigns-theme($theme);
