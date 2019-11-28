@@ -8,7 +8,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
-import { MatTabChangeEvent, PageEvent, MatPaginator, MatSort } from '@angular/material';
+import { MatTabChangeEvent, PageEvent, MatPaginator, MatSort, MatTabGroup } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -229,6 +229,9 @@ export class DashboardsCampaignsComponent implements OnInit
     tranSortDirection: string;
     searchInput: FormControl;
     tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token',  'point', 'status',  'message', 'createDate'];
+    // Tab 
+    @ViewChild(MatTabGroup, {static: true}) tabGroup: MatTabGroup;
+    
     @ViewChild(MatPaginator, {static: true})
     paginator: MatPaginator;
     @ViewChild(MatSort, {static: true})
@@ -478,7 +481,7 @@ export class DashboardsCampaignsComponent implements OnInit
     }
     selectedCampaignChanged(campaign): void
     {
-        // this.tabGroup.selectedIndex = 0;
+        this.tabGroup.selectedIndex = 0;
         this.index = 0;
         this.selectedCampaign = campaign;
         this.getCampaignSummaryById();
