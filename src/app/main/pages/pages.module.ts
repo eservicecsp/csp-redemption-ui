@@ -5,6 +5,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material';
 
 import { LoginModule } from './authentication/login/login.module';
+import { RegisterModule } from './authentication/register/register.module';
+
 import { Error404Module } from './errors/404/error-404.module';
 
 @NgModule({
@@ -12,7 +14,7 @@ import { Error404Module } from './errors/404/error-404.module';
         // Authentication
         LoginModule,
         // RedeemModule,
-        // RegisterModule,
+        RegisterModule,
         // ForgotPasswordModule,
         // ResetPasswordModule,
         // MailConfirmModule,

@@ -1,0 +1,139 @@
+<div id="register" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
+
+    <div id="register-intro" fxFlex fxHide fxShow.gt-xs>
+
+        <div class="logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <img src="assets/images/logos/csp.svg">
+        </div>
+
+        <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+            Welcome to the CSP Redemption!
+        </div>
+
+        <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper nisl erat,
+            vel convallis elit fermentum pellentesque. Sed mollis velit facilisis facilisis viverra.
+        </div>
+
+    </div>
+
+    <div id="register-form-wrapper" fusePerfectScrollbar
+         [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+
+        <div id="register-form">
+
+            <div class="logo" fxHide.gt-xs>
+                <img src="assets/images/logos/csp.svg">
+            </div>
+
+            <div class="title">CREATE AN ACCOUNT</div>
+
+            <mat-vertical-stepper [linear]="true" #stepper>
+                <mat-step [stepControl]="brandForm">
+                    <form name="brandForm" [formGroup]="brandForm" novalidate>
+                        <ng-template matStepLabel>About your brand</ng-template>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Brand Name</mat-label>
+                            <input matInput formControlName="name">
+                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                            <mat-error>
+                                Brand Name is required
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Brand Code</mat-label>
+                            <input matInput formControlName="code">
+                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                            <mat-error>
+                                Brand Code is required
+                            </mat-error>
+                        </mat-form-field>
+
+                        <button mat-button matStepperNext>Next</button>
+                    </form>
+                </mat-step>
+
+                <mat-step [stepControl]="staffForm">
+                    <form name="staffForm" [formGroup]="staffForm" novalidate>
+                        <ng-template matStepLabel>About Administrator</ng-template>
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput formControlName="firstName">
+                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                            <mat-error>
+                                First Name is required
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput formControlName="lastName">
+                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                            <mat-error>
+                                Last Name is required
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email">
+                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                            <mat-error>
+                                Email is required
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Phone</mat-label>
+                            <input matInput formControlName="phone">
+                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                            <mat-error>
+                                Phone is required
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input matInput formControlName="password">
+                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                            <mat-error>
+                                Password is required
+                            </mat-error>
+                        </mat-form-field>
+
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </form>
+                </mat-step>
+
+                <mat-step>
+                    <ng-template matStepLabel>Done</ng-template>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <!-- <button mat-button (click)="stepper.reset()">Reset</button> -->
+                        <!-- <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
+                                [disabled]="brandForm.invalid">
+                            CREATE AN ACCOUNT
+                        </button> -->
+                    </div>
+                </mat-step>
+            </mat-vertical-stepper>
+            <div class="terms" fxLayout="row" fxLayoutAlign="center center">
+                <mat-checkbox name="terms" aria-label="Accept" required>
+                    <span>Accept</span>
+                </mat-checkbox>
+                <a href="#">terms and conditions</a>
+            </div>
+    
+            <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
+                    [disabled]="brandForm.invalid && staffForm.invalid">
+                CREATE AN ACCOUNT
+            </button>
+            <div class="register" fxLayout="column" fxLayoutAlign="center center">
+                <span class="text">Already have an account?</span>
+                <a class="link" [routerLink]="'/pages/auth/login'">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
