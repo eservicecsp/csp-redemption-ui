@@ -97,6 +97,8 @@ $typography: mat-typography-config(
 // Redeem
 @import "src/app/main/redeem/collecting/collecting.theme";
 @import "src/app/main/redeem/collecting-register/collecting-register.theme";
+@import "src/app/main/redeem/point/point.theme";
+@import "src/app/main/redeem/point-register/point-register.theme";
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
@@ -121,6 +123,8 @@ $typography: mat-typography-config(
     // Redeem
     @include redeem-collecting-theme($theme);
     @include redeem-collecting-register-theme($theme);
+    @include redeem-point-theme($theme);
+    @include redeem-point-register-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------

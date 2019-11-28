@@ -6,13 +6,13 @@ import { MatToolbarModule } from '@angular/material';
 
 import { CollectingModule } from './collecting/collecting.module';
 import { RedeemService } from './redeem.service';
-import { CollectingRegisterModule } from './collecting-register/collecting-register.module';
+import { PointModule } from './point/point.module';
 
 
 @NgModule({
     imports: [
         CollectingModule,
-        // CollectingRegisterModule,
+        PointModule,
     ],
     providers: [
         RedeemService,
