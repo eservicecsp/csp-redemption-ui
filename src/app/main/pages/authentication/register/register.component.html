@@ -79,8 +79,11 @@
                             <mat-label>Email</mat-label>
                             <input matInput formControlName="email">
                             <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                            <mat-error>
+                            <mat-error *ngIf="staffForm.get('email').hasError('required')">
                                 Email is required
+                            </mat-error>
+                            <mat-error *ngIf="staffForm.get('email').hasError('email')">
+                                Please enter a valid email address
                             </mat-error>
                         </mat-form-field>
 
@@ -95,11 +98,29 @@
 
                         <mat-form-field appearance="outline">
                             <mat-label>Password</mat-label>
-                            <input matInput type="password" formControlName="password">
+                            <input matInput type="password" formControlName="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@#!%*?&])[A-Za-z\d$@#!%*?&].{7,}">
                             <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                            <mat-error>
+                            <mat-error *ngIf="staffForm.get('password').hasError('required') ">
                                 Password is required
                             </mat-error>
+                            <mat-error *ngIf="!staffForm.get('password').hasError('required') &&
+                                                staffForm.get('password').hasError('pattern')">
+                                <!-- Password must be at least 8 characters, contain a number, lower-upper case and special character -->
+                                Password should contain 8 characters, 1 upper case letter, 1 lower case letter, and 1 special character <br/>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input matInput type="password" formControlName="passwordConfirm">
+                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                            <mat-error *ngIf="staffForm.get('passwordConfirm').hasError('required') ">
+                                Password is required
+                            </mat-error>
+                            <mat-error *ngIf="!staffForm.get('passwordConfirm').hasError('required') &&
+                                                staffForm.get('passwordConfirm').hasError('passwordsNotMatching')">
+                                    New password  must match
+                        </mat-error>
                         </mat-form-field>
 
                         <button mat-button matStepperPrevious>Back</button>
@@ -107,17 +128,12 @@
                     </form>
                 </mat-step>
 
-                <mat-step>
+                <!-- <mat-step>
                     <ng-template matStepLabel>Done</ng-template>
                     <div>
                         <button mat-button matStepperPrevious>Back</button>
-                        <!-- <button mat-button (click)="stepper.reset()">Reset</button> -->
-                        <!-- <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
-                                [disabled]="brandForm.invalid">
-                            CREATE AN ACCOUNT
-                        </button> -->
                     </div>
-                </mat-step>
+                </mat-step> -->
             </mat-vertical-stepper>
             <div class="terms" fxLayout="row" fxLayoutAlign="center center">
                 <mat-checkbox name="terms" aria-label="Accept" required>
@@ -126,8 +142,10 @@
                 <a href="#">terms and conditions</a>
             </div>
     
-            <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
-                    [disabled]="brandForm.invalid && staffForm.invalid">
+            <button mat-raised-button color="accent" class="submit-button" 
+                    aria-label="CREATE AN ACCOUNT"
+                    (click)="onSubmit()"
+                    [disabled]="!brandForm.valid || !staffForm.valid">
                 CREATE AN ACCOUNT
             </button>
             <div class="register" fxLayout="column" fxLayoutAlign="center center">

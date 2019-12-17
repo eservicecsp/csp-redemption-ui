@@ -35,6 +35,11 @@ export class CollectingRegisterComponent implements OnInit
     isShowReward04: boolean;
     isShowReward05: boolean;
 
+    pieces = [];
+    totalPieces = 0;
+    msgWinner = '';
+    isWinner: boolean;
+
     /**
      * Constructor
      *
@@ -157,16 +162,24 @@ export class CollectingRegisterComponent implements OnInit
 
         this._redeemService.register(requestData).then(response => {
             this.isRewardShow = true;
-            this.message = response.message;
-            response.pieces.forEach(x => {
-                switch(x){
-                    case 1: this.isShowReward01 = true; break;
-                    case 2: this.isShowReward02 = true; break;
-                    case 3: this.isShowReward03 = true; break;
-                    case 4: this.isShowReward04 = true; break;
-                    case 5: this.isShowReward05 = true; break;
-                }
-            })
+            // response.pieces.forEach(x => {
+            //     switch(x){
+            //         case 1: this.isShowReward01 = true; break;
+            //         case 2: this.isShowReward02 = true; break;
+            //         case 3: this.isShowReward03 = true; break;
+            //         case 4: this.isShowReward04 = true; break;
+            //         case 5: this.isShowReward05 = true; break;
+            //     }
+            // })
+            this.pieces = response.pieces;
+            this.totalPieces = response.totalPieces;
+            if (this.totalPieces === this.pieces.length){
+                this.isWinner = true;
+                this.msgWinner = 'ยินดีด้วย! คุณสะสมชิ้นส่วนครบแล้ว';
+            }else{
+                this.msgWinner = 'พยายามอีกนิด ชิ้นส่วนยังไม่ครบ';
+                this.message = response.message;
+            }
         });
     }
 }

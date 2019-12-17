@@ -48,11 +48,22 @@
         </div> -->
         <div id="collecting-reward-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="isRewardShow">
             <div id="collecting-reward" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
-                <img src="assets/images/logos/lotte-toppo-logo-t.png" *ngIf="isShowReward01">
+                <!-- <img src="assets/images/logos/lotte-toppo-logo-t.png" *ngIf="isShowReward01">
                 <img src="assets/images/logos/lotte-toppo-logo-o1.png" *ngIf="isShowReward02">
                 <img src="assets/images/logos/lotte-toppo-logo-p1.png" *ngIf="isShowReward03">
                 <img src="assets/images/logos/lotte-toppo-logo-p2.png" *ngIf="isShowReward04">
-                <img src="assets/images/logos/lotte-toppo-logo-o2.png"*ngIf="isShowReward05" >
+                <img src="assets/images/logos/lotte-toppo-logo-o2.png"*ngIf="isShowReward05" > -->
+                <!-- <img src="assets/images/logos/one.png" *ngIf="isShowReward01" >
+                <img src="assets/images/logos/one.png" *ngIf="!isShowReward01" >
+                <img src="assets/images/logos/two.png" *ngIf="isShowReward02" >
+                <img src="assets/images/logos/two.png" *ngIf="!isShowReward02" >
+                <img src="assets/images/logos/three.png" *ngIf="isShowReward03" >
+                <img src="assets/images/logos/three.png" *ngIf="!isShowReward03" >
+                <img src="assets/images/logos/four.png" *ngIf="isShowReward04" >
+                <img src="assets/images/logos/four.png" *ngIf="!isShowReward04" >
+                <img src="assets/images/logos/five.png"*ngIf="isShowReward05" >
+                <img src="assets/images/logos/five.png" *ngIf="!isShowReward05" >  -->
+
                 <!-- <img src="assets/images/logos/one.png" *ngIf="isShowReward01" >
 
                 <img src="assets/images/logos/two.png" *ngIf="isShowReward02" >
@@ -62,6 +73,18 @@
                 <img src="assets/images/logos/four.png" *ngIf="isShowReward04" >
                
                 <img src="assets/images/logos/five.png"*ngIf="isShowReward05" > -->
+                <div *ngIf="isWinner" style="color: green;">
+                    <h2>{{msgWinner}}</h2>
+                </div>
+                <div *ngIf="!isWinner" style="color: orange;">
+                    <h2>{{msgWinner}}</h2>
+                    {{message}}
+                </div>
+                <mat-chip-list class="mat-chip-list-stacked" aria-label="Color selection" >
+                    <mat-chip *ngFor="let piece of pieces" selected color="warn" >
+                      <span>{{piece}}</span>
+                    </mat-chip>
+                </mat-chip-list>
               
                 
             </div>

@@ -1,7 +1,15 @@
 @import "src/@fuse/scss/fuse";
 
 register {
-
+    mat-form-field .mat-form-field {
+        &-underline {
+          position: relative;
+          bottom: auto;
+        }
+        &-subscript-wrapper {
+          position: static;
+        }
+    }
     #register {
         width: 100%;
         overflow: hidden;

@@ -26,6 +26,12 @@ export class CollectingComponent implements OnInit
     isShowReward03: boolean;
     isShowReward04: boolean;
     isShowReward05: boolean;
+    pieces = [];
+    totalPieces = 0;
+    msgWinner = '';
+    isWinner: boolean;
+    message: string;
+
 
     /**
      * Constructor
@@ -90,41 +96,36 @@ export class CollectingComponent implements OnInit
     collecting(): void
     {
         // this.isRewardShow = true;
-        // const pieces = [1, 2, 3, 4, 5];
-        // pieces.forEach(x => {
-        //     console.log(x)
-        //     switch (x){
-        //         case 1: this.isShowReward01 = true; break;
-        //         case 2: this.isShowReward02 = true; break;
-        //         case 3: this.isShowReward03 = true; break;
-        //         case 4: this.isShowReward04 = true; break;
-        //         case 5: this.isShowReward05 = true; break;
-        //     }
-        // });
+        // this.pieces = [1, 2, 4, 5];
+        // this.totalPieces = 5;
+        // if (this.totalPieces === this.pieces.length){
+        //     this.isWinner = true;
+        //     this.msgWinner = 'ยินดีด้วย! คุณสะสมชิ้นส่วนครบแล้ว';
+        // }else{
+        //     this.msgWinner = 'พยายามอีกนิด ชิ้นส่วนยังไม่ครบ';
+        // }
+
+
         const requestData = {
             phone  : this.collectingForm.value.phone,
             token   : this.token,
             campaignId: this.campaignId,
         };
 
-        console.log(requestData);
-
         this._redeemService.isExist(requestData).then(response => {
-            console.log(response)
             if (response.isExist)
             {
-                console.log('SUCCESS');
-                console.log(response);
                 this.isRewardShow = true;
-                response.pieces.forEach(x => {
-                    switch(x){
-                        case 1: this.isShowReward01 = true; break;
-                        case 2: this.isShowReward02 = true; break;
-                        case 3: this.isShowReward03 = true; break;
-                        case 4: this.isShowReward04 = true; break;
-                        case 5: this.isShowReward05 = true; break;
-                    }
-                })
+                this.pieces = response.pieces;
+                this.totalPieces = response.totalPieces;
+                if (this.totalPieces === this.pieces.length){
+                    this.isWinner = true;
+                    this.msgWinner = 'ยินดีด้วย! คุณสะสมชิ้นส่วนครบแล้ว';
+                }else{
+                    this.msgWinner = 'พยายามอีกนิด ชิ้นส่วนยังไม่ครบ';
+                    this.message = response.message;
+                }
+
                 // this.isShowReward01 = true;
             }
             else

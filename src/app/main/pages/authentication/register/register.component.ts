@@ -84,8 +84,9 @@ export class RegisterComponent implements OnInit, OnDestroy
             id      : [0],
             firstName: [undefined, [Validators.required]],
             lastName: [undefined, [Validators.required]],
-            email: [undefined, [Validators.required]],
+            email: [undefined, [Validators.required, Validators.email]],
             password: [undefined, [Validators.required]],
+            passwordConfirm: [undefined, [Validators.required, confirmPasswordValidator]],
             phone: [undefined, [Validators.required]],
             brandId: [0, [Validators.required]],
             roleId: [0, [Validators.required]],
@@ -127,21 +128,27 @@ export class RegisterComponent implements OnInit, OnDestroy
             brand : this.brandForm.value,
             staff : this.staffForm.value,
         };
-        console.log(data);
-        // this._authenticationService.register(data).then(res => {
-        //     if (res.isSuccess === true){
-        //         this.router.navigate(['/pages/auth/login']);
-        //         loadingDialogRef.close();
-        //     }else{
-        //         this._snackBar.open(res.message, 'Close', {
-        //             duration: 5000,
-        //             horizontalPosition: this.horizontalPosition,
-        //             verticalPosition: this.verticalPosition,
-        //             panelClass: ['blue-snackbar']
-        //         });
-        //         loadingDialogRef.close();
-        //     }
-        // });
+        //console.log(data);
+        this._authenticationService.register(data).then(res => {
+            if (res.isSuccess === true){
+                this._snackBar.open('Register completed.', 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['blue-snackbar']
+                });
+                this.router.navigate(['/pages/auth/login']);
+                //loadingDialogRef.close();
+            }else{
+                this._snackBar.open(res.message, 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['blue-snackbar']
+                });
+                //loadingDialogRef.close();
+            }
+        });
         
         
     }

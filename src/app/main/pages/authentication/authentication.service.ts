@@ -138,16 +138,16 @@ export class AuthenticationService{
         });
     }
 
-    // register(data: any): Promise<any>
-    // {
-    //     return new Promise((resolve, reject) => {
+    register(data: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
 
-    //         this._httpClient.post(environment.apiBaseUrl + '/users/register' , data)
-    //             .subscribe(response => {
-    //                 resolve(response);
-    //             });
-    //     });
-    // }
+            this._httpClient.post(environment.apiBaseUrl + '/brands/create' , data)
+                .subscribe(response => {
+                    resolve(response);
+                });
+        });
+    }
 
     // getPermission(data: any): Promise<any>
     // {
