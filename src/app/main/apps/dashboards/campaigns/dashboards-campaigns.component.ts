@@ -148,7 +148,8 @@ export class DashboardsCampaignsComponent implements OnInit
             this.campaignTypeId = this.selectedCampaign.campaignTypeId;
             this.Chart();
         }else{
-            window.location.href = 'apps/campaigns';
+            //window.location.href = 'apps/campaigns';
+            this._router.navigate(['apps/campaigns']);
         }
     }
 
