@@ -10,7 +10,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 
 import { CollectingComponent } from './collecting.component';
 import { CollectingRegisterComponent } from '../collecting-register/collecting-register.component';
-import { MatSelectModule } from '@angular/material';
+import { MatSelectModule, MatDatepickerModule } from '@angular/material';
 
 const routes = [
     {
@@ -37,6 +37,7 @@ const routes = [
         MatIconModule,
         MatInputModule,
         MatSelectModule,
+        MatDatepickerModule,
 
         FuseSharedModule
     ]

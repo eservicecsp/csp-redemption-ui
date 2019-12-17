@@ -73,4 +73,31 @@ export class ConfigurationsDealersService implements Resolve<any>
                 }, reject);
         });
     }
+    saveDealer(data: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(`${environment.apiBaseUrl}/dealers/create`, data)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+    updateDealer(data: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(`${environment.apiBaseUrl}/dealers/update`, data)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+    getDealer(id: number): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(`${environment.apiBaseUrl}/dealers/` + id)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
 }

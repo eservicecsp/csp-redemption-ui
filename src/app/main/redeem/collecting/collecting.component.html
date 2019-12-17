@@ -34,6 +34,18 @@
             </div>
             
         </div>
+        <!-- <div *ngIf="isRewardShow" fxLayoutAlign="center center" >
+                <img src="assets/images/logos/one.png" *ngIf="isShowReward01" >
+                <img src="assets/images/logos/one.png" *ngIf="!isShowReward01" >
+                <img src="assets/images/logos/two.png" *ngIf="isShowReward02" >
+                <img src="assets/images/logos/two.png" *ngIf="!isShowReward02" >
+                <img src="assets/images/logos/three.png" *ngIf="isShowReward03" >
+                <img src="assets/images/logos/three.png" *ngIf="!isShowReward03" >
+                <img src="assets/images/logos/four.png" *ngIf="isShowReward04" >
+                <img src="assets/images/logos/four.png" *ngIf="!isShowReward04" >
+                <img src="assets/images/logos/five.png"*ngIf="isShowReward05" >
+                <img src="assets/images/logos/five.png" *ngIf="!isShowReward05" >       
+        </div> -->
         <div id="collecting-reward-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="isRewardShow">
             <div id="collecting-reward" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
                 <img src="assets/images/logos/lotte-toppo-logo-t.png" *ngIf="isShowReward01">
@@ -41,6 +53,17 @@
                 <img src="assets/images/logos/lotte-toppo-logo-p1.png" *ngIf="isShowReward03">
                 <img src="assets/images/logos/lotte-toppo-logo-p2.png" *ngIf="isShowReward04">
                 <img src="assets/images/logos/lotte-toppo-logo-o2.png"*ngIf="isShowReward05" >
+                <!-- <img src="assets/images/logos/one.png" *ngIf="isShowReward01" >
+
+                <img src="assets/images/logos/two.png" *ngIf="isShowReward02" >
+                
+                <img src="assets/images/logos/three.png" *ngIf="isShowReward03" >
+               
+                <img src="assets/images/logos/four.png" *ngIf="isShowReward04" >
+               
+                <img src="assets/images/logos/five.png"*ngIf="isShowReward05" > -->
+              
+                
             </div>
             
         </div>

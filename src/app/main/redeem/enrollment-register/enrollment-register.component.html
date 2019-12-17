@@ -1,0 +1,154 @@
+<div id="enrollment-register" fxLayout="column">
+
+    <div id="enrollment-register-form-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="!isRewardShow">
+        <div id="logo-wrapper">
+            <div class="logo">
+                <img src="assets/images/logos/csp.svg">
+            </div>
+        </div>
+
+        <div id="enrollment-register-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+            
+            <div class="title">REGISTER</div>
+
+            <form name="enrollmentRegisterForm" [formGroup]="enrollmentRegisterForm" novalidate>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Mobile No.</mat-label>
+                    <input matInput formControlName="phone" readonly>
+                    <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
+                    <mat-error>
+                        Mobile No. is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input matInput formControlName="firstName">
+                    <mat-error>
+                        First Name is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput formControlName="lastName">
+                    <mat-error>
+                        Last Name is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email">
+                    <mat-error>
+                        Email is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" >
+                    <mat-label>Birth date</mat-label>
+                    <input matInput [matDatepicker]="dpEndDate" formControlName="birthDate" placeholder="Birth date" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="dpEndDate"></mat-datepicker-toggle>
+                    <mat-datepicker #dpEndDate></mat-datepicker>
+                    <mat-error>
+                        Birth date is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                
+
+                <!-- <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="dpStartDate" placeholder="Start Date" formControlName="startDate" readonly='true'>
+                    <mat-datepicker-toggle matSuffix [for]="dpStartDate"></mat-datepicker-toggle>
+                    <mat-datepicker #dpStartDate></mat-datepicker>
+                </mat-form-field> -->
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Address</mat-label>
+                    <input matInput formControlName="address1">
+                    <mat-error>
+                        Address is required
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- <mat-form-field appearance="outline">
+                    <mat-label>Address</mat-label>
+                    <input matInput formControlName="address2">
+                    <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
+                </mat-form-field> -->
+
+                <!-- <mat-form-field appearance="outline">
+                    <mat-label>Province</mat-label>
+                    <input matInput formControlName="province">
+                    <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
+                    <mat-error>
+                        Province is required
+                    </mat-error>
+                </mat-form-field> -->
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Province</mat-label>
+                    <mat-select formControlName="provinceCode" (selectionChange)="getAmphurs($event)">
+                      <mat-option *ngFor="let province of provinces" [value]="province.code">{{province.nameTh}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Province is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Amphur</mat-label>
+                    <mat-select formControlName="amphurCode" (selectionChange)="getTumbols($event)">
+                      <mat-option *ngFor="let amphur of amphurs" [value]="amphur.code">{{amphur.nameTh}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Amphur is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Tumbol</mat-label>
+                    <mat-select formControlName="tumbolCode" (selectionChange)="getZipcode($event)">
+                      <mat-option *ngFor="let tumbol of tumbols" [value]="tumbol.code">{{tumbol.nameTh}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Tumbol is required
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- <mat-form-field appearance="outline">
+                    <mat-label>Tumbol</mat-label>
+                    <input matInput formControlName="tumbol">
+                    <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
+                    <mat-error>
+                        Tumbol is required
+                    </mat-error>
+                </mat-form-field> -->
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Zip Code</mat-label>
+                    <input matInput formControlName="zipCode">
+                    <mat-error>
+                        Zip Code is required
+                    </mat-error>
+                </mat-form-field>
+
+                <button type="button" mat-raised-button color="accent" class="submit-button" aria-label="Redeem" 
+                [disabled]="enrollmentRegisterForm.invalid"
+                (click)="register()">
+                    CONFIRM
+                </button>
+            </form>
+
+        </div>
+        
+    </div>
+    <div id="enrollment-reward-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="isRewardShow">
+        <div id="enrollment-reward" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+            {{message}}
+        </div>
+    </div>
+
+</div>

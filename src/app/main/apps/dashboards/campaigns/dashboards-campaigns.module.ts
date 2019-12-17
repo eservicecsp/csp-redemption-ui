@@ -20,7 +20,10 @@ import { AuthenticationGuard } from 'app/main/pages/authentication/authenticatio
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
 
 import { AgmCoreModule } from '@agm/core';
-import { MatPaginatorModule, MatSortModule } from '@angular/material';
+import { MatPaginatorModule, MatSortModule, MatToolbarModule, MatProgressBarModule, MatDialogModule, MatTooltipModule, MatSnackBarModule } from '@angular/material';
+import { QRCodeModule } from 'angular2-qrcode';
+import { CommonModule } from '@angular/common';
+import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
 
 const routes: Routes = [
     {
@@ -37,7 +40,8 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        DashboardsCampaignsComponent
+        DashboardsCampaignsComponent,
+        // QRDialogComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -52,9 +56,14 @@ const routes: Routes = [
         MatTabsModule,
         MatPaginatorModule,
         MatSortModule,
-
-        ChartsModule,
+        MatDialogModule,
+        MatTooltipModule,
+        MatProgressBarModule,
+        MatToolbarModule,
+        MatSnackBarModule,
         NgxChartsModule,
+        CommonModule,
+        MatToolbarModule,
         AgmCoreModule.forRoot({
             apiKey: ''
         }),
@@ -66,7 +75,10 @@ const routes: Routes = [
     providers   : [
         DashboardsCampaignsService,
         AuthenticationGuard
-    ]
+    ],
+    // entryComponents: [
+    //     QRDialogComponent
+    // ]
 })
 export class DashboardsCampaignsModule
 {

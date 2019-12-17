@@ -80,6 +80,9 @@ export class AuthenticationGuard implements CanActivate{
                     
                 });
             }
+            else {
+                this.router.navigate(['/pages/auth/login']);
+            }
         });
         
         return true;

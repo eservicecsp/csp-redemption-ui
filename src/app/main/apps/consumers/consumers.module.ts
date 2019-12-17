@@ -18,7 +18,7 @@ import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 import { AuthenticationGuard } from 'app/main/pages/authentication/authentication.guard';
 import { ConsumersComponent } from './consumers.component';
 import { ConsumersService } from './consumers.service';
-import { MatPaginatorModule, MatSortModule, MatDialogModule, MatTooltipModule, MatProgressBarModule, MatToolbarModule, MatSnackBarModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatPaginatorModule, MatSortModule, MatDialogModule, MatTooltipModule, MatProgressBarModule, MatToolbarModule, MatSnackBarModule, MatProgressSpinnerModule, MatInputModule } from '@angular/material';
 import { ConsumerUploadDialogComponent } from './consumer-upload/consumer-upload.component';
 import { FileUploadModule } from 'ng2-file-upload';
 
@@ -60,6 +60,7 @@ const routes: Routes = [
         MatToolbarModule,
         MatSnackBarModule,
         MatProgressSpinnerModule,
+        MatInputModule,
 
         ChartsModule,
         NgxChartsModule,

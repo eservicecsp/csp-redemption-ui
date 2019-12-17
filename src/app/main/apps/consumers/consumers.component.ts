@@ -11,9 +11,9 @@ import { FuseUtils } from '@fuse/utils';
 import { ConsumersService } from './consumers.service';
 import { takeUntil } from 'rxjs/internal/operators';
 import { FileUploader } from 'ng2-file-upload';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 import { ConsumerUploadDialogComponent } from './consumer-upload/consumer-upload.component';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 // import { ConfigurationsConsumerUploadComponent } from '../consumer-upload/consumer-upload.component';
 
 @Component({
@@ -51,9 +51,13 @@ export class ConsumersComponent implements OnInit
     // Private
     private _unsubscribeAll: Subject<any>;
 
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
+
     constructor(
         private _ConsumersService: ConsumersService,
         public _matDialog: MatDialog,
+        private _snackBar: MatSnackBar,
     )
     {
         // Set the private defaults
@@ -115,46 +119,45 @@ export class ConsumersComponent implements OnInit
                     return;
                 }
                 const actionType: string = dialogResponse[0];
-                // const formData: FormGroup = dialogResponse[1];
+                const formData: FormGroup = dialogResponse[1];
                 switch ( actionType )
                 {
                     /**
                      * Save
                      */
                     case 'upload':
+                        
+                         const data = formData.getRawValue();
+                         this._ConsumersService.uploadConsumerFile(data).then(response => {
+                            if (response.isSuccess)
+                            {
+                                this._snackBar.open('Upload completed.', 'Close', {
+                                    duration: 5000,
+                                    horizontalPosition: this.horizontalPosition,
+                                    verticalPosition: this.verticalPosition,
+                                    panelClass: ['success-snackbar']
+                                });
+                                this.Mapdata();
+                            }
+                            else
+                            {
+                                this._snackBar.open(response.message, 'Close', {
+                                    duration: 5000,
+                                    horizontalPosition: this.horizontalPosition,
+                                    verticalPosition: this.verticalPosition,
+                                    panelClass: ['error-snackbar']
+                                });
+                            }
+                        }, error => {
+                            this._snackBar.open(error, 'Close', {
+                                duration: 5000,
+                                horizontalPosition: this.horizontalPosition,
+                                verticalPosition: this.verticalPosition,
+                                panelClass: ['error-snackbar']
+                            });
+                        });
 
-                        // const data = formData.getRawValue();
-                        // data.orderId = this.selectedCampaign.id;
-                        // this._monitoringCampaignService.uploadEnrollmentFile(data).then(response => {
-                        //     if (response.isSuccess)
-                        //     {
-                        //         this._snackBar.open('Upload completed.', 'Close', {
-                        //             duration: 5000,
-                        //             horizontalPosition: this.horizontalPosition,
-                        //             verticalPosition: this.verticalPosition,
-                        //             panelClass: ['success-snackbar']
-                        //         });
-                        //         this.getEnrollments();
-                        //     }
-                        //     else
-                        //     {
-                        //         this._snackBar.open(response.message, 'Close', {
-                        //             duration: 5000,
-                        //             horizontalPosition: this.horizontalPosition,
-                        //             verticalPosition: this.verticalPosition,
-                        //             panelClass: ['error-snackbar']
-                        //         });
-                        //     }
-                        // }, error => {
-                        //     this._snackBar.open(error, 'Close', {
-                        //         duration: 5000,
-                        //         horizontalPosition: this.horizontalPosition,
-                        //         verticalPosition: this.verticalPosition,
-                        //         panelClass: ['error-snackbar']
-                        //     });
-                        // });
-
-                        break;
+                         break;
                 }
             });
     }

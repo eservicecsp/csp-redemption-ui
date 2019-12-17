@@ -112,7 +112,7 @@ export class PointComponent implements OnInit
                     console.log('FAIL');
                 }
                 else{
-                    this._router.navigate(['redeem/point/register'], {queryParams: {token: this.token, campaignId: this.campaignId}});
+                    this._router.navigate(['redeem/point/register'], {queryParams: {token: this.token, campaignId: this.campaignId, phone: this.pointForm.value.phone}});
                 }
                 
             }

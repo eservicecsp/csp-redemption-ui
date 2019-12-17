@@ -1,6 +1,6 @@
 <div id="point-register" fxLayout="column">
 
-        <div id="point-register-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+        <div id="point-register-form-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="!isRewardShow">
             <div id="logo-wrapper">
                 <div class="logo">
                     <img src="assets/images/logos/csp.svg">
@@ -12,11 +12,11 @@
                 
                 <div class="title">REGISTER</div>
     
-                <form name="pointRegisterForm" [formGroup]="pointRegisterForm" novalidate>
+                <form name="pointRegisterForm" [formGroup]="pointRegisterForm" >
     
                     <mat-form-field appearance="outline">
                         <mat-label>Mobile No.</mat-label>
-                        <input matInput formControlName="phone">
+                        <input matInput formControlName="phone" readonly>
                         <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             Mobile No. is required
@@ -26,7 +26,6 @@
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput formControlName="firstName">
-                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             First Name is required
                         </mat-error>
@@ -35,7 +34,6 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput formControlName="lastName">
-                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             Last Name is required
                         </mat-error>
@@ -44,16 +42,32 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Email</mat-label>
                         <input matInput formControlName="email">
-                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             Email is required
                         </mat-error>
                     </mat-form-field>
 
+                    <!-- <mat-form-field appearance="outline">
+                        <mat-label>Birth date</mat-label>
+                        <input  matInput placeholder="Birth date"  formControlName="birthDate">
+    
+                    </mat-form-field> -->
+
+
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Birth date</mat-label>
+                        <input matInput [matDatepicker]="dpEndDate" formControlName="birthDate" placeholder="Birth date" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="dpEndDate"></mat-datepicker-toggle>
+                        <mat-datepicker #dpEndDate></mat-datepicker>
+                        <mat-error>
+                            Birth date is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+
                     <mat-form-field appearance="outline">
                         <mat-label>Address</mat-label>
                         <input matInput formControlName="address1">
-                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             Address is required
                         </mat-error>
@@ -116,7 +130,6 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Zip Code</mat-label>
                         <input matInput formControlName="zipCode">
-                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             Zip Code is required
                         </mat-error>
@@ -127,12 +140,16 @@
                     (click)="register()">
                         CONFIRM
                     </button>
-    
                 </form>
 
             </div>
             
         </div>
-    
+        <div id="point-reward-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="isRewardShow">
+            <div id="point-reward" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+                {{message}}
+            </div>
+            
+        </div>
     </div>
     

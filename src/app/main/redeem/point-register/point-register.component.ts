@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RedeemService } from '../redeem.service';
 import { switchMap, zip } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
     selector     : 'point-register',
@@ -25,6 +26,9 @@ export class PointRegisterComponent implements OnInit
     provinces: any[];
     amphurs: any[];
     tumbols: any[];
+
+    isRewardShow: boolean;
+    message: string;
 
     /**
      * Constructor
@@ -60,6 +64,8 @@ export class PointRegisterComponent implements OnInit
         // get return url from route parameters or default to '/'
         this.token = this._route.snapshot.queryParams['token'];
         this.campaignId = this._route.snapshot.queryParams['campaignId'];
+        this.isRewardShow = false;
+        this.message = undefined;
 
         this._redeemService.getProvinces().then(response => {
             this.provinces = response.provinces;
@@ -77,23 +83,20 @@ export class PointRegisterComponent implements OnInit
     {
         this.pointRegisterForm = this._formBuilder.group({
             id: [0],
-            firstName: [undefined, [Validators.required]],
-            lastName: [undefined, [Validators.required]],
-            email: [undefined, [Validators.required]],
-            phone   : [undefined, [Validators.required]],
-            address1   : [undefined, [Validators.required]],
+            firstName: [undefined, Validators.required],
+            lastName: [undefined, Validators.required],
+            email: [undefined, [Validators.required, Validators.email]],
+            phone   : [this._route.snapshot.queryParams['phone'], Validators.required],
+            address1   : [undefined, Validators.required],
             address2   : [undefined],
-            tumbolCode: [undefined, [Validators.required]],
-            amphurCode: [undefined, [Validators.required]],
-            provinceCode: [undefined, [Validators.required]],
-            zipCode: [undefined, [Validators.required]],
-            campaignId: [this.campaignId, [Validators.required]],
+            tumbolCode: [undefined, Validators.required],
+            amphurCode: [undefined, Validators.required],
+            provinceCode: [undefined, Validators.required],
+            zipCode: [undefined, Validators.required],
+            campaignId: [this.campaignId, Validators.required],
             token: [this.token],
-            birthDate: ['2019-11-27']
+            birthDate:  ['', Validators.required]
         });
-
-        console.log(this.token);
-        console.log(this.campaignId);
     }
 
     getAmphurs(event): void
@@ -124,12 +127,27 @@ export class PointRegisterComponent implements OnInit
 
     register(): void
     {
-        const requestData = this.pointRegisterForm.value;
+        const requestData = {
+            firstName: this.pointRegisterForm.value.firstName,
+            lastName: this.pointRegisterForm.value.lastName,
+            email: this.pointRegisterForm.value.email,
+            phone   : this._route.snapshot.queryParams['phone'],
+            address1   : this.pointRegisterForm.value.address1,
+            address2   : null,
+            tumbolCode: this.pointRegisterForm.value.tumbolCode,
+            amphurCode: this.pointRegisterForm.value.amphurCode,
+            provinceCode: this.pointRegisterForm.value.provinceCode,
+            zipCode: this.pointRegisterForm.value.zipCode,
+            campaignId: this.campaignId,
+            token: this.token,
+            birthDate:  moment(this.pointRegisterForm.value.birthDate).format('YYYY-MM-DD')
+        };
+        
 
-        // console.log(requestData);
-
+        //console.log(requestData);
         this._redeemService.register(requestData).then(response => {
-            console.log(response);
+            this.isRewardShow = true;
+            this.message = response.message;
         });
     }
 }

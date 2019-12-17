@@ -10,7 +10,8 @@ import { FuseSharedModule } from '@fuse/shared.module';
 
 import { PointComponent } from './point.component';
 import { PointRegisterComponent } from '../point-register/point-register.component';
-import { MatSelectModule } from '@angular/material';
+import { MatSelectModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { DatePipe } from '@angular/common';
 
 const routes = [
     {
@@ -30,15 +31,24 @@ const routes = [
     ],
     imports     : [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        // BrowserModule ,
+        // BrowserAnimationsModule,
+        // CommonModule,
+        
 
         FuseSharedModule
+    ]
+    ,
+    providers: [
+        DatePipe,
     ]
 })
 export class PointModule

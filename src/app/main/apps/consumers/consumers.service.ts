@@ -86,4 +86,13 @@ export class ConsumersService implements Resolve<any>
                 }, reject);
         });
     }
+    uploadConsumerFile(value): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(environment.apiBaseUrl + '/Consumers/upload', value)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
 }

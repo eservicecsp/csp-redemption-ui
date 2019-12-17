@@ -57,7 +57,10 @@ collecting {
             }
         }
 
-
+        .responsive {
+            width: 100%;
+            height: auto;
+          }
 
         #collecting-form-wrapper {
             flex: 1 0 auto;

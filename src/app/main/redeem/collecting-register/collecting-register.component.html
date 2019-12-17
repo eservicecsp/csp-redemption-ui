@@ -1,6 +1,6 @@
 <div id="collecting-register" fxLayout="column">
 
-        <div id="collecting-register-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+        <div id="collecting-register-form-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="!isRewardShow">
             <div id="logo-wrapper">
                 <div class="logo">
                     <img src="assets/images/logos/lotte-toppo-logo.svg">
@@ -16,7 +16,7 @@
     
                     <mat-form-field appearance="outline">
                         <mat-label>Mobile No.</mat-label>
-                        <input matInput formControlName="phone">
+                        <input matInput formControlName="phone" readonly>
                         <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             Mobile No. is required
@@ -26,7 +26,6 @@
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput formControlName="firstName">
-                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             First Name is required
                         </mat-error>
@@ -35,7 +34,6 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput formControlName="lastName">
-                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             Last Name is required
                         </mat-error>
@@ -44,16 +42,24 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Email</mat-label>
                         <input matInput formControlName="email">
-                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             Email is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Birth date</mat-label>
+                        <input matInput [matDatepicker]="dpEndDate" formControlName="birthDate" placeholder="Birth date" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="dpEndDate"></mat-datepicker-toggle>
+                        <mat-datepicker #dpEndDate></mat-datepicker>
+                        <mat-error>
+                            Birth date is <strong>required</strong>
                         </mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Address</mat-label>
                         <input matInput formControlName="address1">
-                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             Address is required
                         </mat-error>
@@ -116,7 +122,6 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Zip Code</mat-label>
                         <input matInput formControlName="zipCode">
-                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
                         <mat-error>
                             Zip Code is required
                         </mat-error>
@@ -133,6 +138,20 @@
             </div>
             
         </div>
-    
+        <div id="collecting-reward-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="isRewardShow">
+            <div id="collecting-reward" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+                <img src="/assets/images/logos/lotte-toppo-logo-t.png" *ngIf="isShowReward01">
+                <img src="/assets/images/logos/lotte-toppo-logo-o1.png" *ngIf="isShowReward02">
+                <img src="/assets/images/logos/lotte-toppo-logo-p1.png" *ngIf="isShowReward03">
+                <img src="/assets/images/logos/lotte-toppo-logo-p2.png" *ngIf="isShowReward04">
+                <img src="/assets/images/logos/lotte-toppo-logo-o2.png"*ngIf="isShowReward05" >
+                <!-- <img src="assets/images/logos/logo_fun_01.png" *ngIf="isShowReward01">
+                <img src="assets/images/logos/logo_fun_02.png" *ngIf="isShowReward02">
+                <img src="assets/images/logos/logo_fun_03.png" *ngIf="isShowReward03">
+                <img src="assets/images/logos/logo_fun_04.png" *ngIf="isShowReward04">
+                <img src="assets/images/logos/logo_fun_05.png"*ngIf="isShowReward05" > -->
+            </div>
+            
+        </div>
     </div>
     

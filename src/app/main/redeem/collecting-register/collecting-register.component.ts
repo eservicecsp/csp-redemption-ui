@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RedeemService } from '../redeem.service';
 import { switchMap, zip } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
     selector     : 'collecting-register',
@@ -25,6 +26,14 @@ export class CollectingRegisterComponent implements OnInit
     provinces: any[];
     amphurs: any[];
     tumbols: any[];
+
+    isRewardShow: boolean;
+    message: string;
+    isShowReward01: boolean;
+    isShowReward02: boolean;
+    isShowReward03: boolean;
+    isShowReward04: boolean;
+    isShowReward05: boolean;
 
     /**
      * Constructor
@@ -60,10 +69,16 @@ export class CollectingRegisterComponent implements OnInit
         // get return url from route parameters or default to '/'
         this.token = this._route.snapshot.queryParams['token'];
         this.campaignId = this._route.snapshot.queryParams['campaignId'];
-
+        this.isRewardShow = false;
+        this.message = undefined;
         this._redeemService.getProvinces().then(response => {
             this.provinces = response.provinces;
         });
+        this.isShowReward01 = false;
+        this.isShowReward02 = false;
+        this.isShowReward03 = false;
+        this.isShowReward04 = false;
+        this.isShowReward05 = false;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -77,19 +92,19 @@ export class CollectingRegisterComponent implements OnInit
     {
         this.collectingRegisterForm = this._formBuilder.group({
             id: [0],
-            firstName: [undefined, [Validators.required]],
-            lastName: [undefined, [Validators.required]],
-            email: [undefined, [Validators.required]],
-            phone   : [undefined, [Validators.required]],
-            address1   : [undefined, [Validators.required]],
+            firstName: [undefined, Validators.required],
+            lastName: [undefined, Validators.required],
+            email: [undefined, [Validators.required, Validators.email]],
+            phone   : [this._route.snapshot.queryParams['phone'], [Validators.required]],
+            address1   : [undefined, Validators.required],
             address2   : [undefined],
-            tumbolCode: [undefined, [Validators.required]],
-            amphurCode: [undefined, [Validators.required]],
-            provinceCode: [undefined, [Validators.required]],
-            zipCode: [undefined, [Validators.required]],
-            campaignId: [this.campaignId, [Validators.required]],
+            tumbolCode: [undefined, Validators.required],
+            amphurCode: [undefined, Validators.required],
+            provinceCode: [undefined, Validators.required],
+            zipCode: [undefined, Validators.required],
+            campaignId: [this.campaignId, Validators.required],
             token: [this.token],
-            birthDate: ['2019-11-27']
+            birthDate:  [undefined, Validators.required]
         });
 
         console.log(this.token);
@@ -124,12 +139,34 @@ export class CollectingRegisterComponent implements OnInit
 
     register(): void
     {
-        const requestData = this.collectingRegisterForm.value;
-
-        // console.log(requestData);
+        const requestData = {
+            firstName: this.collectingRegisterForm.value.firstName,
+            lastName: this.collectingRegisterForm.value.lastName,
+            email: this.collectingRegisterForm.value.email,
+            phone   : this._route.snapshot.queryParams['phone'],
+            address1   : this.collectingRegisterForm.value.address1,
+            address2   : null,
+            tumbolCode: this.collectingRegisterForm.value.tumbolCode,
+            amphurCode: this.collectingRegisterForm.value.amphurCode,
+            provinceCode: this.collectingRegisterForm.value.provinceCode,
+            zipCode: this.collectingRegisterForm.value.zipCode,
+            campaignId: this.campaignId,
+            token: this.token,
+            birthDate:  moment(this.collectingRegisterForm.value.birthDate).format('YYYY-MM-DD')
+        };
 
         this._redeemService.register(requestData).then(response => {
-            console.log(response);
+            this.isRewardShow = true;
+            this.message = response.message;
+            response.pieces.forEach(x => {
+                switch(x){
+                    case 1: this.isShowReward01 = true; break;
+                    case 2: this.isShowReward02 = true; break;
+                    case 3: this.isShowReward03 = true; break;
+                    case 4: this.isShowReward04 = true; break;
+                    case 5: this.isShowReward05 = true; break;
+                }
+            })
         });
     }
 }

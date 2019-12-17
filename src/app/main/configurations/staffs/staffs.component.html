@@ -35,7 +35,7 @@
     
                 <!-- ADD BUTTON -->
                 <button mat-raised-button
-                        [routerLink]="'/configurations/staffs/new'"
+                        [routerLink]="'/configurations/staffs/staff'"
                         class="add-staff-button fuse-white mt-24 mt-md-0">
                     <span>ADD NEW STAFF</span>
                 </button>
@@ -114,7 +114,7 @@
                     <mat-row *matRowDef="let staff; columns: displayedColumns;"
                              class="staff"
                              matRipple
-                             [routerLink]="'/configurations/staffs/'+staff.id+'/'+staff.handle">
+                             [routerLink]="['/configurations/staffs/staff', staff.id]">
                              <!-- [routerLink]="'/configurations/staffs/'+staff.id+'/'+staff.handle"> -->
                     </mat-row>
     

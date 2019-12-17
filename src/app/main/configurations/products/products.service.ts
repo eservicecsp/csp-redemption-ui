@@ -73,4 +73,31 @@ export class ConfigurationsProductsService implements Resolve<any>
                 }, reject);
         });
     }
+    getProductsById(id: number): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/products/' + id)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+    saveProduct(data: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(`${environment.apiBaseUrl}/products/create`, data)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+    updateProduct(data: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(`${environment.apiBaseUrl}/products/update`, data)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
 }

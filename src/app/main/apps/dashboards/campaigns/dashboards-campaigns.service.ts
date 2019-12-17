@@ -163,4 +163,24 @@ export class DashboardsCampaignsService implements Resolve<any>
 
         });
     }
+
+    chartTransaction(campaignId: number): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(`${environment.apiBaseUrl}/charts/transaction/` + campaignId)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+
+    chartQrCode(campaignId: number): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(`${environment.apiBaseUrl}/charts/qrcode/` + campaignId)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
 }

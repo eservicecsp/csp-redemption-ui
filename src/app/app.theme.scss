@@ -95,11 +95,15 @@ $typography: mat-typography-config(
 @import "src/app/main/configurations/products/products.theme";
 @import "src/app/main/configurations/dealers/dealers.theme";
 
+// @import "src/app/main/configurations/products/form-product/form-product.theme";
+
 // Redeem
 @import "src/app/main/redeem/collecting/collecting.theme";
 @import "src/app/main/redeem/collecting-register/collecting-register.theme";
 @import "src/app/main/redeem/point/point.theme";
 @import "src/app/main/redeem/point-register/point-register.theme";
+@import "src/app/main/redeem/enrollment/enrollment.theme";
+@import "src/app/main/redeem/enrollment-register/enrollment-register.theme";
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
@@ -127,6 +131,8 @@ $typography: mat-typography-config(
     @include redeem-collecting-register-theme($theme);
     @include redeem-point-theme($theme);
     @include redeem-point-register-theme($theme);
+    @include redeem-enrollment-theme($theme);
+    @include redeem-enrollment-register-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------

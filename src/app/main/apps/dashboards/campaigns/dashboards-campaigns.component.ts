@@ -8,9 +8,11 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
-import { MatTabChangeEvent, PageEvent, MatPaginator, MatSort, MatTabGroup } from '@angular/material';
+import { MatTabChangeEvent, PageEvent, MatPaginator, MatSort, MatTabGroup, MatDialog } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
 
 @Component({
     selector     : 'dashboards-campaigns',
@@ -21,201 +23,22 @@ import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 export class DashboardsCampaignsComponent implements OnInit
 {
+    isVisible: boolean;
     campaigns: any[];
     selectedCampaign: any;
     index = 0;
+    campaignTypeId: number;
+    showCoulmnCode: boolean;
+    showCoulmnPoint: boolean;
+    showCoulmnEnrollment: boolean;
 
     firstName: string;
 
-    widgets: any;
-    widget5 = {
-        chartType: 'line',
-        datasets : {
-            yesterday: [
-                {
-                    label: 'Visitors',
-                    data : [190, 300, 340, 220, 290, 390, 250, 380, 410, 380, 320, 290],
-                    fill : 'start'
-
-                },
-                {
-                    label: 'Page views',
-                    data : [2200, 2900, 3900, 2500, 3800, 3200, 2900, 1900, 3000, 3400, 4100, 3800],
-                    fill : 'start'
-                }
-            ],
-            today    : [
-                {
-                    label: 'Visitors',
-                    data : [410, 380, 320, 290, 190, 390, 250, 380, 300, 340, 220, 290],
-                    fill : 'start'
-                },
-                {
-                    label: 'Page Views',
-                    data : [3000, 3400, 4100, 3800, 2200, 3200, 2900, 1900, 2900, 3900, 2500, 3800],
-                    fill : 'start'
-
-                }
-            ]
-        },
-        labels   : ['12am', '2am', '4am', '6am', '8am', '10am', '12pm', '2pm', '4pm', '6pm', '8pm', '10pm'],
-        colors   : [
-            {
-                borderColor              : '#008000',
-                backgroundColor          : '#008000',
-                pointBackgroundColor     : '#008000',
-                pointHoverBackgroundColor: '#008000',
-                pointBorderColor         : '#ffffff',
-                pointHoverBorderColor    : '#ffffff'
-            },
-            {
-                borderColor              : '#99cc99',
-                backgroundColor          : '#99cc99',
-                pointBackgroundColor     : '#99cc99',
-                pointHoverBackgroundColor: '#99cc99',
-                pointBorderColor         : '#ffffff',
-                pointHoverBorderColor    : '#ffffff'
-            }
-        ],
-        options  : {
-            spanGaps           : false,
-            legend             : {
-                display: false
-            },
-            maintainAspectRatio: false,
-            tooltips           : {
-                position : 'nearest',
-                mode     : 'index',
-                intersect: false
-            },
-            layout             : {
-                padding: {
-                    left : 24,
-                    right: 32
-                }
-            },
-            elements           : {
-                point: {
-                    radius          : 4,
-                    borderWidth     : 2,
-                    hoverRadius     : 4,
-                    hoverBorderWidth: 2
-                }
-            },
-            scales             : {
-                xAxes: [
-                    {
-                        gridLines: {
-                            display: false
-                        },
-                        ticks    : {
-                            fontColor: 'rgba(0,0,0,0.54)'
-                        }
-                    }
-                ],
-                yAxes: [
-                    {
-                        gridLines: {
-                            tickMarkLength: 16
-                        },
-                        ticks    : {
-                            stepSize: 1000
-                        }
-                    }
-                ]
-            },
-            plugins            : {
-                filler: {
-                    propagate: false
-                }
-            }
-        }
-    };
-
-    mapStyle = [
-        {
-            'featureType': 'administrative',
-            'elementType': 'labels.text.fill',
-            'stylers'    : [
-                {
-                    'color': '#444444'
-                }
-            ]
-        },
-        {
-            'featureType': 'landscape',
-            'elementType': 'all',
-            'stylers'    : [
-                {
-                    'color': '#f2f2f2'
-                }
-            ]
-        },
-        {
-            'featureType': 'poi',
-            'elementType': 'all',
-            'stylers'    : [
-                {
-                    'visibility': 'off'
-                }
-            ]
-        },
-        {
-            'featureType': 'road',
-            'elementType': 'all',
-            'stylers'    : [
-                {
-                    'saturation': -100
-                },
-                {
-                    'lightness': 45
-                }
-            ]
-        },
-        {
-            'featureType': 'road.highway',
-            'elementType': 'all',
-            'stylers'    : [
-                {
-                    'visibility': 'simplified'
-                }
-            ]
-        },
-        {
-            'featureType': 'road.arterial',
-            'elementType': 'labels.icon',
-            'stylers'    : [
-                {
-                    'visibility': 'off'
-                }
-            ]
-        },
-        {
-            'featureType': 'transit',
-            'elementType': 'all',
-            'stylers'    : [
-                {
-                    'visibility': 'off'
-                }
-            ]
-        },
-        {
-            'featureType': 'water',
-            'elementType': 'all',
-            'stylers'    : [
-                {
-                    'color': '#039be5'
-                },
-                {
-                    'visibility': 'on'
-                }
-            ]
-        }
-    ];
-
-    widget5SelectedDay = 'today';
+   
 
     dateNow = Date.now();
+
+    dialogRef: any;
 
     // Transaction
     DataSource: any;
@@ -228,7 +51,7 @@ export class DashboardsCampaignsComponent implements OnInit
     tranSortActive: string;
     tranSortDirection: string;
     searchInput: FormControl;
-    tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token',  'point', 'status',  'message', 'createDate'];
+    tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token', 'code', 'point', 'status',  'message', 'createDate'];
     // Tab 
     @ViewChild(MatTabGroup, {static: true}) tabGroup: MatTabGroup;
     
@@ -245,6 +68,7 @@ export class DashboardsCampaignsComponent implements OnInit
     filter: ElementRef;
 
     private _unsubscribeAll: Subject<any>;
+    urlValue: string;
 
     //qrCode
     qrDataSource: any;
@@ -258,7 +82,42 @@ export class DashboardsCampaignsComponent implements OnInit
     qrSortDirection: string;
     
     // qrSearchInput: FormControl;
-    qrDisplayed = ['token', 'peice', 'point', 'fullName', 'email',  'phone', 'createDate'];
+    qrDisplayed = ['token', 'peice', 'code', 'point', 'fullName', 'email',  'phone', 'createDate', 'QrCode'];
+
+    // // Tab 1
+     resTransaction = [];
+     resQrCode = [];
+    // options
+    // showXAxis = true;
+    // showYAxis = true;
+    // gradient = false;
+    // showLegend = false;
+    // showXAxisLabel = false;
+    // xAxisLabel = 'Type';
+    // showYAxisLabel = false;
+    // yAxisLabel = 'Quantity';
+
+    // colorScheme = {
+    //     domain: ['#42BFF7', '#42BFF7', '#C6ECFD', '#42BFF7', '#42BFF7', '#42BFF7', '#42BFF7', '#42BFF7']
+    // };
+    // options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Type';
+  xAxisLabelQr = 'Type';
+  showYAxisLabel = true;
+  yAxisLabel = 'Transaction';
+  yAxisLabelQr = 'Code';
+
+//   colorScheme = {
+//     domain: ['#42BFF7', '#42BFF7', '#C6ECFD', '#42BFF7', '#42BFF7']
+//   };
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#42BFF7', '#42BFF7']
+  };
 
 
     /**
@@ -271,7 +130,9 @@ export class DashboardsCampaignsComponent implements OnInit
     constructor(
         private _fuseSidebarService: FuseSidebarService,
         private _dashboardsCampaignsService: DashboardsCampaignsService,
-        private _authenticationService: AuthenticationService
+        private _authenticationService: AuthenticationService,
+        private _router: Router,
+        public _matDialog: MatDialog,
     )
     {
         this._unsubscribeAll = new Subject();
@@ -280,10 +141,12 @@ export class DashboardsCampaignsComponent implements OnInit
         
         this.firstName = this._authenticationService.getRawAccessToken('firstName');
         this.campaigns = this._dashboardsCampaignsService.campaigns;
+        //console.log(this.campaigns);
         if (this.campaigns && this.campaigns.length > 0)
         {
             this.selectedCampaign = this.campaigns[0];
-            this.getCampaignSummaryById();
+            this.campaignTypeId = this.selectedCampaign.campaignTypeId;
+            this.Chart();
         }
     }
 
@@ -296,7 +159,6 @@ export class DashboardsCampaignsComponent implements OnInit
      */
     ngOnInit(): void
     {
-        this.widgets = this._dashboardsCampaignsService.widgets;
 
         this.searchInput.valueChanges
         .pipe(
@@ -305,11 +167,12 @@ export class DashboardsCampaignsComponent implements OnInit
             distinctUntilChanged()
         )
         .subscribe(searchText => {
-            if (this.index === 3) // Transaction
+            if (this.index === 1) // Transaction
             {
                 this.GetTransactions();
+               
             }
-            else if (this.index === 4) // qrcode
+            else if (this.index === 2) // qrcode
             {
                 this.Getqrcode();
             }
@@ -398,24 +261,43 @@ export class DashboardsCampaignsComponent implements OnInit
     tabChanged(tabChangeEvent: MatTabChangeEvent): void
     {
         this.index = tabChangeEvent.index;
+        this.urlValue = null;
+        this.isVisible = false;
+        this.showCoulmnCode = false;
+        this.showCoulmnPoint = false;
+        this.showCoulmnEnrollment = false;
+        if (this.campaignTypeId === 3){
+            this.qrDisplayed = ['token', 'code', 'fullName', 'email',  'phone', 'createDate', 'QrCode'];
+            this.tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token', 'code',  'status',  'message', 'createDate'];
+        }
+        if (this.campaignTypeId === 2){
+            this.qrDisplayed = ['token',  'point', 'fullName', 'email',  'phone', 'createDate', 'QrCode'];
+            this.tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token', 'point', 'status',  'message', 'createDate'];
+        }
+        if (this.campaignTypeId === 1){
+            this.qrDisplayed = ['token', 'peice',  'fullName', 'email',  'phone', 'createDate', 'QrCode'];
+            this.tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token',  'status',  'message', 'createDate'];
+        }
         if (this.index === 0) 
         {
-
+            this.Chart();
         }
-        else if (this.index === 1) 
-        {
+        // else if (this.index === 1) 
+        // {
 
-        }
-        else if (this.index === 2)
-        {
+        // }
+        // else if (this.index === 2)
+        // {
 
-        }
-        else if (this.index === 3) // Transaction
+        // }
+        else if (this.index === 1) // Transaction
         {
+            this.isVisible = true;
             this.GetTransactions();
         }
-        else if (this.index === 4) // qrcode
+        else if (this.index === 2) // qrcode
         {
+            this.isVisible = true;
             this.Getqrcode();
         }
     }
@@ -484,7 +366,10 @@ export class DashboardsCampaignsComponent implements OnInit
         this.tabGroup.selectedIndex = 0;
         this.index = 0;
         this.selectedCampaign = campaign;
-        this.getCampaignSummaryById();
+        this.campaignTypeId = this.selectedCampaign.campaignTypeId;
+        
+        //this.getCampaignSummaryById();
+        this.Chart();
     } 
 
     getCampaignSummaryById(): void
@@ -494,6 +379,88 @@ export class DashboardsCampaignsComponent implements OnInit
         }, error => {
 
         });
+    }
+    Chart(): void{
+        this._dashboardsCampaignsService.chartTransaction(this.selectedCampaign.id).then(response => {
+            if (response.isSuccess)
+            {
+                this.resTransaction = response.charts;
+                console.log(this.resTransaction);
+            }
+        }, error => {
+
+        });
+
+        this._dashboardsCampaignsService.chartQrCode(this.selectedCampaign.id).then(response => {
+            if (response.isSuccess)
+            {
+                this.resQrCode = response.charts;
+                console.log(this.resQrCode);
+            }
+        }, error => {
+
+        });
+    }
+
+    genQrCode(data): void
+    {
+        // window.location.href = data;
+        this.dialogRef = this._matDialog.open(QRDialogComponent, {
+            panelClass: 'qr-dialog',
+            data      : {
+                data
+            }
+        });
+
+        // this.dialogRef.afterClosed()
+        //     .subscribe(dialogResponse => {
+        //         if ( !dialogResponse )
+        //         {
+        //             return;
+        //         }
+        //         const actionType: string = dialogResponse[0];
+        //         switch ( actionType )
+        //         {
+        //             /**
+        //              * Save
+        //              */
+        //             case 'upload':
+
+        //                 const data = formData.getRawValue();
+        //                 data.orderId = this.selectedCampaign.id;
+        //                 console.log(data);
+        //                 // this._monitoringCampaignService.uploadEnrollmentFile(data).then(response => {
+        //                 //     if (response.isSuccess)
+        //                 //     {
+        //                 //         this._snackBar.open('Upload completed.', 'Close', {
+        //                 //             duration: 5000,
+        //                 //             horizontalPosition: this.horizontalPosition,
+        //                 //             verticalPosition: this.verticalPosition,
+        //                 //             panelClass: ['success-snackbar']
+        //                 //         });
+        //                 //         this.getEnrollments();
+        //                 //     }
+        //                 //     else
+        //                 //     {
+        //                 //         this._snackBar.open(response.message, 'Close', {
+        //                 //             duration: 5000,
+        //                 //             horizontalPosition: this.horizontalPosition,
+        //                 //             verticalPosition: this.verticalPosition,
+        //                 //             panelClass: ['error-snackbar']
+        //                 //         });
+        //                 //     }
+        //                 // }, error => {
+        //                 //     this._snackBar.open(error, 'Close', {
+        //                 //         duration: 5000,
+        //                 //         horizontalPosition: this.horizontalPosition,
+        //                 //         verticalPosition: this.verticalPosition,
+        //                 //         panelClass: ['error-snackbar']
+        //                 //     });
+        //                 // });
+
+        //                 break;
+        //         }
+        //     });
     }
 }
 

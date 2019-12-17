@@ -1,4 +1,4 @@
-<div class="dialog-content-wrapper">
+<!-- <div class="dialog-content-wrapper">
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
             <span class="title dialog-title">{{dialogTitle}}</span>
@@ -6,21 +6,10 @@
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar-row>
-
-        <!-- <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
-            <img [src]="contact.avatar" class="avatar contact-avatar huge m-0"
-                    [alt]="contact.name"/>
-            <div class="contact-name mt-8">Upload files</div>
-        </mat-toolbar-row> -->
     </mat-toolbar>
 
     <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
 
-        <!-- <div class="">
-            Or upload your file(s) here
-            <label for="uploader">Browser</label>
-            <input #uploader type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
-        </div> -->
         <button mat-raised-button (click)="fileInput.click()" class="mb-12">
             <span>Select file</span>
             <input #fileInput type="file" 
@@ -57,12 +46,6 @@
                     <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
                     <td *ngIf="uploader.options.isHTML5">
                         <div class="progress" style="margin-bottom: 0;">
-                            <!-- <mat-progress-bar
-                                class=""
-                                color="accent"
-                                mode="determinate"
-                                [value]="item.progress">
-                            </mat-progress-bar> -->
                             <mat-progress-spinner
                                 class=""
                                 color="accent"
@@ -115,21 +98,8 @@
                 mode="determinate"
                 [value]="uploader.progress">
             </mat-progress-bar>
-            <!-- <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div> -->
         </div>
 
-        <!-- <button mat-raised-button type="button" class="btn btn-success btn-s"
-                (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-            <span class="glyphicon glyphicon-upload"></span> Upload all
-        </button>
-        <button mat-raised-button type="button" class="btn btn-warning btn-s"
-                (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-        </button>
-        <button mat-raised-button type="button" class="btn btn-danger btn-s"
-                (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-            <span class="glyphicon glyphicon-trash"></span> Remove all
-        </button> -->
     </div>
 
     <div mat-dialog-actions class="m-0 p-16" style="bottom:0" fxLayout="row" fxLayoutAlign="start center" >
@@ -149,4 +119,57 @@
             <span class="glyphicon glyphicon-trash"></span> Remove all
         </button>
     </div>
+    
+</div> -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+
+        <form [formGroup]="uploadForm">
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <!-- <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>File</mat-label>
+                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                    <input name="file" formControlName="file" matInput required>
+                </mat-form-field> -->
+                <mat-form-field color="accent" appearance="outline" floatLabel="always" fxFlex="100">
+                    <!-- <input type="hidden" formControlName="attachmentId"> -->
+                    <mat-label>File</mat-label>
+                    <input matInput  placeholder="File Name" formControlName="fileName" accept="text/plain" readonly>
+                    <input #fileInput hidden type="file" (change)="onSelectFile($event)" accept="text/plain"/>
+                    
+                    <button mat-button *ngIf="getControl('fileName').value !== null" matSuffix mat-icon-button aria-label="Clear"  (click)="clearAttachFile()">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+                    <button mat-button *ngIf="getControl('fileName').value === null" matSuffix mat-icon-button aria-label="Clear" (click)="fileInput.click()" >
+                        <mat-icon>folder_open</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center" >
+
+        <button mat-button
+                class="upload-button"
+                (click)="matDialogRef.close(['upload',uploadForm])"
+                [disabled]="uploadForm.invalid"
+                aria-label="UPLOAD">
+            UPLOAD
+        </button>
+
+    </div>
 </div>
+    

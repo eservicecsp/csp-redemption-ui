@@ -19,6 +19,8 @@ export class CampaignsComponent implements OnInit, OnDestroy
 {
     campaignTypes: any[];
 
+    
+
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -35,7 +37,7 @@ export class CampaignsComponent implements OnInit, OnDestroy
 
     ngOnInit(): void 
     {
-        console.log(this.campaignTypes);
+        // console.log(this.campaignTypes);
     }
 
     ngOnDestroy(): void 

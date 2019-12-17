@@ -67,4 +67,43 @@ export class ConfigurationsStaffsService implements Resolve<any>
                 }, reject);
         });
     }
+
+    getRoles(): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/roles')
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+    getStaff(id: number): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/staffs/staff/' + id)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+    
+    saveStaff(data: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(`${environment.apiBaseUrl}/staffs/create`, data)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+    updateStaff(data: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(`${environment.apiBaseUrl}/staffs/update`, data)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+
 }

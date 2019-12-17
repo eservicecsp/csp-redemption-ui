@@ -1,0 +1,50 @@
+<div id="enrollment" fxLayout="column">
+
+    <div id="enrollment-form-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="!isRewardShow">
+        <div id="logo-wrapper">
+            <div class="logo">
+                <img src="assets/images/logos/csp.svg">
+            </div>
+        </div>
+
+        <div id="enrollment-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+            
+            <div class="title">REDEEM</div>
+
+            <form name="enrollmentForm" [formGroup]="enrollmentForm" novalidate>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Mobile No.</mat-label>
+                    <input matInput formControlName="phone">
+                    <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
+                    <mat-error>
+                        Mobile No. is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Code</mat-label>
+                    <input matInput formControlName="code">
+                    <mat-error>
+                        Code is required
+                    </mat-error>
+                </mat-form-field>
+
+                <button type="button" mat-raised-button color="accent" class="submit-button" aria-label="Redeem" 
+                [disabled]="enrollmentForm.invalid"
+                (click)="enrollment()">
+                    REDEEM!
+                </button>
+
+            </form>
+
+        </div>
+        
+    </div>
+    <div id="enrollment-reward-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="isRewardShow">
+        <div id="enrollment-reward" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+            {{message}}
+        </div>
+    </div>
+
+</div>

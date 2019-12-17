@@ -70,6 +70,7 @@
                 min-height: 192px !important;
                 max-height: 192px !important;
             }
+            
         }
 
         > .content {
@@ -114,6 +115,9 @@
         }
         .mat-column-token {
             flex: 0 1 300px;
+        }
+        .mat-column-code {
+            flex: 0 1 100px;
         }
         .mat-column-point {
             flex: 0 1 100px;

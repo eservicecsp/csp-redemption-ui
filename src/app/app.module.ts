@@ -19,7 +19,9 @@ import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { SampleModule } from 'app/main/sample/sample.module';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatDatepickerModule, MatToolbarModule } from '@angular/material';
+import { QRDialogComponent } from './main/apps/dashboards/campaigns/qr-dialog/qr-dialog.component';
+import { QRCodeModule } from 'angular2-qrcode';
 
 const appRoutes: Routes = [
     {
@@ -46,7 +48,8 @@ const appRoutes: Routes = [
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        QRDialogComponent
     ],
     imports     : [
         BrowserModule,
@@ -63,6 +66,9 @@ const appRoutes: Routes = [
         MatButtonModule,
         MatIconModule,
         MatDialogModule,
+        MatDatepickerModule,
+        MatToolbarModule,
+        QRCodeModule,
 
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
@@ -80,6 +86,9 @@ const appRoutes: Routes = [
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    ],
+    entryComponents: [
+        QRDialogComponent,
     ]
 })
 export class AppModule

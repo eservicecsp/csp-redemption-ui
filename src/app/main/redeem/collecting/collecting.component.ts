@@ -89,6 +89,18 @@ export class CollectingComponent implements OnInit
 
     collecting(): void
     {
+        // this.isRewardShow = true;
+        // const pieces = [1, 2, 3, 4, 5];
+        // pieces.forEach(x => {
+        //     console.log(x)
+        //     switch (x){
+        //         case 1: this.isShowReward01 = true; break;
+        //         case 2: this.isShowReward02 = true; break;
+        //         case 3: this.isShowReward03 = true; break;
+        //         case 4: this.isShowReward04 = true; break;
+        //         case 5: this.isShowReward05 = true; break;
+        //     }
+        // });
         const requestData = {
             phone  : this.collectingForm.value.phone,
             token   : this.token,
@@ -129,7 +141,7 @@ export class CollectingComponent implements OnInit
                     console.log('FAIL');
                 }
                 else{
-                    this._router.navigate(['redeem/collecting/register'], {queryParams: {token: this.token, campaignId: this.campaignId}});
+                    this._router.navigate(['redeem/collecting/register'], {queryParams: {token: this.token, campaignId: this.campaignId, phone: this.collectingForm.value.phone}});
                 }
                 
             }

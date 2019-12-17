@@ -35,7 +35,7 @@
     
                 <!-- ADD BUTTON -->
                 <button mat-raised-button
-                        [routerLink]="'/configurations/products/new'"
+                        [routerLink]="'/configurations/products/product'"
                         class="add-product-button fuse-white mt-24 mt-md-0">
                     <span>ADD NEW PRODUCT</span>
                 </button>
@@ -45,7 +45,7 @@
             <!-- / HEADER -->
     
             <!-- CONTENT CARD -->
-            <div class="content-card">
+            <div class="content-card" >
     
                 <mat-table class="products-table"
                            #table [dataSource]="dataSource"
@@ -94,7 +94,7 @@
                         <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Created By</mat-header-cell>
                         <mat-cell *matCellDef="let product" fxHide fxShow.gt-md>
                             <p class="text-truncate">
-                                {{product.createdBy}}
+                                {{product.createdName}}
                             </p>
                         </mat-cell>
                     </ng-container>
@@ -103,7 +103,8 @@
     
                     <mat-row *matRowDef="let product; columns: displayedColumns;"
                              class="product"
-                             matRipple>
+                             matRipple
+                             [routerLink]="['/configurations/products/product/', product.id]">
                              <!-- [routerLink]="'/configurations/products/'+product.id+'/'+product.handle"> -->
                     </mat-row>
     

@@ -22,6 +22,7 @@ export class ConfigurationsProductsComponent implements OnInit
 {
     dataSource: FilesDataSource | null;
     displayedColumns = ['id', 'name', 'description', 'createdBy'];
+    isMngProduct: boolean;
 
     @ViewChild(MatPaginator, {static: true})
     paginator: MatPaginator;
@@ -68,6 +69,10 @@ export class ConfigurationsProductsComponent implements OnInit
 
                 this.dataSource.filter = this.filter.nativeElement.value;
             });
+    }
+
+    mngProduct(): void{
+        this.isMngProduct = true;
     }
 }
 

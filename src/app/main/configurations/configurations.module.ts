@@ -19,7 +19,7 @@ import { AgmCoreModule } from '@agm/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 
-import { MatProgressBarModule, MatToolbarModule, MatDialogModule, MatTooltipModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatProgressBarModule, MatToolbarModule, MatDialogModule, MatTooltipModule, MatProgressSpinnerModule, MatSlideToggleModule } from '@angular/material';
 import { AuthenticationGuard } from '../pages/authentication/authentication.guard';
 import { ConfigurationsStaffsComponent } from './staffs/staffs.component';
 import { ConfigurationsStaffsService } from './staffs/staffs.service';
@@ -27,6 +27,9 @@ import { ConfigurationsDealersComponent } from './dealers/dealers.component';
 import { ConfigurationsDealersService } from './dealers/dealers.service';
 import { ConfigurationsProductsComponent } from './products/products.component';
 import { ConfigurationsProductsService } from './products/products.service';
+import { FormProductComponent } from './products/form-product/form-product.component';
+import { FormDealerComponent } from './dealers/form-dealer/form-dealer.component';
+import { FormStaffComponent } from './staffs/form-staff/form-staff.component';
 
 
 const routes: Routes = [
@@ -35,6 +38,26 @@ const routes: Routes = [
         component: ConfigurationsStaffsComponent,
         resolve  : {
             data: ConfigurationsStaffsService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
+        path     : 'staffs/staff',
+        component: FormStaffComponent,
+        resolve  : {
+            data: ConfigurationsProductsService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
+        path     : 'staffs/staff/:id',
+        component: FormStaffComponent,
+        resolve  : {
+            data: ConfigurationsProductsService
         },
         canActivate: [
             AuthenticationGuard
@@ -51,8 +74,48 @@ const routes: Routes = [
         ]
     },
     {
+        path     : 'dealers/dealer',
+        component: FormDealerComponent,
+        resolve  : {
+            data: ConfigurationsProductsService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
+        path     : 'dealers/dealer/:id',
+        component: FormDealerComponent,
+        resolve  : {
+            data: ConfigurationsProductsService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
         path     : 'products',
         component: ConfigurationsProductsComponent,
+        resolve  : {
+            data: ConfigurationsProductsService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
+        path     : 'products/product',
+        component: FormProductComponent,
+        resolve  : {
+            data: ConfigurationsProductsService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
+        path     : 'products/product/:id',
+        component: FormProductComponent,
         resolve  : {
             data: ConfigurationsProductsService
         },
@@ -66,7 +129,10 @@ const routes: Routes = [
     declarations: [
         ConfigurationsStaffsComponent,
         ConfigurationsDealersComponent,
-        ConfigurationsProductsComponent
+        ConfigurationsProductsComponent,
+        FormProductComponent,
+        FormDealerComponent,
+        FormStaffComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -89,6 +155,7 @@ const routes: Routes = [
         MatDialogModule,
         MatTooltipModule,
         MatProgressSpinnerModule,
+        MatSlideToggleModule,
 
         FuseSharedModule,
         FuseWidgetModule
