@@ -55,7 +55,7 @@ export class ConsumersComponent implements OnInit
     verticalPosition: MatSnackBarVerticalPosition = 'top';
 
     constructor(
-        private _ConsumersService: ConsumersService,
+        private _consumersService: ConsumersService,
         public _matDialog: MatDialog,
         private _snackBar: MatSnackBar,
     )
@@ -85,7 +85,7 @@ export class ConsumersComponent implements OnInit
         .subscribe(searchText => {
             this.Mapdata();
         });
-        // this.dataSource = new FilesDataSource(this._ConsumersService, this.paginator, this.sort);
+        // this.dataSource = new FilesDataSource(this._consumersService, this.paginator, this.sort);
 
         fromEvent(this.filter.nativeElement, 'keyup')
             .pipe(
@@ -128,7 +128,7 @@ export class ConsumersComponent implements OnInit
                     case 'upload':
                         
                          const data = formData.getRawValue();
-                         this._ConsumersService.uploadConsumerFile(data).then(response => {
+                         this._consumersService.uploadConsumerFile(data).then(response => {
                             if (response.isSuccess)
                             {
                                 this._snackBar.open('Upload completed.', 'Close', {
@@ -177,9 +177,8 @@ export class ConsumersComponent implements OnInit
             //BrandId: 1,
             filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
         };
-        this._ConsumersService.getdata(data).then(res => {
+        this._consumersService.getdata(data).then(res => {
             this.dataSource  = res.data;
-            console.log(this.dataSource );
 
             this.length = res.length;
             this.paginator.length = res.length;
@@ -209,14 +208,14 @@ export class FilesDataSource extends DataSource<any>
      * @param {MatSort} _matSort
      */
     constructor(
-        private _ConsumersService: ConsumersService,
+        private _consumersService: ConsumersService,
         private _matPaginator: MatPaginator,
         private _matSort: MatSort
     )
     {
         super();
 
-        this.filteredData = this._ConsumersService.consumers;
+        this.filteredData = this._consumersService.consumers;
     }
 
     /**
@@ -227,7 +226,7 @@ export class FilesDataSource extends DataSource<any>
     connect(): Observable<any[]>
     {
         const displayDataChanges = [
-            this._ConsumersService.onConsumersChanged,
+            this._consumersService.onConsumersChanged,
             this._matPaginator.page,
             this._filterChange,
             this._matSort.sortChange
@@ -236,7 +235,7 @@ export class FilesDataSource extends DataSource<any>
         return merge(...displayDataChanges)
             .pipe(
                 map(() => {
-                        let data = this._ConsumersService.consumers.slice();
+                        let data = this._consumersService.consumers.slice();
 
                         data = this.filterData(data);
 

@@ -35,7 +35,7 @@
     
                 <!-- ADD BUTTON -->
                 <button mat-raised-button
-                        [routerLink]="'/configurations/products/product'"
+                        [routerLink]="'/configurations/products/create'"
                         class="add-product-button fuse-white mt-24 mt-md-0">
                     <span>ADD NEW PRODUCT</span>
                 </button>
@@ -62,16 +62,16 @@
                     </ng-container>
     
                     <!-- Image Column -->
-                    <!-- <ng-container matColumnDef="image">
+                    <ng-container matColumnDef="image">
                         <mat-header-cell *matHeaderCellDef></mat-header-cell>
                         <mat-cell *matCellDef="let product">
                             <img class="product-image"
-                                 *ngIf="product.featuredImageId" [alt]="product.name"
-                                 [src]="product.images[product.featuredImageId].url"/>
-                            <img *ngIf="!product.featuredImageId"
+                                 *ngIf="product.attachments && product.attachments[product.attachments.length-1]" [alt]="product.name"
+                                 [src]="product.attachments[product.attachments.length-1].extension + ',' + product.attachments[product.attachments.length-1].file"/>
+                            <img *ngIf="!(product.attachments && product.attachments[product.attachments.length-1])"
                                  [src]="'assets/images/ecommerce/product-image-placeholder.png'">
                         </mat-cell>
-                    </ng-container> -->
+                    </ng-container>
     
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">
@@ -104,7 +104,7 @@
                     <mat-row *matRowDef="let product; columns: displayedColumns;"
                              class="product"
                              matRipple
-                             [routerLink]="['/configurations/products/product/', product.id]">
+                             [routerLink]="['/configurations/products/', product.id]">
                              <!-- [routerLink]="'/configurations/products/'+product.id+'/'+product.handle"> -->
                     </mat-row>
     

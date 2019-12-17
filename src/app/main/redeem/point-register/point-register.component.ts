@@ -142,9 +142,7 @@ export class PointRegisterComponent implements OnInit
             token: this.token,
             birthDate:  moment(this.pointRegisterForm.value.birthDate).format('YYYY-MM-DD')
         };
-        
-
-        //console.log(requestData);
+    
         this._redeemService.register(requestData).then(response => {
             this.isRewardShow = true;
             this.message = response.message;

@@ -56,7 +56,6 @@ export class FormStaffComponent implements OnInit
             if (this.userId){
                 this._configurationsStaffsService.getStaff(this.userId).then(response => {
                     if (response.isSuccess === true){
-                        console.log(response.staff);
                         this.staffForm = this._formBuilder.group({
                             Id: response.staff.id,
                             firstName   : [response.staff.firstName, Validators.required],

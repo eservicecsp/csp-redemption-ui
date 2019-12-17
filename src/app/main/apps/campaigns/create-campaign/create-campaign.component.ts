@@ -213,12 +213,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
 
     generateQrCode(): void 
     {
-        //console.log(this.form.value);
+        
         this.urlValue = this.form.value.url;
     }
     createCampaign(): void
     {
-        //console.log(this._datepipe.transform(this.form.value.startDate, 'yyyy-MM-dd'));
         let data = {};
         let camp = {};
         if (this.campaignType.id === 3){ // Enrollment & Member

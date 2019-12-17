@@ -4,10 +4,11 @@ import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@an
 import { fuseAnimations } from '@fuse/animations';
 
 import { ConfigurationsProductsService } from '../products.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
 
 @Component({
     selector     : 'form-product',
@@ -18,11 +19,22 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class FormProductComponent implements OnInit
 {
-    productForm: FormGroup;
+    productForm = this._formBuilder.group({
+        id: [0],
+        name   : ['', [Validators.required]],
+        description: ['', Validators.required],
+        createdBy : this._authenticationService.getRawAccessToken('userId'),
+        attachments: this._formBuilder.array([])
+    });
+
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+    pageType: string;
+
     productId: number;
 
+    product: any;
 
     constructor(
         private _configurationsProductsService: ConfigurationsProductsService,
@@ -33,7 +45,37 @@ export class FormProductComponent implements OnInit
         private route: ActivatedRoute
     )
     {
-        
+        this.productId = 0;
+        this.product = {
+            attachments: []
+        };
+
+        this.route.params.subscribe(params => {
+            this.productId = params['id'];
+            if (this.productId){
+                this.pageType = 'edit';
+
+                this._configurationsProductsService.getProductsById(this.productId).then(response => {
+                    if (response.isSuccess)
+                    {
+                        this.product = response.product;
+                        const attachmentsFA = this.setAttachments(this.product.attachments);
+
+                        this.productForm = this._formBuilder.group({
+                            id: this.productId,
+                            name   : [response.product.name, [Validators.required]],
+                            description: [response.product.description, Validators.required],
+                            attachments: attachmentsFA
+                        });
+                        
+                    }
+                });
+            }
+            else
+            {
+                this.pageType = 'create';
+            }
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -45,35 +87,98 @@ export class FormProductComponent implements OnInit
      */
     ngOnInit(): void
     {
-        this.productId = 0;
-        this.productForm = this._formBuilder.group({
-            Id: this.productId,
-            name   : ['', [Validators.required]],
-            description: ['', Validators.required],
-            createdBy : this._authenticationService.getRawAccessToken('userId')
-
-        });
-
-        this.route.params.subscribe(params => {
-            this.productId = params['id'];
-            if (this.productId){
-                this._configurationsProductsService.getProductsById(this.productId).then(response => {
-                    if (response.isSuccess === true){
-                        console.log(response.product);
-                        this.productForm = this._formBuilder.group({
-                            Id: this.productId,
-                            name   : [response.product.name, [Validators.required]],
-                            description: [response.product.description, Validators.required],
-                
-                        });
-                    }
-                });
-            }
-         });
+        
     }
 
-    saveProduct():void
+    getControl(frmGrp: FormGroup, key: string): any {
+        return (frmGrp.controls[key] as FormControl);
+    }
+    
+    getControls(formGroup: FormGroup, fromControl: string): any{
+        return (formGroup.controls[fromControl] as FormArray).controls;
+    }
+
+    setAttachments(attachments: any[]): FormArray
     {
+        const formArray = new FormArray([]);
+        attachments.forEach((a: any) => {
+            const attachmentIdFC = this._formBuilder.control(a.id);
+            const attachmentNameFC = this._formBuilder.control(a.name);
+            const attachmentPathFC = this._formBuilder.control(a.path);
+            const attachmentFileFC = this._formBuilder.control(a.file);
+            const attachmentExtensionFC = this._formBuilder.control(a.extension);
+
+            const attachmentFG = this._formBuilder.group({
+                id: attachmentIdFC,
+                name: attachmentNameFC,
+                path: attachmentPathFC,
+                file: attachmentFileFC,
+                extension: attachmentExtensionFC
+            });
+
+            formArray.push(attachmentFG);
+        });
+        return formArray;
+    }
+
+    onSelectFile(event): void {
+        // console.log(event)
+        if (event.target.files && event.target.files[0])
+        {
+            const formArray = this.productForm.controls.attachments as FormArray;
+            const filesAmount = event.target.files.length;
+            if (event.target.files[0].type.includes('jpeg') || event.target.files[0].type.includes('png'))
+            {
+                if (event.target.files[0].size > 1000000)
+                {
+
+                }
+                else
+                {
+                    for (let i = 0; i < filesAmount; i++) 
+                    {
+                        const reader = new FileReader();
+        
+                        reader.onload = (_event: any) => {
+                            const attachmentIdFC = this._formBuilder.control(0);
+                            const attachmentNameFC = this._formBuilder.control(event.target.files[0].name);
+                            const attachmentPathFC = this._formBuilder.control(undefined);
+                            const attachmentFileFC = this._formBuilder.control(_event.target.result.split(',')[1]);
+                            const attachmentExtensionFC = this._formBuilder.control(_event.target.result.split(',')[0]);
+                
+                            const attachmentFG = this._formBuilder.group({
+                                id: attachmentIdFC,
+                                name: attachmentNameFC,
+                                path: attachmentPathFC,
+                                file: attachmentFileFC,
+                                extension: attachmentExtensionFC
+                            });
+
+                            formArray.push(attachmentFG);
+                        };
+        
+                        reader.readAsDataURL(event.target.files[i]);
+                    }
+
+                    
+                }
+
+            }
+            else
+            {
+
+            }
+        }
+    }
+
+    removeAttachment(control, index): void 
+    {
+        control.removeAt(index);
+    }
+
+    saveProduct(): void
+    {
+        // console.log(this.productForm.value);
         if (this.productForm.value.Id === 0) {
             this._configurationsProductsService.saveProduct(this.productForm.value).then(response => {
                 if (response.isSuccess === false){

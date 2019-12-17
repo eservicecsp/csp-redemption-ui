@@ -387,7 +387,6 @@ export class DashboardsCampaignsComponent implements OnInit
             if (response.isSuccess)
             {
                 this.resTransaction = response.charts;
-                console.log(this.resTransaction);
             }
         }, error => {
 
@@ -397,7 +396,6 @@ export class DashboardsCampaignsComponent implements OnInit
             if (response.isSuccess)
             {
                 this.resQrCode = response.charts;
-                console.log(this.resQrCode);
             }
         }, error => {
 

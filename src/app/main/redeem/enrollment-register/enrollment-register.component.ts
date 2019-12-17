@@ -112,9 +112,6 @@ export class EnrollmentRegisterComponent implements OnInit
             campaignId: [this.campaignId],
             token: [this.token],
         });
-
-        console.log(this.token);
-        console.log(this.campaignId);
     }
 
     getAmphurs(event): void

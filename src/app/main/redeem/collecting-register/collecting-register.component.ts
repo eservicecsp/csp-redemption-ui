@@ -111,9 +111,6 @@ export class CollectingRegisterComponent implements OnInit
             token: [this.token],
             birthDate:  [undefined, Validators.required]
         });
-
-        console.log(this.token);
-        console.log(this.campaignId);
     }
 
     getAmphurs(event): void
