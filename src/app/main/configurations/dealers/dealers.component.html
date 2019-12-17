@@ -35,7 +35,7 @@
     
                 <!-- ADD BUTTON -->
                 <button mat-raised-button
-                        [routerLink]="'/configurations/dealers/dealer'"
+                        [routerLink]="'/configurations/dealers/create'"
                         class="add-dealer-button fuse-white mt-24 mt-md-0">
                     <span>ADD NEW DEALER</span>
                 </button>
@@ -114,7 +114,7 @@
                     <mat-row *matRowDef="let dealer; columns: displayedColumns;"
                              class="dealer"
                              matRipple
-                             [routerLink]="['/configurations/dealers/dealer/', dealer.id]">
+                             [routerLink]="['/configurations/dealers/', dealer.id]">
                              <!-- [routerLink]="'/apps/e-commerce/dealers/'+dealer.id+'/'+dealer.handle"> -->
                              
                     </mat-row>

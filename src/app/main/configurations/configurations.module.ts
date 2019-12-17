@@ -44,7 +44,7 @@ const routes: Routes = [
         ]
     },
     {
-        path     : 'staffs/staff',
+        path     : 'staffs/create',
         component: FormStaffComponent,
         resolve  : {
             data: ConfigurationsProductsService
@@ -54,7 +54,7 @@ const routes: Routes = [
         ]
     },
     {
-        path     : 'staffs/staff/:id',
+        path     : 'staffs/:id',
         component: FormStaffComponent,
         resolve  : {
             data: ConfigurationsProductsService
@@ -74,7 +74,7 @@ const routes: Routes = [
         ]
     },
     {
-        path     : 'dealers/dealer',
+        path     : 'dealers/create',
         component: FormDealerComponent,
         resolve  : {
             data: ConfigurationsProductsService
@@ -84,7 +84,7 @@ const routes: Routes = [
         ]
     },
     {
-        path     : 'dealers/dealer/:id',
+        path     : 'dealers/:id',
         component: FormDealerComponent,
         resolve  : {
             data: ConfigurationsProductsService
@@ -104,7 +104,7 @@ const routes: Routes = [
         ]
     },
     {
-        path     : 'products/product',
+        path     : 'products/create',
         component: FormProductComponent,
         resolve  : {
             data: ConfigurationsProductsService
@@ -114,7 +114,7 @@ const routes: Routes = [
         ]
     },
     {
-        path     : 'products/product/:id',
+        path     : 'products/:id',
         component: FormProductComponent,
         resolve  : {
             data: ConfigurationsProductsService
@@ -132,7 +132,9 @@ const routes: Routes = [
         ConfigurationsProductsComponent,
         FormProductComponent,
         FormDealerComponent,
-        FormStaffComponent
+        FormStaffComponent,
+
+        
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -165,6 +167,9 @@ const routes: Routes = [
         ConfigurationsProductsService,
         ConfigurationsDealersService,
         AuthenticationGuard
+    ],
+    entryComponents: [
+        
     ]
 })
 export class ConfigurationsModule

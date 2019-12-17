@@ -58,7 +58,7 @@ export class ConsumerUploadDialogComponent implements OnInit, OnDestroy
         this.dialogTitle = 'Upload consumer file';
         this.uploadForm = this.createUploadForm();
         this.uploadForm.valueChanges.subscribe(value => {
-            //console.log(value);
+  
         });
 
         this.allowedMimeType = ['text/plain'];

@@ -1,96 +1,116 @@
-@import "src/@fuse/scss/fuse";
+#product {
 
-:host {
+    .header {
+
+        .product-image {
+            overflow: hidden;
+            width: 56px;
+            min-width: 56px;
+            max-width: 56px;
+            height: 56px;
+            min-height: 56px;
+            max-height: 56px;
+            border-radius: 4px;
+
+            img {
+                height: 100%;
+                width: auto;
+                max-width: none;
+            }
+        }
+
+        .subtitle {
+            margin: 6px 0 0 0;
+        }
+    }
 
     .content {
 
-        form {
-            width: 100%;
-            max-width: 800px !important;
+        .mat-tab-group,
+        .mat-tab-body-wrapper,
+        .tab-content{
+            flex: 1 1 auto;
+            max-width: 100%;
         }
 
-        .form-errors-model {
-            flex: 1;
-
-            code {
-                background: none !important;
-            }
-        }
-
-        .horizontal-stepper-wrapper,
-        .vertical-stepper-wrapper {
-            max-width: 800px;
-        }
-    }
-}
-
-#forms {
-    // -----------------------------------------------------------------------------------------------------
-    // @ Cards
-    // -----------------------------------------------------------------------------------------------------
-    .peice-card {
-        // max-width: 100%;
-        // min-width: 100%;
-        
-        border-radius: 8px;
-        border: 1px solid;
-        margin-right: 12px;
-
-        @include media-breakpoint('xs') {
-            margin-right: 0;
-        }
-
-        .peice-card-header{
-            border-radius: 8px 8px 0px 0px;
-        }
-
-        &.variable-width {
-            min-width: 0;
-        }
-
-        &.auto-width {
-            min-width: 0;
-            max-width: none;
-        }
-
-        // Buttons
-        .mat-button {
-            min-width: 0 !important;
-            padding: 0 8px !important;
-        }
-
-        // Button Toggle Group
-        .mat-button-toggle-group,
-        .mat-button-toggle-standalone {
-            box-shadow: none !important;
-        }
-
-        // Tabs
-        .mat-tab-labels {
-            justify-content: center;
+        .mat-tab-body-content {
+            display: flex;
         }
 
         .mat-tab-label {
-            min-width: 0 !important;
+            height: 64px;
         }
 
-        // Divider
-        .card-divider {
-            margin: 16px;
-
-            &.full-width {
-                margin: 0;
-            }
-        }
-
-        // Expand Area
-        .card-expand-area {
+        .product-image {
             overflow: hidden;
+            width: 128px;
+            height: 128px;
+            margin-right: 16px;
+            margin-bottom: 16px;
+            border-radius: 4px;
+            position: relative;
 
-            .card-expanded-content {
-                padding: 8px 16px 16px 16px;
-                line-height: 1.75;
+            img {
+                height: 100%;
+                width: auto;
+                max-width: none;
             }
+        }
+
+        .add-product-image {
+            overflow: hidden;
+            width: 128px;
+            height: 128px;
+            margin-right: 16px;
+            margin-bottom: 16px;
+            border-radius: 4px;
+            position: relative;
+
+            // img {
+            //     height: 100%;
+            //     width: auto;
+            //     max-width: none;
+            // }
+                border-width: 5px;
+                border-style: dashed;
+
+        }
+
+        // .add-product-image:hover .new {
+        //     display: block;
+        // }
+
+        .product-image:hover .edit {
+            display: block;
+        }
+
+        // .new {
+        //     padding-top: 32px;	
+        //     padding-right: 32px;
+        //     position: absolute;
+        //     right: 0;
+        //     top: 0;
+        //     display: none;
+        // }
+
+        .edit {
+            padding-top: 7px;	
+            padding-right: 7px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            display: none;
+
+            // a {
+            //     color: #ffffff;
+            // }
+        }
+
+        // Temporary prefix alignment fix
+        .mat-form-field-appearance-outline .mat-form-field-prefix,
+        .mat-form-field-appearance-outline .mat-form-field-suffix {
+            top: 0;
         }
     }
+
 }

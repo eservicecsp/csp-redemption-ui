@@ -74,9 +74,6 @@ export class PointComponent implements OnInit
         this.pointForm = this._formBuilder.group({
             phone   : ['', [Validators.required]]
         });
-
-        console.log(this.token);
-        console.log(this.campaignId);
     }
 
     point(): void
@@ -87,31 +84,26 @@ export class PointComponent implements OnInit
             campaignId: this.campaignId,
         };
 
-        console.log(requestData);
-
         this._redeemService.isExist(requestData).then(response => {
-            console.log(response)
             if (response.isExist)
             {
-                console.log('SUCCESS');
-                console.log(response);
                 this.isRewardShow = true;
                 this.message = response.message;
             }
             else
             {
                 // this._router.navigate(['redeem/point/register', {token: this.token, campaignId: this.campaignId}]);
-                if(response.statusTypeCode === 'DUPLICATE'){
-                    console.log('DUPLICATE');
+                if (response.statusTypeCode === 'DUPLICATE')
+                { 
                 }
-                else if(response.statusTypeCode === 'SUCCESS'){
-                    console.log('SUCCESS');
-                    console.log(response);
+                else if (response.statusTypeCode === 'SUCCESS')
+                {
                 }
-                else if(response.statusTypeCode === 'FAIL'){
-                    console.log('FAIL');
+                else if (response.statusTypeCode === 'FAIL')
+                {
                 }
-                else{
+                else
+                {
                     this._router.navigate(['redeem/point/register'], {queryParams: {token: this.token, campaignId: this.campaignId, phone: this.pointForm.value.phone}});
                 }
                 

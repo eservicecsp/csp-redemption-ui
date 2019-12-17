@@ -37,7 +37,7 @@ export class CampaignsComponent implements OnInit, OnDestroy
 
     ngOnInit(): void 
     {
-        // console.log(this.campaignTypes);
+        
     }
 
     ngOnDestroy(): void 

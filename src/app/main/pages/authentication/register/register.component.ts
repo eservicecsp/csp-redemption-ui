@@ -127,7 +127,6 @@ export class RegisterComponent implements OnInit, OnDestroy
             brand : this.brandForm.value,
             staff : this.staffForm.value,
         };
-        console.log(data);
         // this._authenticationService.register(data).then(res => {
         //     if (res.isSuccess === true){
         //         this.router.navigate(['/pages/auth/login']);
