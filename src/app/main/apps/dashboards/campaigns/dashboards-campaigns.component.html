@@ -89,7 +89,7 @@
                 </mat-tab>
 
                 <mat-tab label="Transactions">
-                    
+
                     <div class="widget-group" fxLayout="row wrap" fxFlex="100" [@animateStagger]="{value:'50'}">
 
                         <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
@@ -201,6 +201,9 @@
                                 <mat-toolbar>
                                     <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center"
                                         style="background-color: white;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            
+                                        </div>
                                         <mat-paginator #paginator showFirstLastButtons [length]="tranLength"
                                             [pageIndex]="tranPageIndex" [pageSize]="tranPageSize"
                                             [pageSizeOptions]="tranPageSizeOptions" (page)="tranPageEvent = $event"
@@ -326,6 +329,9 @@
                                 <mat-toolbar>
                                     <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center"
                                         style="background-color: white;">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+
+                                        </div>
                                         <mat-paginator #paginator showFirstLastButtons [length]="qrLength"
                                             [pageIndex]="qrPageIndex" [pageSize]="qrPageSize"
                                             [pageSizeOptions]="qrPageSizeOptions" (page)="qrPageEvent = $event"
@@ -342,23 +348,21 @@
 
                 <mat-tab label="Enrollment">
 
-                    
+
                     <div class="widget-group" fxLayout="row wrap" fxFlex="100" [@animateStagger]="{value:'50'}">
 
                         <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
                             fxFlex="100">
 
-                            
+
                             <div class="fuse-widget-front">
 
                                 <div class="p-24 mb-8 border-bottom" fxLayout="row wrap"
                                     fxLayoutAlign="space-between center">
                                     <div fxFlex class="h3">Enrollments</div>
                                     <div fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="space-around center">
-                                        <button mat-icon-button aria-label="import file icon button"
-                                            matTooltip="Upload"
-                                            matTooltipPosition="above"
-                                            (click)="uploadDialog()">
+                                        <button mat-icon-button aria-label="import file icon button" matTooltip="Upload"
+                                            matTooltipPosition="above" (click)="uploadDialog()">
                                             <mat-icon>cloud_upload</mat-icon>
                                         </button>
                                         <mat-icon>search</mat-icon>
@@ -464,11 +468,13 @@
                                         style="background-color: white;">
                                         <div fxLayout="row" fxLayoutAlign="start center">
                                             <div fxLayout="column" fxFlex="1 0 auto">
-                                                <section class="example-section">
-                                                    <mat-checkbox class="example-margin" [(ngModel)]="SmsChecked">Send
-                                                        SMS</mat-checkbox>
-                                                    <mat-checkbox class="example-margin" [(ngModel)]="EmailChecked">Send
-                                                        Email</mat-checkbox>
+                                                <section class="example-section" fxLayout="row">
+                                                    <mat-checkbox class="mr-12" [(ngModel)]="SmsChecked">
+                                                        Send SMS
+                                                    </mat-checkbox>
+                                                    <mat-checkbox class="mr-12" [(ngModel)]="EmailChecked">
+                                                        Send Email
+                                                    </mat-checkbox>
                                                 </section>
                                             </div>
 
