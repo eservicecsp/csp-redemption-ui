@@ -14,6 +14,7 @@ import { CampaignsService } from './campaigns.service';
 
 import { QRCodeModule } from 'angular2-qrcode';
 import { DatePipe } from '@angular/common';
+import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
 
 const routes = [
     {
@@ -66,6 +67,7 @@ const routes = [
         AuthenticationGuard,
         CampaignsService,
         DatePipe,
+        ConfigurationsProductsService,
     ]
 })
 

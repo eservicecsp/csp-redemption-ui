@@ -338,6 +338,109 @@
                         <a href="{{urlValue}}">{{urlValue}}</a>
                     </div>  
                 </mat-tab> -->
+                <mat-tab label="Enrollment"  *ngIf="campaignTypeId == 3">
+                    <div class="content-card">
+                            <mat-table class="qrCode-table"
+                            #table [dataSource]="DataSource"
+                            matSort #qrMatSort="matSort"
+                            (matSortChange)="Getqrcode()"
+                            [@animateStagger]="{value:'50'}"
+                            fusePerfectScrollbar>
+        
+                        <!-- ID Column -->
+                        <ng-container matColumnDef="token">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Qr Code</mat-header-cell>
+                            <mat-cell *matCellDef="let qr">
+                                <p class="text-truncate">{{qr.token}}</p>
+                            </mat-cell>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="peice">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Peice</mat-header-cell>
+                            <mat-cell *matCellDef="let qr">
+                                <p class="text-truncate">{{qr.peice}}</p>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="code">
+                            <mat-header-cell showCoulmn  *matHeaderCellDef mat-sort-header>Code</mat-header-cell>
+                            <mat-cell  showCoulmn  *matCellDef="let qr">
+                                <p class="text-truncate">{{qr.code}}</p>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="point">
+                            <mat-header-cell showCoulmn *matHeaderCellDef mat-sort-header>Point</mat-header-cell>
+                            <mat-cell *matCellDef="let qr">
+                                <p class="text-truncate">{{qr.point}}</p>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="fullName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                            <mat-cell *matCellDef="let qr">
+                                    <p class="text-truncate">{{qr.firstName}} {{qr.lastName}}</p>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="email">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+                            <mat-cell *matCellDef="let qr">
+                                <p class="text-truncate">{{qr.email}}</p>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="phone">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
+                            <mat-cell *matCellDef="let qr">
+                                <p class="text-truncate">{{qr.phone}}</p>
+                            </mat-cell>
+                        </ng-container>
+        
+                        
+        
+                        <ng-container matColumnDef="createDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Redemption date </mat-header-cell>
+                            <mat-cell *matCellDef="let qr">
+                                <div *ngIf="qr.scanDate">
+                                    <p class="text-truncate" >
+                                        {{qr.scanDate | date : 'dd-MM-yyyy'}} 
+                                        <br/>
+                                        {{qr.scanDate | date : 'HH:mm:ss'}} 
+                                    </p>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="QrCode" >
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>QrCode </mat-header-cell>
+                            <mat-cell *matCellDef="let qr">
+                                <!-- {{qr.fullUrl}} -->
+                                <button (click)="genQrCode(qr.fullUrl)" mat-raised-button color="accent">View</button>
+                            </mat-cell>
+                        </ng-container>
+        
+                        
+        
+                        <mat-header-row *matHeaderRowDef="qrDisplayed; sticky:true"></mat-header-row>
+        
+                        <mat-row *matRowDef="let qr; columns: qrDisplayed;" matRipple>
+                        </mat-row>
+        
+                        </mat-table>
+            
+                        <mat-paginator #paginator
+                                            showFirstLastButtons
+                                            [length]="qrLength"
+                                            [pageIndex]="qrPageIndex"
+                                            [pageSize]="qrPageSize"
+                                            [pageSizeOptions]="qrPageSizeOptions"
+                                            (page)="qrPageEvent = $event"
+                                            (page)="Getqrcode()"
+                                        >
+                        </mat-paginator>
+                    </div>
+                </mat-tab>
             </mat-tab-group>
 
         </div>

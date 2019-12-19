@@ -12,6 +12,7 @@ import { AuthenticationService } from 'app/main/pages/authentication/authenticat
 import { DatePipe } from '@angular/common';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 import { Router } from '@angular/router';
+import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
 
 @Component({
     selector   : 'create-campaign',
@@ -27,6 +28,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
     
     campaignType: any;
     campaignName: string;
+    products: any[];
 
     form: FormGroup;
     collectingForm: FormGroup;
@@ -46,11 +48,13 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
         private _formBuilder: FormBuilder,
         private _campaignsService: CampaignsService,
         private _authenticationService: AuthenticationService,
+        private _configurationsProductsService: ConfigurationsProductsService,
         private _datepipe: DatePipe,
         private _snackBar: MatSnackBar,
         private _router: Router,
         )
     {
+        
         // Set the private defaults
         this._unsubscribeAll = new Subject();
 
@@ -61,6 +65,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             //url : [''],
             name : ['', Validators.required],
             description : [undefined],
+            product: ['', Validators.required],
             quantity : ['', Validators.required],
             startDate : ['', Validators.required],
             endDate : ['', Validators.required],
@@ -75,6 +80,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             Id:  [''],
             name : [undefined, Validators.required],
             description : [undefined],
+            product: ['', Validators.required],
            // url : [''],
             //quantity : [0, Validators.required],
             startDate : [undefined, Validators.required],
@@ -92,6 +98,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             //url : [''],
             name : ['', Validators.required],
             description : [undefined],
+            product: ['', Validators.required],
             quantity : ['', Validators.required],
             startDate : ['', Validators.required],
             endDate : ['', Validators.required],
@@ -106,6 +113,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
 
     ngOnInit(): void 
     {
+        this._configurationsProductsService.getProducts().then(res => {
+            if (res.isSuccess){
+                this.products = res.products;
+            }
+        });
         //const campaignId = this._datepipe.transform(new Date(), 'yyyyMMddHHmmssSSS');
         const campaignId = 'token=[#token#]&campaignId=[#campaignId#]';
 
@@ -239,7 +251,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             camp = {
                 Peices : [],
                 Point: 0,
-                Campaign: data
+                Campaign: data,
+                Product: this.form.value.product,
             };
         }
         if (this.campaignType.id === 2){ // Point & Reward
@@ -260,7 +273,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             camp = {
                 Peices : [],
                 Point: this.PointForm.value.point,
-                Campaign: data
+                Campaign: data,
+                Product: this.PointForm.value.product
             };
         }
         if (this.campaignType.id === 1){ // Collecting
@@ -290,7 +304,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             camp = {
                Peices : arrayPeices,
                Point: 0,
-               Campaign: data
+               Campaign: data,
+               Product: this.collectingForm.value.product
            };
         }
         this._campaignsService.createOrder(camp).then(response => {

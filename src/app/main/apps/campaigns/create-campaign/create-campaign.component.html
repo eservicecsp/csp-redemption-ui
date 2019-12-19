@@ -100,6 +100,21 @@
                     </mat-form-field>
 
                 </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-label>Product</mat-label>
+                        <mat-select formControlName="product">
+                          <mat-option *ngFor="let product of products" [value]="product.id">
+                            {{product.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Product <strong>required</strong>
+                        </mat-error>
+                      </mat-form-field>
+
+                </div>
 
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
@@ -224,6 +239,18 @@
                     <textarea matInput formControlName="description"></textarea>
                 </mat-form-field>
 
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Product</mat-label>
+                    <mat-select formControlName="product">
+                      <mat-option *ngFor="let product of products" [value]="product.id">
+                        {{product.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Product <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
@@ -250,17 +277,17 @@
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
-                        <mat-label>Date out of range message</mat-label>
+                        <mat-label>Alert message for overdue of Campaign</mat-label>
                         <input matInput #alertMessage formControlName="alertMessage" maxlength="255" required>
                         <mat-hint align="end">{{alertMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Date out of range message. is required!</mat-error>
+                        <mat-error>Alert message for overdue of Campaign. is required!</mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex="50">
-                        <mat-label>Duplicate Message</mat-label>
+                        <mat-label>Alert message for duplicate case</mat-label>
                         <input matInput #duplicateMessage formControlName="duplicateMessage" maxlength="255" required>
                         <mat-hint align="end">{{duplicateMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Duplicate Message. is required!</mat-error>
+                        <mat-error>Alert message for duplicate case. is required!</mat-error>
                     </mat-form-field>
 
                 </div>
@@ -268,17 +295,17 @@
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
-                        <mat-label>Code not exist message</mat-label>
+                        <mat-label>Alert message for invalid case</mat-label>
                         <input matInput #qrCodeNotExistMessage formControlName="qrCodeNotExistMessage" maxlength="255" required>
                         <mat-hint align="end">{{qrCodeNotExistMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Code not exist message. is required!</mat-error>
+                        <mat-error>Alert message for invalid case. is required!</mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex="50">
-                        <mat-label>Success Message</mat-label>
+                        <mat-label>Alert message for success case</mat-label>
                         <input matInput #winMessage formControlName="winMessage" maxlength="255" required>
                         <mat-hint align="end">{{winMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Success Message. is required!</mat-error>
+                        <mat-error>Alert message for success case. is required!</mat-error>
                     </mat-form-field>
 
                 </div>
@@ -288,10 +315,10 @@
                     <div *ngFor="let peice of peices.controls; let i = index" class="peice-card mb-16" fxFlex="19" >
                         <div class="p-16 light-green-700 peice-card-header" fxLayout="row" fxLayoutAlign="space-between center">
                             <div class="pr-16">
-                                <div class="h1 font-weight-300"> Peice {{ i + 1}}</div>
+                                <div class="h1 font-weight-300"> Piece {{ i + 1}}</div>
                             </div>
                             <div *ngIf="this.peices.value.length > 1">
-                                <button mat-icon-button aria-label="delete" matTooltip="Delete peice" type="button"
+                                <button mat-icon-button aria-label="delete" matTooltip="Delete Piece" type="button"
                                 (click)="deletePeice(i)" >
                                     <mat-icon>close</mat-icon>
                                 </button>
@@ -365,6 +392,18 @@
                     <textarea matInput formControlName="description"></textarea>
                 </mat-form-field>
 
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Product</mat-label>
+                    <mat-select formControlName="product">
+                      <mat-option *ngFor="let product of products" [value]="product.id">
+                        {{product.name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Product <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
@@ -391,17 +430,17 @@
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
-                        <mat-label>Date out of range message</mat-label>
+                        <mat-label>Alert message for overdue of Campaign</mat-label>
                         <input matInput #alertMessage formControlName="alertMessage" maxlength="255" required>
                         <mat-hint align="end">{{alertMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Date out of range message. is required!</mat-error>
+                        <mat-error>Alert message for overdue of Campaign. is required!</mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex="50">
-                        <mat-label>Duplicate Message</mat-label>
+                        <mat-label>Alert message for duplicate case</mat-label>
                         <input matInput #duplicateMessage formControlName="duplicateMessage" maxlength="255" required>
                         <mat-hint align="end">{{duplicateMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Duplicate Message. is required!</mat-error>
+                        <mat-error>Alert message for duplicate case. is required!</mat-error>
                     </mat-form-field>
 
                 </div>
@@ -409,17 +448,17 @@
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
-                        <mat-label>Code not exist message</mat-label>
+                        <mat-label>Alert message for invalid case</mat-label>
                         <input matInput #qrCodeNotExistMessage formControlName="qrCodeNotExistMessage" maxlength="255" required>
                         <mat-hint align="end">{{qrCodeNotExistMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Code not exist message. is required!</mat-error>
+                        <mat-error>Alert message for invalid case. is required!</mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex="50">
-                        <mat-label>Success Message</mat-label>
+                        <mat-label>Alert message for success case</mat-label>
                         <input matInput #winMessage formControlName="winMessage" maxlength="255" required>
                         <mat-hint align="end">{{winMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Success Message. is required!</mat-error>
+                        <mat-error>Alert message for success case. is required!</mat-error>
                     </mat-form-field>
 
                 </div>
