@@ -52,7 +52,7 @@ export class FormProductComponent implements OnInit
 
         this.route.params.subscribe(params => {
             this.productId = params['id'];
-            if (this.productId){
+            if (this.productId > 0){
                 this.pageType = 'edit';
 
                 this._configurationsProductsService.getProductsById(this.productId).then(response => {
@@ -73,7 +73,7 @@ export class FormProductComponent implements OnInit
             }
             else
             {
-                this.pageType = 'create';
+                this.pageType = 'new';
             }
         });
     }
@@ -179,7 +179,7 @@ export class FormProductComponent implements OnInit
     saveProduct(): void
     {
         // console.log(this.productForm.value);
-        if (this.productForm.value.Id === 0) {
+        if (this.productForm.value.id === 0) {
             this._configurationsProductsService.saveProduct(this.productForm.value).then(response => {
                 if (response.isSuccess === false){
                     this._snackBar.open(response.message, 'Close', {
@@ -220,8 +220,6 @@ export class FormProductComponent implements OnInit
         }
        
     }
-
-
 }
 
 
