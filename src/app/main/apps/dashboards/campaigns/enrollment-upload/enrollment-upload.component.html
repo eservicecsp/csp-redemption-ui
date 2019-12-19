@@ -1,0 +1,47 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+
+        <form [formGroup]="uploadForm">
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field color="accent" appearance="outline" floatLabel="always" fxFlex="100">
+                    <!-- <input type="hidden" formControlName="attachmentId"> -->
+                    <mat-label>File</mat-label>
+                    <input matInput  placeholder="File Name" formControlName="fileName" accept="text/plain" readonly>
+                    <input #fileInput hidden type="file" (change)="onSelectFile($event)" accept="text/plain"/>
+                    
+                    <button mat-button *ngIf="getControl('fileName').value !== null" matSuffix mat-icon-button aria-label="Clear"  (click)="clearAttachFile()">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+                    <button mat-button *ngIf="getControl('fileName').value === null" matSuffix mat-icon-button aria-label="Clear" (click)="fileInput.click()" >
+                        <mat-icon>folder_open</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center" >
+
+        <button mat-button
+                class="upload-button"
+                (click)="matDialogRef.close(['upload',uploadForm])"
+                [disabled]="uploadForm.invalid"
+                aria-label="UPLOAD">
+            UPLOAD
+        </button>
+
+    </div>
+</div>
+    
