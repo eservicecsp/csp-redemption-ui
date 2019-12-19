@@ -111,15 +111,15 @@
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
-                            <mat-label>Password</mat-label>
+                            <mat-label>Confirm password</mat-label>
                             <input matInput type="password" formControlName="passwordConfirm">
                             <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
                             <mat-error *ngIf="staffForm.get('passwordConfirm').hasError('required') ">
-                                Password is required
+                                Confirm password is required
                             </mat-error>
                             <mat-error *ngIf="!staffForm.get('passwordConfirm').hasError('required') &&
                                                 staffForm.get('passwordConfirm').hasError('passwordsNotMatching')">
-                                    New password  must match
+                                    Confirm password  must match
                         </mat-error>
                         </mat-form-field>
 
