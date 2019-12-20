@@ -1,20 +1,13 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { DataSource, SelectionModel } from '@angular/cdk/collections';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import * as shape from 'd3-shape';
-
+import { OnInit, OnDestroy, ViewEncapsulation, Component, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
-
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
-import { DashboardsCampaignsService } from './dashboards-campaigns.service';
-import { MatTabChangeEvent, PageEvent, MatPaginator, MatSort, MatTabGroup, MatDialog, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
-import { FormControl, FormGroup } from '@angular/forms';
-import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
-import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
-import { ConsumersService } from '../../consumers/consumers.service';
+import { DashboardsCampaignsService } from './dashboards-campaigns.service';
+import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
+import { MatTabGroup, MatTabChangeEvent, PageEvent, MatSort, MatPaginator } from '@angular/material';
+import { FormControl } from '@angular/forms';
+import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
     selector     : 'dashboards-campaigns',
@@ -27,81 +20,17 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 {
     private _unsubscribeAll: Subject<any>;
 
-    isVisible: boolean;
+    // main
     campaigns: any[];
     selectedCampaign: any;
-    index = 0;
-    campaignTypeId: number;
-    showCoulmnCode: boolean;
-    showCoulmnPoint: boolean;
-    showCoulmnEnrollment: boolean;
-    dataSearch: string;
-
     firstName: string;
 
-   
-
-    dateNow = Date.now();
-
-    dialogRef: any;
-
-    // Transaction
-    dataSource: any;
-    tranPageEvent: PageEvent;
-    tranLength = 0;
-    tranPageIndex = 0;
-    tranPageSize = 5;
-    tranPreviousPageIndex = 0;
-    tranPageSizeOptions: number[] = [5, 10, 25, 100];
-    tranSortActive: string;
-    tranSortDirection: string;
-    searchInput: FormControl;
-    tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token', 'code', 'point', 'status',  'message', 'createDate'];
-
-    // Tab 
     @ViewChild(MatTabGroup, {static: true}) tabGroup: MatTabGroup;
-    
-    @ViewChild(MatPaginator, {static: true})
-    paginator: MatPaginator;
+    index = 0;
 
-    @ViewChild(MatSort, {static: true}) sort: MatSort;
-
-    @ViewChild('qrMatSort', {static: true}) qrMatSort: MatSort;
-
-    @ViewChild('enrollmentMatSort', {static: true}) 
-    enrollmentMatSort: MatSort;
-
-    @ViewChild('filter', {static: true})
-    filter: ElementRef;
-
-    urlValue: string;
-
-    // qrCode
-    qrPageEvent: PageEvent;
-    qrLength = 0;
-    qrPageIndex = 0;
-    qrPageSize = 5;
-    qrPreviousPageIndex = 0;
-    qrPageSizeOptions: number[] = [5, 10, 25, 100];
-    qrSortActive: string;
-    qrSortDirection: string;
-
-    //enrollment
-    pageEvent: PageEvent;
-    length = 0;
-    pageIndex = 0;
-    pageSize = 5;
-    previousPageIndex = 0;
-    pageSizeOptions: number[] = [5, 10, 25, 100];
-    
-    // qrSearchInput: FormControl;
-    qrDisplayed = ['token', 'peice', 'code', 'point', 'fullName', 'email',  'phone', 'createDate', 'actions'];
-    displayedColumns = ['firstName', 'lastName' , 'phone',  'email'];
-
-    // Tab 1
-     resTransaction = [];
-     resQrCode = [];
-    
+    // chart
+    transactionChart: [];
+    qrCodeChart: [];
     showXAxis = true;
     showYAxis = true;
     gradient = false;
@@ -112,70 +41,59 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     showYAxisLabel = true;
     yAxisLabel = 'Transaction';
     yAxisLabelQr = 'Code';
-
     colorScheme = {
         domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#42BFF7', '#42BFF7']
     };
 
+    // table
+    @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
+    dataSource: any;
+    pageEvent: PageEvent;
+    length = 0;
+    pageIndex = 0;
+    pageSize = 5;
+    previousPageIndex = 0;
+    pageSizeOptions: number[] = [5, 10, 25, 100];
+    sortActive: string;
+    sortDirection: string;
+    transactionDisplayedColumns = ['id', 'fullName', 'email', 'phone', 'token', 'code', 'point', 'status',  'message', 'createDate'];
+    qrCodeDisplayedColumns = ['token', 'peice', 'code', 'point', 'fullName', 'email',  'phone', 'createDate', 'actions'];
+    enrollmentDisplayedColumns = ['firstName', 'lastName' , 'phone',  'email'];
+    searchInput: FormControl;
+    searchText: string;
 
     selection = new SelectionModel<any>(true, []);
-    selectionAmount: number;
-    canSendSelected: boolean;
-    canSendAll: boolean;
-    channel: string;
-    
-    smsChecked: boolean;
-    emailChecked: boolean;
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
+    selectionAmount = 0;
 
-    /**
-     * Constructor
-     *
-     * @param {FuseSidebarService} _fuseSidebarService
-     * @param {CampaignService} _campaignService
-     * @param {DashboardsCampaignsService} _dashboardsCampaignsService
-     */
     constructor(
-        private _fuseSidebarService: FuseSidebarService,
+        private _router: Router,
         private _dashboardsCampaignsService: DashboardsCampaignsService,
         private _authenticationService: AuthenticationService,
-        private _router: Router,
-        public _matDialog: MatDialog,
-        private _snackBar: MatSnackBar,
-        private _consumersService: ConsumersService,
     )
     {
-        this._unsubscribeAll = new Subject();
-        this.searchInput = new FormControl(''); 
-
-        this.dataSource = [];
+        this._unsubscribeAll = new  Subject();
         
-        this.firstName = this._authenticationService.getRawAccessToken('firstName');
         this.campaigns = this._dashboardsCampaignsService.campaigns;
-        
+        this.firstName = this._authenticationService.getRawAccessToken('firstName');
+
         if (this.campaigns && this.campaigns.length > 0)
         {
             this.selectedCampaign = this.campaigns[0];
-            this.campaignTypeId = this.selectedCampaign.campaignTypeId;
-            this.Chart();
+            this.getCharts();
         }
         else
         {
-
             this._router.navigate(['apps/campaigns']);
         }
+
+        this.searchInput = new FormControl('');
+        this.dataSource = [];
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
-    ngOnInit(): void
+    ngOnInit(): void 
     {
+        this._unsubscribeAll = new Subject();
 
         this.searchInput.valueChanges
         .pipe(
@@ -183,169 +101,16 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
             debounceTime(300),
             distinctUntilChanged()
         )
-        .subscribe(searchText => {
-            this.dataSearch = searchText;
-            if (this.index === 1) // Transaction
-            {
-                this.getTransactions();
-               
-            }
-            else if (this.index === 2) // qrcode
-            {
-                this.getqrcode();
-            }
-            else if (this.index === 3)// Enrollments
-            {
-                this.getEnrollments();
-            }
-
+        .subscribe(_searchText => {
+            this.searchText = _searchText;
+            this.getTableDataSource();
         });
     }
 
-    ngOnDestroy(): void
+    ngOnDestroy(): void 
     {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Toggle the sidebar
-     *
-     * @param name
-     */
-    toggleSidebar(name): void
-    {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-    }
-
-    tabChanged(tabChangeEvent: MatTabChangeEvent): void
-    {
-        this.index = tabChangeEvent.index;
-        this.urlValue = null;
-        this.isVisible = false;
-        this.showCoulmnCode = false;
-        this.showCoulmnPoint = false;
-        this.showCoulmnEnrollment = false;
-        if (this.campaignTypeId === 3){
-            this.qrDisplayed = ['token', 'code', 'fullName', 'email',  'phone', 'createDate', 'actions'];
-            this.tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token', 'code',  'status',  'message', 'createDate'];
-        }
-        if (this.campaignTypeId === 2){
-            this.qrDisplayed = ['token',  'point', 'fullName', 'email',  'phone', 'createDate', 'actions'];
-            this.tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token', 'point', 'status',  'message', 'createDate'];
-        }
-        if (this.campaignTypeId === 1){
-            this.qrDisplayed = ['token', 'peice',  'fullName', 'email',  'phone', 'createDate', 'actions'];
-            this.tranDisplayed = ['id', 'fullName', 'email', 'phone', 'token',  'status',  'message', 'createDate'];
-        }
-        if (this.index === 0) 
-        {
-            this.Chart();
-        }
-        else if (this.index === 1) // Transaction
-        {
-            this.isVisible = true;
-            this.getTransactions();
-        }
-        else if (this.index === 2) // qrcode
-        {
-            this.isVisible = true;
-            this.getqrcode();
-        }
-        else if (this.index === 3)
-        {
-            this.isVisible = true;
-            this.getEnrollments();
-        }
-    }
-
-    getTransactions(): void
-    {
-        
-        const data = {
-            sortActive: this.sort.active ? this.sort.active : null,
-            sortDirection: this.sort['_direction'] ? this.sort['_direction'] : null,
-            length: this.tranPageEvent ? this.tranPageEvent.length : 0,
-            pageIndex: this.tranPageEvent ? this.tranPageEvent.pageIndex : this.tranPageIndex,
-            pageSize: this.tranPageEvent ? this.tranPageEvent.pageSize : this.tranPageSize,
-            previousPageIndex: this.tranPageEvent ? this.tranPageEvent.previousPageIndex : this.tranPreviousPageIndex,
-            campaignId: this.selectedCampaign.id,
-            //filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
-            filter : this.dataSearch
-        };
-        this._dashboardsCampaignsService.getTransactionByCampaignId(data).then((res: any) => {
-            this.dataSource  = res.data;
-            this.tranLength = res.length;
-            this.paginator.length = res.length;
-            this.paginator.pageIndex = this.tranPageEvent ? this.tranPageEvent.pageIndex : this.tranPageIndex;
-            this.paginator.pageSize = this.tranPageEvent ? this.tranPageEvent.pageSize : this.tranPageSize;
-            if (this.tranLength <= ( data.pageIndex * data.pageSize)){
-                this.paginator.length = res.length;
-                this.paginator.pageIndex = 0;
-                this.paginator.pageSize  = data.pageSize;
-            }
-        });
-    }
-
-    getqrcode(): void
-    {
-        const data = {
-            sortActive: this.qrMatSort.active ? this.qrMatSort.active : null,
-            sortDirection: this.qrMatSort['_direction'] ? this.qrMatSort['_direction'] : null,
-            length: this.qrPageEvent ? this.qrPageEvent.length : 0,
-            pageIndex: this.qrPageEvent ? this.qrPageEvent.pageIndex : this.qrPageIndex,
-            pageSize: this.qrPageEvent ? this.qrPageEvent.pageSize : this.qrPageSize,
-            previousPageIndex: this.qrPageEvent ? this.qrPageEvent.previousPageIndex : this.qrPreviousPageIndex,
-            campaignId: this.selectedCampaign.id,
-            //filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
-            filter : this.dataSearch
-        };
-        this._dashboardsCampaignsService.getQrCodeByCampaignId(data).then(res => {
-            this.dataSource  = res.data;
-            this.qrLength = res.length;
-            this.paginator.length = res.length;
-            this.paginator.pageIndex = this.qrPageEvent ? this.qrPageEvent.pageIndex : this.qrPageIndex;
-            this.paginator.pageSize = this.qrPageEvent ? this.qrPageEvent.pageSize : this.qrPageSize;
-            if (this.qrLength <= ( data.pageIndex * data.pageSize)){
-                this.paginator.length = res.length;
-                this.paginator.pageIndex = 0;
-                this.paginator.pageSize  = data.pageSize;
-            }
-        });
-    }
-
-    getEnrollments(): void
-    {
-        console.log(this.enrollmentMatSort)
-        const data = {
-            sortActive: this.enrollmentMatSort.active ? this.enrollmentMatSort.active : null,
-            sortDirection: this.enrollmentMatSort['_direction'] ? this.enrollmentMatSort['_direction'] : null,
-            length: this.pageEvent ? this.pageEvent.length : 0,
-            pageIndex: this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex,
-            pageSize: this.pageEvent ? this.pageEvent.pageSize : this.pageSize,
-            previousPageIndex: this.pageEvent ? this.pageEvent.previousPageIndex : this.previousPageIndex,
-            campaignId: this.selectedCampaign.id,
-            //filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
-            filter : this.dataSearch
-        };
-        this._dashboardsCampaignsService.getEnrollment(data).then(res => {
-            this.dataSource  = res.data;
-
-            this.length = res.length;
-            this.paginator.length = res.length;
-            this.paginator.pageIndex = this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex;
-            this.paginator.pageSize = this.pageEvent ? this.pageEvent.pageSize : this.pageSize;
-            if (this.length <= ( data.pageIndex * data.pageSize)){
-                this.paginator.length = res.length;
-                this.paginator.pageIndex = 0;
-                this.paginator.pageSize  = data.pageSize;
-            }
-           // dialogRef.close();
-        });
     }
 
     selectedCampaignChanged(campaign): void
@@ -353,25 +118,49 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         this.tabGroup.selectedIndex = 0;
         this.index = 0;
         this.selectedCampaign = campaign;
-        this.campaignTypeId = this.selectedCampaign.campaignTypeId;
-        
-        this.Chart();
-    } 
 
-    getCampaignSummaryById(): void
-    {
-        this._dashboardsCampaignsService.getCampaignSummaryById(this.selectedCampaign.id).then(response => {
-
-        }, error => {
-
-        });
+        this.getCharts();
     }
 
-    Chart(): void{
+    tabChanged(tabChangeEvent: MatTabChangeEvent): void
+    {
+        this.index = tabChangeEvent.index;
+        switch (this.selectedCampaign.campaignTypeId){
+            case 0:
+                {
+                    this.getCharts();
+                    break;
+                }
+            case 1:
+                {
+                    this.getTransactions();
+                    break;
+                }
+            case 2:
+                {
+                    this.getQrCodes();
+                    break;
+                }
+            case 3:
+                {
+                    this.getEnrollments();
+                    break;
+                }
+            default: 
+            {
+                break;
+            }
+        }
+
+        this.getTableDataSource();
+    }
+
+    getCharts(): void
+    {
         this._dashboardsCampaignsService.chartTransaction(this.selectedCampaign.id).then(response => {
             if (response.isSuccess)
             {
-                this.resTransaction = response.charts;
+                this.transactionChart = response.charts;
             }
         }, error => {
 
@@ -380,84 +169,182 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         this._dashboardsCampaignsService.chartQrCode(this.selectedCampaign.id).then(response => {
             if (response.isSuccess)
             {
-                this.resQrCode = response.charts;
+                this.qrCodeChart = response.charts;
             }
         }, error => {
 
         });
     }
 
-    genQrCode(data): void
+    getTableDataSource(): void
     {
-        // window.location.href = data;
-        this.dialogRef = this._matDialog.open(QRDialogComponent, {
-            panelClass: 'qr-dialog',
-            data      : {
-                data
+        switch (this.index){
+            case 1: {
+                this.getTransactions();
+                break;
+            }
+            case 2: {
+                this.getQrCodes();
+                break;
+            }
+            case 3: {
+                this.getEnrollments();
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    getTransactions(): void
+    {
+        const requestData = {
+            sortActive: this.sort.active ? this.sort.active : null,
+            sortDirection: this.sort['_direction'] ? this.sort['_direction'] : null,
+            length: this.pageEvent ? this.pageEvent.length : 0,
+            pageIndex: this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex,
+            pageSize: this.pageEvent ? this.pageEvent.pageSize : this.pageSize,
+            previousPageIndex: this.pageEvent ? this.pageEvent.previousPageIndex : this.previousPageIndex,
+            campaignId: this.selectedCampaign.id,
+            filter : this.searchText
+        };
+
+        this._dashboardsCampaignsService.getTransactionByCampaignId(requestData).then((response: any) => {
+            this.dataSource = response.data;
+            this.length = response.length;
+            this.paginator.length = response.length;
+            this.paginator.pageIndex = this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex;
+            this.paginator.pageSize = this.pageEvent ? this.pageEvent.pageSize : this.pageSize;
+            if (this.length <= ( requestData.pageIndex * requestData.pageSize))
+            {
+                this.paginator.length = response.length;
+                this.paginator.pageIndex = 0;
+                this.paginator.pageSize  = requestData.pageSize;
             }
         });
 
     }
 
-    uploadDialog(): void
+    getQrCodes(): void
     {
-        
-        this.dialogRef = this._matDialog.open(EnrollmentUploadDialogComponent, {
-            panelClass: 'enrollment-upload-dialog',
-            data      : {
-                // Don't send anything
+        const requestData = {
+            sortActive: this.sort.active ? this.sort.active : null,
+            sortDirection: this.sort['_direction'] ? this.sort['_direction'] : null,
+            length: this.pageEvent ? this.pageEvent.length : 0,
+            pageIndex: this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex,
+            pageSize: this.pageEvent ? this.pageEvent.pageSize : this.pageSize,
+            previousPageIndex: this.pageEvent ? this.pageEvent.previousPageIndex : this.previousPageIndex,
+            campaignId: this.selectedCampaign.id,
+            filter : this.searchText
+        };
+        this._dashboardsCampaignsService.getQrCodeByCampaignId(requestData).then((response: any) => {
+            this.dataSource  = response.data;
+            this.length = response.length;
+            this.paginator.length = response.length;
+            this.paginator.pageIndex = this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex;
+            this.paginator.pageSize = this.pageEvent ? this.pageEvent.pageSize : this.pageSize;
+            if (this.length <= ( requestData.pageIndex * requestData.pageSize)){
+                this.paginator.length = response.length;
+                this.paginator.pageIndex = 0;
+                this.paginator.pageSize  = requestData.pageSize;
             }
         });
+    }
 
-        this.dialogRef.afterClosed()
-            .subscribe(dialogResponse => {
-                if ( !dialogResponse )
-                {
-                    return;
-                }
-                const actionType: string = dialogResponse[0];
-                const formData: FormGroup = dialogResponse[1];
-                switch ( actionType )
-                {
-                    /**
-                     * Save
-                     */
-                    case 'upload':
-                        const data = formData.getRawValue();
-                        data.campaignId = this.selectedCampaign.id;
-                        this._consumersService.uploadConsumerFile(data).then(response => {
-                            if (response.isSuccess)
-                            {
-                                this._snackBar.open('Upload completed.', 'Close', {
-                                    duration: 5000,
-                                    horizontalPosition: this.horizontalPosition,
-                                    verticalPosition: this.verticalPosition,
-                                    panelClass: ['success-snackbar']
-                                });
-                                this.getEnrollments();
-                            }
-                            else
-                            {
-                                this._snackBar.open(response.message, 'Close', {
-                                    duration: 5000,
-                                    horizontalPosition: this.horizontalPosition,
-                                    verticalPosition: this.verticalPosition,
-                                    panelClass: ['error-snackbar']
-                                });
-                            }
-                        }, error => {
-                            this._snackBar.open(error, 'Close', {
-                                duration: 5000,
-                                horizontalPosition: this.horizontalPosition,
-                                verticalPosition: this.verticalPosition,
-                                panelClass: ['error-snackbar']
-                            });
-                        });
+    getEnrollments(): void
+    {
+        const requestData = {
+            sortActive: this.sort.active ? this.sort.active : null,
+            sortDirection: this.sort['_direction'] ? this.sort['_direction'] : null,
+            length: this.pageEvent ? this.pageEvent.length : 0,
+            pageIndex: this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex,
+            pageSize: this.pageEvent ? this.pageEvent.pageSize : this.pageSize,
+            previousPageIndex: this.pageEvent ? this.pageEvent.previousPageIndex : this.previousPageIndex,
+            campaignId: this.selectedCampaign.id,
+            filter : this.searchText
+        };
 
-                        break;
-                }
-            });
+        this._dashboardsCampaignsService.getEnrollment(requestData).then((response: any) => {
+            this.dataSource  = response.data;
+            this.length = response.length;
+            this.paginator.length = response.length;
+            this.paginator.pageIndex = this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex;
+            this.paginator.pageSize = this.pageEvent ? this.pageEvent.pageSize : this.pageSize;
+            if (this.length <= ( requestData.pageIndex * requestData.pageSize)){
+                this.paginator.length = response.length;
+                this.paginator.pageIndex = 0;
+                this.paginator.pageSize  = requestData.pageSize;
+            }
+        });
+    }
+
+    generateQrCode(data): void
+    {
+        // this.dialogRef = this._matDialog.open(QRDialogComponent, {
+        //     panelClass: 'qr-dialog',
+        //     data      : {
+        //         data
+        //     }
+        // });
+
+    }
+
+    uploadEnrollmentsDialog(): void
+    {
+
+    }
+
+    isAllSelected(): any 
+    {
+        const numSelected = this.selection.selected.length;
+        const page = this.dataSource.length;
+
+        if (numSelected === page){
+            return true;
+        }
+        else
+        {
+            if (numSelected - 1 === page ){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }        
+    }
+
+    masterToggle(): void 
+    {
+        this.isAllSelected() ? 
+        this.selection.clear() : this.selectRows();
+
+    }
+
+    selectRows(): void
+    {
+        for (let index = 0; index < this.paginator.pageSize; index++) {
+          this.selection.select(this.dataSource[index]);
+          this.selectionAmount = this.selection.selected.length;
+        }
+    }
+
+    checkboxLabel(row?: any): string 
+    {
+        if (!row) 
+        {
+            return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+        }
+        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    }
+
+    sendSelected(): void
+    {
+
+    }
+
+    sendAll(): void
+    {
+
     }
 }
-
-

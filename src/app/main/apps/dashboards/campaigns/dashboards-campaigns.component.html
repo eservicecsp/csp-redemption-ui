@@ -1,100 +1,75 @@
 <div id="dashboards-campaigns" class="page-layout simple right-sidebar" fxLayout="row">
-
-    <!-- CENTER -->
     <div class="center" fusePerfectScrollbar>
         <div class="header accent p-24 pb-0" fxLayout="row" fxLayoutAlign="space-between">
             <div fxLayout="column" fxLayoutAlign="space-between start">
                 <div fxLayout="row" fxLayoutAlign="space-between start">
-
                     <span class="mat-display-1 my-0 my-sm-24 welcome-message"
                         [@animate]="{value:'*',params:{x:'50px'}}">Welcome back, {{firstName}}!
                     </span>
-
                 </div>
-
                 <div fxLayout="row">
-
-                    <div class="selected-campaign">{{selectedCampaign.name}}</div>
-
+                    <div class="selected-campaign">
+                        {{selectedCampaign.name}}
+                    </div>
                     <button mat-icon-button class="campaign-selector" [matMenuTriggerFor]="campaignsMenu"
                         aria-label="Select campaign">
                         <mat-icon>more_horiz</mat-icon>
                     </button>
-
                     <mat-menu #campaignsMenu="matMenu">
-                        <button mat-menu-item *ngFor="let campaign of campaigns"
-                            (click)="selectedCampaignChanged(campaign)">
+                        <button mat-menu-item *ngFor="let campaign of campaigns" (click)="selectedCampaignChanged(campaign)">
                             <span>{{campaign.name}}</span>
                         </button>
                     </mat-menu>
                 </div>
             </div>
         </div>
-
-        <!-- CONTENT -->
         <div class="content">
-
             <mat-tab-group dynamicHeight (selectedTabChange)="tabChanged($event)" #tabGroup>
-
                 <mat-tab label="Summary">
-
                     <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                         [@animateStagger]="{value:'50'}">
-
                         <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100">
                             <div class="fuse-widget-front">
                                 <div class="px-16 border-bottom" fxLayout="row wrap"
                                     fxLayoutAlign="space-between center">
                                     <div fxFlex class="py-16 h3">Transactions</div>
                                 </div>
-
                                 <div class="row wrap">
                                     <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="70">
                                         <ngx-charts-bar-vertical [view]="view" [scheme]="colorScheme"
-                                            [results]="resTransaction" [gradient]="gradient" [xAxis]="showXAxis"
+                                            [results]="transactionChart" [gradient]="gradient" [xAxis]="showXAxis"
                                             [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
                                             [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
                                             [yAxisLabel]="yAxisLabel">
                                         </ngx-charts-bar-vertical>
                                     </div>
                                 </div>
-
                             </div>
                         </fuse-widget>
-
                         <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100">
                             <div class="fuse-widget-front">
                                 <div class="px-16 border-bottom" fxLayout="row wrap"
                                     fxLayoutAlign="space-between center">
-                                    <div fxFlex class="py-16 h3">Code</div>
+                                    <div fxFlex class="py-16 h3">QrCode</div>
                                 </div>
-
                                 <div class="row wrap">
                                     <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="50">
                                         <ngx-charts-bar-vertical [view]="view" [scheme]="colorScheme"
-                                            [results]="resQrCode" [gradient]="gradient" [xAxis]="showXAxis"
+                                            [results]="qrCodeChart" [gradient]="gradient" [xAxis]="showXAxis"
                                             [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
                                             [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabelQr"
                                             [yAxisLabel]="yAxisLabelQr">
                                         </ngx-charts-bar-vertical>
                                     </div>
                                 </div>
-
                             </div>
                         </fuse-widget>
-
-
                     </div>
-
                 </mat-tab>
-
                 <mat-tab label="Transactions">
-
                     <div class="widget-group" fxLayout="row wrap" fxFlex="100" [@animateStagger]="{value:'50'}">
-
-                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
-                            fxFlex="100">
-
+                        <fuse-widget class="widget" fxLayout="row" fxFlex="100"
+                            [@animate]="{value:'*',params:{y:'100%'}}">
                             <div class="fuse-widget-front">
                                 <div class="p-24 mb-8 border-bottom" fxLayout="row wrap"
                                     fxLayoutAlign="space-between center">
@@ -104,78 +79,78 @@
                                         <input matInput #filter placeholder="Search for a transaction"
                                             [formControl]="searchInput" class="px-16">
                                         <div class="text-boxed accent m-0">
-                                            {{qrLength}} transaction(s)
+                                            {{length}} transaction(s)
                                         </div>
                                     </div>
                                 </div>
-
                                 <mat-table class="transactions-table" #table [dataSource]="dataSource" matSort
-                                    (matSortChange)="getTransactions()" [@animateStagger]="{value:'50'}"
+                                    (matSortChange)="getTransactions()" 
+                                    [@animateStagger]="{value:'50'}"
                                     fusePerfectScrollbar>
 
                                     <ng-container matColumnDef="id">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-                                        <mat-cell *matCellDef="let tran">
-                                            <p class="text-truncate">{{tran.id}}</p>
+                                        <mat-cell *matCellDef="let transaction">
+                                            <p class="text-truncate">{{transaction.id}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="fullName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let tran">
-                                            <p class="text-truncate">{{tran.firstName}} {{tran.lastName}}</p>
+                                        <mat-cell *matCellDef="let transaction">
+                                            <p class="text-truncate">{{transaction.firstName}} {{transaction.lastName}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="email">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>E-mail</mat-header-cell>
-                                        <mat-cell *matCellDef="let tran">
-                                            <p class="text-truncate">{{tran.email}}</p>
+                                        <mat-cell *matCellDef="let transaction">
+                                            <p class="text-truncate">{{transaction.email}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="phone">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Mobile</mat-header-cell>
-                                        <mat-cell *matCellDef="let tran">
-                                            <p class="text-truncate">{{tran.phone}}</p>
+                                        <mat-cell *matCellDef="let transaction">
+                                            <p class="text-truncate">{{transaction.phone}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="token">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>QrCode</mat-header-cell>
-                                        <mat-cell *matCellDef="let tran">
-                                            <p class="text-truncate">{{tran.token}}</p>
+                                        <mat-cell *matCellDef="let transaction">
+                                            <p class="text-truncate">{{transaction.token}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="code">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Code</mat-header-cell>
-                                        <mat-cell *matCellDef="let tran">
-                                            <p class="text-truncate">{{tran.code}}</p>
+                                        <mat-cell *matCellDef="let transaction">
+                                            <p class="text-truncate">{{transaction.code}}</p>
                                         </mat-cell>
                                     </ng-container>
 
 
                                     <ng-container matColumnDef="point" disabled>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Point</mat-header-cell>
-                                        <mat-cell *matCellDef="let tran">
-                                            <p class="text-truncate">{{tran.point}}</p>
+                                        <mat-cell *matCellDef="let transaction">
+                                            <p class="text-truncate">{{transaction.point}}</p>
                                         </mat-cell>
                                     </ng-container>
 
 
                                     <ng-container matColumnDef="status">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-                                        <mat-cell *matCellDef="let tran">
-                                            <p class="text-truncate">{{tran.transactionType}}</p>
+                                        <mat-cell *matCellDef="let transaction">
+                                            <p class="text-truncate">{{transaction.transactionType}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="message">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Response Message
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let tran">
-                                            <p class="text-truncate">{{tran.responseMessage}}</p>
+                                        <mat-cell *matCellDef="let transaction">
+                                            <p class="text-truncate">{{transaction.responseMessage}}</p>
                                         </mat-cell>
                                     </ng-container>
 
@@ -183,18 +158,18 @@
                                     <ng-container matColumnDef="createDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Redemption date
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let tran">
+                                        <mat-cell *matCellDef="let transaction">
                                             <p class="text-truncate">
-                                                {{tran.createdDate | date : 'dd-MM-yyyy'}}
+                                                {{transaction.createdDate | date : 'dd-MM-yyyy'}}
                                                 <br />
-                                                {{tran.createdDate | date : 'HH:mm:ss'}}
+                                                {{transaction.createdDate | date : 'HH:mm:ss'}}
                                             </p>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <mat-header-row *matHeaderRowDef="tranDisplayed; sticky:true"></mat-header-row>
+                                    <mat-header-row *matHeaderRowDef="transactionDisplayedColumns; sticky:true"></mat-header-row>
 
-                                    <mat-row *matRowDef="let consumer; columns: tranDisplayed;" class="consumer"
+                                    <mat-row *matRowDef="let consumer; columns: transactionDisplayedColumns;" class="consumer"
                                         matRipple>
                                     </mat-row>
                                 </mat-table>
@@ -204,27 +179,21 @@
                                         <div fxLayout="row" fxLayoutAlign="start center">
                                             
                                         </div>
-                                        <mat-paginator #paginator showFirstLastButtons [length]="tranLength"
-                                            [pageIndex]="tranPageIndex" [pageSize]="tranPageSize"
-                                            [pageSizeOptions]="tranPageSizeOptions" (page)="tranPageEvent = $event"
+                                        <mat-paginator #paginator showFirstLastButtons [length]="length"
+                                            [pageIndex]="pageIndex" [pageSize]="pageSize"
+                                            [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event"
                                             (page)="getTransactions()">
                                         </mat-paginator>
                                     </mat-toolbar-row>
                                 </mat-toolbar>
-
                             </div>
-
                         </fuse-widget>
                     </div>
-
                 </mat-tab>
-
                 <mat-tab label="Code">
                     <div class="widget-group" fxLayout="row wrap" fxFlex="100" [@animateStagger]="{value:'50'}">
-
-                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
-                            fxFlex="100">
-
+                        <fuse-widget class="widget" fxLayout="row" fxFlex="100"
+                            [@animate]="{value:'*',params:{y:'100%'}}">
                             <div class="fuse-widget-front">
                                 <div class="p-24 mb-8 border-bottom" fxLayout="row wrap"
                                     fxLayoutAlign="space-between center">
@@ -234,63 +203,62 @@
                                         <input matInput #filter placeholder="Search for a code"
                                             [formControl]="searchInput" class="px-16">
                                         <div class="text-boxed accent m-0">
-                                            {{qrLength}} code(s)
+                                            {{length}} code(s)
                                         </div>
                                     </div>
                                 </div>
-
                                 <mat-table class="qrCode-table" #table [dataSource]="dataSource" matSort
-                                    #qrMatSort="matSort" (matSortChange)="getqrcode()" [@animateStagger]="{value:'50'}"
+                                    (matSortChange)="getQrCodes()" 
+                                    [@animateStagger]="{value:'50'}"
                                     fusePerfectScrollbar>
-
                                     <ng-container matColumnDef="token">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Qr Code</mat-header-cell>
-                                        <mat-cell *matCellDef="let qr">
-                                            <p class="text-truncate">{{qr.token}}</p>
+                                        <mat-cell *matCellDef="let qrCode">
+                                            <p class="text-truncate">{{qrCode.token}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="peice">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Peice</mat-header-cell>
-                                        <mat-cell *matCellDef="let qr">
-                                            <p class="text-truncate">{{qr.peice}}</p>
+                                        <mat-cell *matCellDef="let qrCode">
+                                            <p class="text-truncate">{{qrCode.peice}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="code">
                                         <mat-header-cell showCoulmn *matHeaderCellDef mat-sort-header>Code
                                         </mat-header-cell>
-                                        <mat-cell showCoulmn *matCellDef="let qr">
-                                            <p class="text-truncate">{{qr.code}}</p>
+                                        <mat-cell showCoulmn *matCellDef="let qrCode">
+                                            <p class="text-truncate">{{qrCode.code}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="point">
                                         <mat-header-cell showCoulmn *matHeaderCellDef mat-sort-header>Point
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let qr">
-                                            <p class="text-truncate">{{qr.point}}</p>
+                                        <mat-cell *matCellDef="let qrCode">
+                                            <p class="text-truncate">{{qrCode.point}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="fullName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let qr">
-                                            <p class="text-truncate">{{qr.firstName}} {{qr.lastName}}</p>
+                                        <mat-cell *matCellDef="let qrCode">
+                                            <p class="text-truncate">{{qrCode.firstName}} {{qrCode.lastName}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="email">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
-                                        <mat-cell *matCellDef="let qr">
-                                            <p class="text-truncate">{{qr.email}}</p>
+                                        <mat-cell *matCellDef="let qrCode">
+                                            <p class="text-truncate">{{qrCode.email}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="phone">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
-                                        <mat-cell *matCellDef="let qr">
-                                            <p class="text-truncate">{{qr.phone}}</p>
+                                        <mat-cell *matCellDef="let qrCode">
+                                            <p class="text-truncate">{{qrCode.phone}}</p>
                                         </mat-cell>
                                     </ng-container>
 
@@ -299,12 +267,12 @@
                                     <ng-container matColumnDef="createDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Redemption date
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let qr">
-                                            <div *ngIf="qr.scanDate">
+                                        <mat-cell *matCellDef="let qrCode">
+                                            <div *ngIf="qrCode.scanDate">
                                                 <p class="text-truncate">
-                                                    {{qr.scanDate | date : 'dd-MM-yyyy'}}
+                                                    {{qrCode.scanDate | date : 'dd-MM-yyyy'}}
                                                     <br />
-                                                    {{qr.scanDate | date : 'HH:mm:ss'}}
+                                                    {{qrCode.scanDate | date : 'HH:mm:ss'}}
                                                 </p>
                                             </div>
                                         </mat-cell>
@@ -312,79 +280,56 @@
 
                                     <ng-container matColumnDef="actions">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>QrCode </mat-header-cell>
-                                        <mat-cell *matCellDef="let qr">
-                                            <!-- {{qr.fullUrl}} -->
-                                            <button (click)="genQrCode(qr.fullUrl)" mat-raised-button
+                                        <mat-cell *matCellDef="let qrCode">
+                                            <button (click)="generateQrCode(qrCode.fullUrl)" mat-raised-button
                                                 color="accent">View</button>
                                         </mat-cell>
                                     </ng-container>
 
 
 
-                                    <mat-header-row *matHeaderRowDef="qrDisplayed; sticky:true"></mat-header-row>
+                                    <mat-header-row *matHeaderRowDef="qrCodeDisplayedColumns; sticky:true"></mat-header-row>
 
-                                    <mat-row *matRowDef="let qr; columns: qrDisplayed;" matRipple>
+                                    <mat-row *matRowDef="let qrCode; columns: qrCodeDisplayedColumns;" matRipple>
                                     </mat-row>
                                 </mat-table>
                                 <mat-toolbar>
                                     <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center"
                                         style="background-color: white;">
-                                        <div fxLayout="row" fxLayoutAlign="start center">
-
-                                        </div>
-                                        <mat-paginator #paginator showFirstLastButtons [length]="qrLength"
-                                            [pageIndex]="qrPageIndex" [pageSize]="qrPageSize"
-                                            [pageSizeOptions]="qrPageSizeOptions" (page)="qrPageEvent = $event"
-                                            (page)="getqrcode()">
+                                        <div fxLayout="row" fxLayoutAlign="start center"></div>
+                                        <mat-paginator #paginator showFirstLastButtons [length]="length"
+                                            [pageIndex]="pageIndex" [pageSize]="pageSize"
+                                            [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event"
+                                            (page)="getQrCodes()">
                                         </mat-paginator>
                                     </mat-toolbar-row>
                                 </mat-toolbar>
-
                             </div>
-
                         </fuse-widget>
                     </div>
                 </mat-tab>
-
-                <mat-tab label="Enrollment" *ngIf="campaignTypeId === 3">
-
-
+                <mat-tab label="Enrollment" *ngIf="selectedCampaign.campaignTypeId === 3">
                     <div class="widget-group" fxLayout="row wrap" fxFlex="100" [@animateStagger]="{value:'50'}">
-
-                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row"
-                            fxFlex="100">
-
-
+                        <fuse-widget class="widget" fxLayout="row" fxFlex="100"
+                            [@animate]="{value:'*',params:{y:'100%'}}">
                             <div class="fuse-widget-front">
-
                                 <div class="p-24 mb-8 border-bottom" fxLayout="row wrap"
                                     fxLayoutAlign="space-between center">
-                                    <div fxFlex class="h3">Enrollments</div>
-                                    <div fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="space-around center">
-                                        <button mat-icon-button aria-label="import file icon button" matTooltip="Upload"
-                                            matTooltipPosition="above" (click)="uploadDialog()">
-                                            <mat-icon>cloud_upload</mat-icon>
-                                        </button>
+                                    <div fxFlex class="h3">Code</div>
+                                    <div fxFlex="0 1 auto" fxLayout="row">
                                         <mat-icon>search</mat-icon>
-                                        <input matInput #filter placeholder="Search for an enrollment"
+                                        <input matInput #filter placeholder="Search for a enrollment"
                                             [formControl]="searchInput" class="px-16">
                                         <div class="text-boxed accent m-0">
-                                            {{paginator.length}} enrollment(s)
+                                            {{length}} enrollment(s)
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- <mat-table class="enrollments-table" #table [dataSource]="dataSource" 
-                                            matSort
-                                            (matSortChange)="getEnrollments()"
-                                            #enrollmentMatSort
-                                            [@animateStagger]="{value:'50'}"
-                                            fusePerfectScrollbar> -->
-                                    <mat-table class="enrollments-table" #table [dataSource]="dataSource" matSort
-                                        #enrollmentMatSort="matSort" (matSortChange)="getEnrollments()" [@animateStagger]="{value:'50'}"
-                                        fusePerfectScrollbar>
-
-                                    <!-- <ng-container matColumnDef="checkbox">
+                                <mat-table class="enrollments-table" #table [dataSource]="dataSource" matSort
+                                    (matSortChange)="getEnrollments()"
+                                    [@animateStagger]="{value:'50'}"
+                                    fusePerfectScrollbar>
+                                    <ng-container matColumnDef="checkbox">
                                         <mat-header-cell *matHeaderCellDef>
                                             <mat-checkbox #allCheckBox (change)="$event ? masterToggle() : null"
                                                 [checked]="selection.hasValue() && isAllSelected()"
@@ -398,18 +343,16 @@
                                                 [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
                                             </mat-checkbox>
                                         </mat-cell>
-                                    </ng-container> -->
-
-                                    <!-- firstName Column -->
+                                    </ng-container>
+    
                                     <ng-container matColumnDef="firstName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
                                         <mat-cell *matCellDef="let enrollment">
-
+    
                                             <p class="text-truncate">{{enrollment.firstName}}</p>
                                         </mat-cell>
                                     </ng-container>
-
-                                    <!-- lastName Column -->
+    
                                     <ng-container matColumnDef="lastName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Last Name
                                         </mat-header-cell>
@@ -417,8 +360,7 @@
                                             <p class="text-truncate">{{enrollment.lastName}}</p>
                                         </mat-cell>
                                     </ng-container>
-
-                                    <!-- tel Column -->
+    
                                     <ng-container matColumnDef="phone">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
                                         <mat-cell *matCellDef="let enrollment">
@@ -427,8 +369,7 @@
                                             </p>
                                         </mat-cell>
                                     </ng-container>
-
-                                    <!-- email Column -->
+    
                                     <ng-container matColumnDef="email">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Email
                                         </mat-header-cell>
@@ -438,8 +379,7 @@
                                             </p>
                                         </mat-cell>
                                     </ng-container>
-
-                                    <!-- code Column -->
+    
                                     <ng-container matColumnDef="code">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Code
                                         </mat-header-cell>
@@ -449,8 +389,7 @@
                                             </p>
                                         </mat-cell>
                                     </ng-container>
-
-                                    <!-- isQr Column -->
+    
                                     <ng-container matColumnDef="isQr">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>QR Code
                                         </mat-header-cell>
@@ -461,17 +400,15 @@
                                             </mat-icon>
                                         </mat-cell>
                                     </ng-container>
-
-                                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
-
-                                    <mat-row *matRowDef="let enrollment; columns: displayedColumns;" class="enrollment"
+    
+                                    <mat-header-row *matHeaderRowDef="enrollmentDisplayedColumns; sticky:true"></mat-header-row>
+    
+                                    <mat-row *matRowDef="let enrollment; columns: enrollmentDisplayedColumns;" class="enrollment"
                                         (click)="selection.toggle(enrollment)" matRipple>
-                                        <!-- [routerLink]="'/apps/e-commerce/orders/'+order.id"> -->
                                     </mat-row>
                                 </mat-table>
                                 <mat-toolbar>
-                                    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center"
-                                        style="background-color: white;">
+                                    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center" style="background-color: white;">
                                         <div fxLayout="row" fxLayoutAlign="start center">
                                             <div fxLayout="column" fxFlex="1 0 auto">
                                                 <section class="example-section" fxLayout="row">
@@ -483,17 +420,18 @@
                                                     </mat-checkbox>
                                                 </section>
                                             </div>
-
                                         </div>
-                                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
-                                            class="mt-12">
+                                        <div class="mt-12" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                                             <button mat-raised-button color="primary"
                                                 *ngIf="selection.selected.length > 0 && (smsChecked === true || emailChecked === true)"
-                                                class="mr-12" (click)="sendSelected()" title="SEND SELECTED">SEND
-                                                SELECTED</button>
+                                                class="mr-12" (click)="sendSelected()" title="SEND SELECTED">
+                                                SEND SELECTED
+                                            </button>
                                             <button mat-raised-button color="primary"
                                                 *ngIf="smsChecked === true || emailChecked === true" (click)="sendAll()"
-                                                title="SEND ALL">SEND ALL</button>
+                                                title="SEND ALL">
+                                                SEND ALL
+                                            </button>
                                         </div>
                                         <span class="example-spacer"></span>
                                         <mat-paginator #paginator showFirstLastButtons [length]="length"
@@ -503,21 +441,11 @@
                                         </mat-paginator>
                                     </mat-toolbar-row>
                                 </mat-toolbar>
-
                             </div>
-                            <!-- / Front -->
-
                         </fuse-widget>
-
                     </div>
-
                 </mat-tab>
             </mat-tab-group>
-
         </div>
-        <!-- / CONTENT -->
-
     </div>
-    <!-- / CENTER -->
-
 </div>
