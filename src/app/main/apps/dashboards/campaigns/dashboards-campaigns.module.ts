@@ -25,6 +25,7 @@ import { QRCodeModule } from 'angular2-qrcode';
 import { CommonModule } from '@angular/common';
 import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
 import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
+import { ConsumersService } from '../../consumers/consumers.service';
 
 const routes: Routes = [
     {
@@ -79,7 +80,8 @@ const routes: Routes = [
     ],
     providers   : [
         DashboardsCampaignsService,
-        AuthenticationGuard
+        AuthenticationGuard,
+        ConsumersService
     ],
     entryComponents: [
         EnrollmentUploadDialogComponent

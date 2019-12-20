@@ -346,7 +346,7 @@
                     </div>
                 </mat-tab>
 
-                <mat-tab label="Enrollment">
+                <mat-tab label="Enrollment" *ngIf="campaignTypeId === 3">
 
 
                     <div class="widget-group" fxLayout="row wrap" fxFlex="100" [@animateStagger]="{value:'50'}">
@@ -374,11 +374,17 @@
                                     </div>
                                 </div>
 
-                                <mat-table class="enrollments-table" #table [dataSource]="dataSource" matSort
-                                    (matSortChange)="getEnrollments()" [@animateStagger]="{value:'50'}"
-                                    fusePerfectScrollbar>
+                                <!-- <mat-table class="enrollments-table" #table [dataSource]="dataSource" 
+                                            matSort
+                                            (matSortChange)="getEnrollments()"
+                                            #enrollmentMatSort
+                                            [@animateStagger]="{value:'50'}"
+                                            fusePerfectScrollbar> -->
+                                    <mat-table class="enrollments-table" #table [dataSource]="dataSource" matSort
+                                        #enrollmentMatSort="matSort" (matSortChange)="getEnrollments()" [@animateStagger]="{value:'50'}"
+                                        fusePerfectScrollbar>
 
-                                    <ng-container matColumnDef="checkbox">
+                                    <!-- <ng-container matColumnDef="checkbox">
                                         <mat-header-cell *matHeaderCellDef>
                                             <mat-checkbox #allCheckBox (change)="$event ? masterToggle() : null"
                                                 [checked]="selection.hasValue() && isAllSelected()"
@@ -392,14 +398,14 @@
                                                 [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
                                             </mat-checkbox>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <!-- firstName Column -->
                                     <ng-container matColumnDef="firstName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
                                         <mat-cell *matCellDef="let enrollment">
 
-                                            <p class="text-truncate">{{enrollment.FirstName}}</p>
+                                            <p class="text-truncate">{{enrollment.firstName}}</p>
                                         </mat-cell>
                                     </ng-container>
 
@@ -408,16 +414,16 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Last Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let enrollment" fxHide fxShow.gt-sm>
-                                            <p class="text-truncate">{{enrollment.LastName}}</p>
+                                            <p class="text-truncate">{{enrollment.lastName}}</p>
                                         </mat-cell>
                                     </ng-container>
 
                                     <!-- tel Column -->
-                                    <ng-container matColumnDef="tel">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Tel</mat-header-cell>
+                                    <ng-container matColumnDef="phone">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
                                         <mat-cell *matCellDef="let enrollment">
                                             <p class="text-truncate">
-                                                {{enrollment.Tel}}
+                                                {{enrollment.tel}}
                                             </p>
                                         </mat-cell>
                                     </ng-container>
@@ -428,7 +434,7 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let enrollment" fxHide fxShow.gt-md>
                                             <p class="total-price text-truncate">
-                                                {{enrollment.Email}}
+                                                {{enrollment.email}}
                                             </p>
                                         </mat-cell>
                                     </ng-container>
@@ -469,10 +475,10 @@
                                         <div fxLayout="row" fxLayoutAlign="start center">
                                             <div fxLayout="column" fxFlex="1 0 auto">
                                                 <section class="example-section" fxLayout="row">
-                                                    <mat-checkbox class="mr-12" [(ngModel)]="SmsChecked">
+                                                    <mat-checkbox class="mr-12" [(ngModel)]="smsChecked">
                                                         Send SMS
                                                     </mat-checkbox>
-                                                    <mat-checkbox class="mr-12" [(ngModel)]="EmailChecked">
+                                                    <mat-checkbox class="mr-12" [(ngModel)]="emailChecked">
                                                         Send Email
                                                     </mat-checkbox>
                                                 </section>
@@ -482,11 +488,11 @@
                                         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
                                             class="mt-12">
                                             <button mat-raised-button color="primary"
-                                                *ngIf="selection.selected.length > 0 && (SmsChecked === true || EmailChecked === true)"
+                                                *ngIf="selection.selected.length > 0 && (smsChecked === true || emailChecked === true)"
                                                 class="mr-12" (click)="sendSelected()" title="SEND SELECTED">SEND
                                                 SELECTED</button>
                                             <button mat-raised-button color="primary"
-                                                *ngIf="SmsChecked === true || EmailChecked === true" (click)="sendAll()"
+                                                *ngIf="smsChecked === true || emailChecked === true" (click)="sendAll()"
                                                 title="SEND ALL">SEND ALL</button>
                                         </div>
                                         <span class="example-spacer"></span>

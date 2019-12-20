@@ -118,6 +118,22 @@ export class DashboardsCampaignsService implements Resolve<any>
         
     }
 
+    getEnrollment(event): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(environment.apiBaseUrl + '/enrollments', event)
+                .subscribe((response: any) => {
+                    if (response.isSuccess)
+                    {
+                        resolve(response);
+                    }
+                    else{
+                        reject(response);
+                    }
+                }, reject);
+        });
+    }
+
     /**
      * Get widgets
      */
