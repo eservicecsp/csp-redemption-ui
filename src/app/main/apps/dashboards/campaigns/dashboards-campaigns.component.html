@@ -317,6 +317,10 @@
                                     fxLayoutAlign="space-between center">
                                     <div fxFlex class="h3">Code</div>
                                     <div fxFlex="0 1 auto" fxLayout="row">
+                                        <button mat-icon-button aria-label="import file icon button" matTooltip="Upload"
+                                            matTooltipPosition="above" (click)="uploadEnrollmentsDialog()">
+                                            <mat-icon>cloud_upload</mat-icon>
+                                        </button>
                                         <mat-icon>search</mat-icon>
                                         <input matInput #filter placeholder="Search for a enrollment"
                                             [formControl]="searchInput" class="px-16">

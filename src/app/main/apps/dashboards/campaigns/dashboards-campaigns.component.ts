@@ -2,12 +2,18 @@ import { OnInit, OnDestroy, ViewEncapsulation, Component, ViewChild } from '@ang
 import { Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { Router } from '@angular/router';
+
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
-import { MatTabGroup, MatTabChangeEvent, PageEvent, MatSort, MatPaginator } from '@angular/material';
-import { FormControl } from '@angular/forms';
+import { ConsumersService } from '../../consumers/consumers.service';
+
+import { MatTabGroup, MatTabChangeEvent, PageEvent, MatSort, MatPaginator, MatDialog, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import { FormControl, FormGroup } from '@angular/forms';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
+
+import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
+
 
 @Component({
     selector     : 'dashboards-campaigns',
@@ -24,6 +30,10 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     campaigns: any[];
     selectedCampaign: any;
     firstName: string;
+    dialogRef: any;
+    
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
 
     @ViewChild(MatTabGroup, {static: true}) tabGroup: MatTabGroup;
     index = 0;
@@ -59,17 +69,24 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     sortDirection: string;
     transactionDisplayedColumns = ['id', 'fullName', 'email', 'phone', 'token', 'code', 'point', 'status',  'message', 'createDate'];
     qrCodeDisplayedColumns = ['token', 'peice', 'code', 'point', 'fullName', 'email',  'phone', 'createDate', 'actions'];
-    enrollmentDisplayedColumns = ['firstName', 'lastName' , 'phone',  'email'];
+    enrollmentDisplayedColumns = ['checkbox', 'firstName', 'lastName' , 'phone',  'email'];
     searchInput: FormControl;
     searchText: string;
 
     selection = new SelectionModel<any>(true, []);
     selectionAmount = 0;
 
+    smsChecked: boolean;
+    emailChecked: boolean;
+    channel: string;
+
     constructor(
         private _router: Router,
         private _dashboardsCampaignsService: DashboardsCampaignsService,
         private _authenticationService: AuthenticationService,
+        private _consumersService: ConsumersService,
+        public _matDialog: MatDialog,
+        private _snackBar: MatSnackBar,
     )
     {
         this._unsubscribeAll = new  Subject();
@@ -292,7 +309,58 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 
     uploadEnrollmentsDialog(): void
     {
+        this.dialogRef = this._matDialog.open(EnrollmentUploadDialogComponent, {
+            panelClass: 'enrollment-upload-dialog',
+            data      : {
+                // Don't send anything
+            }
+        });
 
+        this.dialogRef.afterClosed()
+            .subscribe(dialogResponse => {
+                if ( !dialogResponse )
+                {
+                    return;
+                }
+                const actionType: string = dialogResponse[0];
+                const formData: FormGroup = dialogResponse[1];
+                switch ( actionType )
+                {
+                    case 'upload':
+                        const data = formData.getRawValue();
+                        data.campaignId = this.selectedCampaign.id;
+                        this._consumersService.uploadConsumerFile(data).then(response => {
+                            if (response.isSuccess)
+                            {
+                                this._snackBar.open('Upload completed.', 'Close', {
+                                    duration: 5000,
+                                    horizontalPosition: this.horizontalPosition,
+                                    verticalPosition: this.verticalPosition,
+                                    panelClass: ['success-snackbar']
+                                });
+                                this.getEnrollments();
+                            }
+                            else
+                            {
+                                this._snackBar.open(response.message, 'Close', {
+                                    duration: 5000,
+                                    horizontalPosition: this.horizontalPosition,
+                                    verticalPosition: this.verticalPosition,
+                                    panelClass: ['error-snackbar']
+                                });
+                            }
+                        }, error => {
+                            this._snackBar.open(error, 'Close', {
+                                duration: 5000,
+                                horizontalPosition: this.horizontalPosition,
+                                verticalPosition: this.verticalPosition,
+                                panelClass: ['error-snackbar']
+                            });
+                        });
+
+                        break;
+                }
+            });
     }
 
     isAllSelected(): any 
@@ -340,11 +408,45 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 
     sendSelected(): void
     {
+        if (this.smsChecked && this.emailChecked)
+        {
+            this.channel = 'All';
+        }
+        else if (this.smsChecked)
+        {
+            this.channel = 'SMS';
+        }
+        else
+        {
+            this.channel = 'Email';
+        }
 
+        // this._monitoringCampaignService.sendSelected(this.selection.selected, this.channel).then(res => {
+
+        // });
     }
 
     sendAll(): void
     {
+        const requestData = {
+            campaignId: this.selectedCampaign.id
+        };
 
+        if (this.smsChecked && this.emailChecked)
+        {
+            this.channel = 'All';
+        }
+        else if (this.smsChecked)
+        {
+            this.channel = 'SMS';
+        }
+        else
+        {
+            this.channel = 'Email';
+        }
+
+        // this._monitoringCampaignService.sendSelected(this.selection.selected, this.channel).then(res => {
+
+        // });
     }
 }
