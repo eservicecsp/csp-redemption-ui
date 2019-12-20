@@ -14,6 +14,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { MatDialog, MatDialogRef, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 import { ConsumerUploadDialogComponent } from './consumer-upload/consumer-upload.component';
 import { FormControl, FormGroup } from '@angular/forms';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 // import { ConfigurationsConsumerUploadComponent } from '../consumer-upload/consumer-upload.component';
 
 @Component({
@@ -58,6 +59,7 @@ export class ConsumersComponent implements OnInit
         private _consumersService: ConsumersService,
         public _matDialog: MatDialog,
         private _snackBar: MatSnackBar,
+        private _fuseSidebarService: FuseSidebarService,
     )
     {
         // Set the private defaults
@@ -191,6 +193,51 @@ export class ConsumersComponent implements OnInit
             }
            // dialogRef.close();
         });
+    }
+
+    downloadFile(){
+        // const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this._matDialog.open(ProgressSpinnerDialogComponent, {
+        //     panelClass: 'transparent',
+        //     disableClose: true
+        // });
+        let filter =  this.filter.nativeElement.value ? this.filter.nativeElement.value : null;
+        this._consumersService.downloadFile(filter).subscribe(response => {
+            const newBlob = new Blob([response], {type: 'text/plain'});
+
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(newBlob);
+                //dialogRef.close();
+                return;
+            }
+
+            const data = window.URL.createObjectURL(newBlob);
+            const link = document.createElement('a');
+            link.href = data;
+            link.download = 'consummers.txt';
+
+            link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+            //dialogRef.close();
+
+            setTimeout(() => {
+                // For Firefox it is necessary to delay revoking the ObjectURL
+                window.URL.revokeObjectURL(data);
+                link.remove();
+                //dialogRef.close();
+            }, 100);
+            
+        }, error => {
+            this._snackBar.open('Error : ' + error, 'Close', {
+                duration: 5000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+            });
+           // dialogRef.close();
+        });
+    }
+    toggleSidebar(name): void
+    {
+        console.log(name);
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
 
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'environments/environment';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
@@ -94,5 +94,14 @@ export class ConsumersService implements Resolve<any>
                     resolve(response);
                 }, reject);
         });
+    }
+    downloadFile( filter: string): Observable<Blob>
+    {
+        // const params = new URLSearchParams();
+        // params.append('reportType', reportType);
+        // params.append('dateFilter', dateFilter);
+        const params = new HttpParams().set('filter', filter);
+        return this._httpClient.get(environment.apiBaseUrl + '/consumers/download', {responseType: 'blob'});
+        
     }
 }

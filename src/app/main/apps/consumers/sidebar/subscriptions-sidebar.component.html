@@ -1,0 +1,66 @@
+<!-- SIDEBAR HEADER -->
+<div class="header p-24" fxLayout="column" fxLayoutAlign="space-between">
+
+        <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon secondary-text s-36 mr-16">search</mat-icon>
+            <span class="logo-text h1">Filter</span>
+        </div>
+        
+    </div>
+    <!-- / SIDEBAR HEADER -->
+        
+    <!-- SIDEBAR CONTENT -->
+    
+    <div fxLayout="column" fxLayoutAlign="space-around">
+        <div class="p-12">
+            <button mat-raised-button (click)="sendFilter()">
+                Search
+            </button>
+        </div>
+        
+    </div>
+    <!-- <div class="content py-16" fusePerfectScrollbar>
+    
+        <div fxLayout="column" fxLayoutAlign="space-around stretch" >
+            <label class="example-margin"><b>Gender</b></label>
+    
+            <mat-radio-group aria-labelledby="example-radio-group-label"
+                            class="example-radio-group"
+                            [(ngModel)]="gender">
+                <mat-radio-button class="example-radio-button" *ngFor="let gender of genders" [value]="gender">
+                    {{gender}}
+                </mat-radio-button>
+            </mat-radio-group>
+    
+            <section class="example-section" >
+                <label class="example-margin"><b>Favourite</b></label>
+                <mat-checkbox class="example-margin" [(ngModel)]="isSkincare">Skincare</mat-checkbox>
+                <mat-checkbox class="example-margin" [(ngModel)]="isMakeup">Makeup</mat-checkbox>
+                <mat-checkbox class="example-margin" [(ngModel)]="isBodycare">Bodycare</mat-checkbox>
+                <mat-checkbox class="example-margin" [(ngModel)]="isSupplements">Supplements</mat-checkbox>
+            </section>
+    
+            <section class="pt-24">
+                <label class="example-margin"><b>Age range</b></label>
+            </section>
+            <div class="mt-12 p-24">
+                <mat-slidef
+                    class="pt-24"
+                    style="width:100%;"
+                    [lang]="'en'"
+                    [thumb-label]="true"
+                    [values]="ageRanges"
+                    [value]="ageRanges.range_end"
+                    [startRange]="startAgeRanges"
+                    [max]="100"
+                    [min]="0">
+                </mat-slidef>
+            </div>
+    
+            <button class="ml-12 mr-12 w-100" mat-raised-button (click)="sendFilter()">
+                Search
+            </button>
+        </div>
+    </div> -->
+    <!-- / SIDEBAR CONTENT -->
+        

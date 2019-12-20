@@ -24,15 +24,33 @@
                 </div>
                 <!-- / APP TITLE -->
     
+              
                 <!-- SEARCH -->
+                
                 <div class="search-wrapper mx-32 mx-md-0">
-                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <!-- <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
                         <input #filter placeholder="Search for a consumer" [formControl]="searchInput">
+                    </div> -->
+                    <div fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="space-around center">
+                        <button mat-icon-button  matTooltip="Download"
+                            matTooltipPosition="above" (click)="downloadFile()">
+                            <mat-icon>cloud_download</mat-icon>
+                        </button>
+
+                        <mat-icon>search</mat-icon>
+                        <input matInput #filter placeholder="Search for a consumer"
+                            [formControl]="searchInput" class="px-16">
                     </div>
                 </div>
+                <div class="left-side" fxLayout="row">
+                    <button mat-icon-button class="sidebar-toggle"
+                            matTooltip="Filter"
+                            (click)="toggleSidebar('subscriptions-sidebar')">
+                        <mat-icon>filter_list</mat-icon>
+                    </button>
+                </div>
                 <!-- / SEARCH -->
-    
                 <!-- ADD BUTTON -->
                 <!-- <button mat-raised-button
                         class="add-consumer-button fuse-white mt-24 mt-md-0"
