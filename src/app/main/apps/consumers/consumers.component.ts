@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { DataSource } from '@angular/cdk/collections';
+import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import { FuseUtils } from '@fuse/utils';
 import { ConsumersService } from './consumers.service';
 import { takeUntil } from 'rxjs/internal/operators';
 import { FileUploader } from 'ng2-file-upload';
-import { MatDialog, MatDialogRef, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatCheckbox } from '@angular/material';
 import { ConsumerUploadDialogComponent } from './consumer-upload/consumer-upload.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -36,7 +36,22 @@ export class ConsumersComponent implements OnInit
     sortActive: string;
     sortDirection: string;
     searchInput: FormControl;
-    displayedColumns = ['id', 'fullName',  'birthDate', 'phone',  'email'];
+    displayedColumns = ['checkbox', 'fullName',  'birthDate', 'phone',  'email'];
+    filters: any[];
+    startAge: 0;
+    endAge: 120;
+    birthOfMonth: 0;
+    phone: string;
+    email: string;
+
+    //select
+    selection = new SelectionModel<any>(true, []);
+    selectionAmount = 0;
+    smsChecked: boolean;
+    emailChecked: boolean;
+    channel: string;
+    @ViewChild('allCheckBox', {static: false}) 
+    allCheckBox: MatCheckbox;
 
     @ViewChild(MatPaginator, {static: true})
     paginator: MatPaginator;
@@ -44,13 +59,18 @@ export class ConsumersComponent implements OnInit
     @ViewChild(MatSort, {static: true})
     sort: MatSort;
 
-    @ViewChild('filter', {static: true})
-    filter: ElementRef;
+    // @ViewChild('filter', {static: true})
+    // filter: ElementRef;
 
     dialogRef: any;
 
     // Private
     private _unsubscribeAll: Subject<any>;
+
+    isSkincare = false;
+    isMakeup = false;
+    isBodycare = false;
+    isSupplements = false;
 
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -65,7 +85,7 @@ export class ConsumersComponent implements OnInit
         // Set the private defaults
         this._unsubscribeAll = new Subject();
 
-        this.searchInput = new FormControl('');
+        //this.searchInput = new FormControl('');
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -78,31 +98,46 @@ export class ConsumersComponent implements OnInit
     ngOnInit(): void
     {
         this.Mapdata();
-        this.searchInput.valueChanges
-        .pipe(
-            takeUntil(this._unsubscribeAll),
-            debounceTime(300),
-            distinctUntilChanged()
-        )
-        .subscribe(searchText => {
-            this.Mapdata();
-        });
+        // this.searchInput.valueChanges
+        // .pipe(
+        //     takeUntil(this._unsubscribeAll),
+        //     debounceTime(300),
+        //     distinctUntilChanged()
+        // )
+        // .subscribe(searchText => {
+        //     this.Mapdata();
+        // });
         // this.dataSource = new FilesDataSource(this._consumersService, this.paginator, this.sort);
 
-        fromEvent(this.filter.nativeElement, 'keyup')
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                debounceTime(150),
-                distinctUntilChanged()
-            )
-            .subscribe(() => {
-                if ( !this.dataSource )
-                {
-                    return;
-                }
+        // fromEvent(this.filter.nativeElement, 'keyup')
+        //     .pipe(
+        //         takeUntil(this._unsubscribeAll),
+        //         debounceTime(150),
+        //         distinctUntilChanged()
+        //     )
+        //     .subscribe(() => {
+        //         if ( !this.dataSource )
+        //         {
+        //             return;
+        //         }
 
-                this.dataSource.filter = this.filter.nativeElement.value;
-            });
+        //         this.dataSource.filter = this.filter.nativeElement.value;
+        //     });
+        this._consumersService.onFiltersChanged.subscribe(filter => {
+            this.filters = filter;
+
+            this.startAge = filter.startAge;
+            this.endAge = filter.endAge;
+            this.birthOfMonth = filter.birthOfMonth;
+            this.phone = filter.phone;
+            this.email = filter.email;
+            this.isSkincare = filter.isSkincare;
+            this.isMakeup = filter.isMakeup;
+            this.isBodycare = filter.isBodycare;
+            this.isSupplements = filter.isSupplements;
+            this.Mapdata();
+            
+        });
     }
 
     uploadDialog(): void
@@ -169,6 +204,8 @@ export class ConsumersComponent implements OnInit
         //     panelClass: 'transparent',
         //     disableClose: true
         //   });
+        this.selection.clear();
+
         const data = {
             sortActive: this.sort.active ? this.sort.active : null,
             sortDirection: this.sort['_direction'] ? this.sort['_direction'] : null,
@@ -177,7 +214,7 @@ export class ConsumersComponent implements OnInit
             pageSize: this.pageEvent ? this.pageEvent.pageSize : this.pageSize,
             previousPageIndex: this.pageEvent ? this.pageEvent.previousPageIndex : this.previousPageIndex,
             //BrandId: 1,
-            filter : this.filter.nativeElement.value ? this.filter.nativeElement.value : null
+            filters : this.filters ? this.filters : null
         };
         this._consumersService.getdata(data).then(res => {
             this.dataSource  = res.data;
@@ -192,6 +229,8 @@ export class ConsumersComponent implements OnInit
                 this.paginator.pageSize  = data.pageSize;
             }
            // dialogRef.close();
+           this.allCheckBox.checked = false;
+            this._fuseSidebarService.getSidebar('subscriptions-sidebar').close();
         });
     }
 
@@ -200,8 +239,20 @@ export class ConsumersComponent implements OnInit
         //     panelClass: 'transparent',
         //     disableClose: true
         // });
-        let filter =  this.filter.nativeElement.value ? this.filter.nativeElement.value : null;
-        this._consumersService.downloadFile(filter).subscribe(response => {
+        //let filter =  this.filter.nativeElement.value ? this.filter.nativeElement.value : null;
+       
+        const data = {
+            startAge : this.startAge ? this.startAge : 0,
+            endAge : this.endAge ? this.endAge : 120,
+            birthOfMonth : this.birthOfMonth ? this.birthOfMonth : 0,
+            phone: this.phone ? this.phone : null,
+            email : this.email ? this.email : null,
+            isSkincare : this.isSkincare,
+            isMakeup : this.isMakeup,
+            isBodycare : this.isBodycare,
+            isSupplement : this.isSupplements
+        };
+        this._consumersService.downloadFile(data).subscribe(response => {
             const newBlob = new Blob([response], {type: 'text/plain'});
 
             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -236,8 +287,138 @@ export class ConsumersComponent implements OnInit
     }
     toggleSidebar(name): void
     {
-        console.log(name);
         this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+
+    isAllSelected(): any 
+    {
+        const numSelected = this.selection.selected.length;
+        const page = this.dataSource.length;
+
+        if (numSelected === page){
+            return true;
+        }
+        else
+        {
+            if (numSelected - 1 === page ){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }        
+    }
+
+    masterToggle(): void 
+    {
+        this.isAllSelected() ? 
+        this.selection.clear() : this.selectRows();
+
+    }
+    selectRows(): void
+    {
+        for (let index = 0; index < this.paginator.pageSize; index++) {
+          this.selection.select(this.dataSource[index]);
+          this.selectionAmount = this.selection.selected.length;
+        }
+    }
+    checkboxLabel(row?: any): string 
+    {
+        if (!row) 
+        {
+            return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+        }
+        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    }
+
+    sendSelected(): void
+    {
+        if (this.smsChecked && this.emailChecked)
+        {
+            this.channel = 'All';
+        }
+        else if (this.smsChecked)
+        {
+            this.channel = 'SMS';
+        }
+        else
+        {
+            this.channel = 'Email';
+        }
+
+        this._consumersService.sendSelected(this.selection.selected, this.channel).then(res => {
+            if (res.isSuccess === false)
+            {
+                this._snackBar.open(res.message, 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['error-snackbar']
+                });
+            }
+            else
+            {
+                this._snackBar.open('Send data successed', 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['success-snackbar']
+                });
+                this.allCheckBox.checked = false;
+                this.selection.clear();
+            }
+        });
+    }
+
+    sendAll(): void
+    {
+        const data = {
+            startAge : this.startAge ? this.startAge : 0,
+            endAge : this.endAge ? this.endAge : 120,
+            birthOfMonth : this.birthOfMonth ? this.birthOfMonth : 0,
+            phone: this.phone ? this.phone : null,
+            email : this.email ? this.email : null,
+            isSkincare: this.isSkincare,
+            isMakeup: this.isMakeup,
+            isBodycare: this.isBodycare,
+            isSupplements: this.isSupplements, 
+        };
+
+        if (this.smsChecked && this.emailChecked)
+        {
+            this.channel = 'All';
+        }
+        else if (this.smsChecked)
+        {
+            this.channel = 'SMS';
+        }
+        else
+        {
+            this.channel = 'Email';
+        }
+
+        this._consumersService.sendAll(data, this.channel).then(res => {
+            if (res.isSuccess === false)
+            {
+                this._snackBar.open(res.message, 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['error-snackbar']
+                });
+            }
+            else
+            {
+                this._snackBar.open('Send data successed', 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['success-snackbar']
+                });
+                this.allCheckBox.checked = false;
+                this.selection.clear();
+            }
+        });
     }
 
 }

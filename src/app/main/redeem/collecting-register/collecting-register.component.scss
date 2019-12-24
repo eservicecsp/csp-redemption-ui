@@ -2,14 +2,14 @@
 
 collecting-register {
     .logo {
-        width: 256px;
+        width: 128px;
         // margin: 32px auto;
     }
 
     
     #collecting-register {
         width: 100%;
-        background: url('/csp-redemption-ui/assets/images/backgrounds/lotte-bg.jpg') no-repeat;
+        background: url('/csp-redemption-ui/assets/images/backgrounds/dark-material-bg.jpg') no-repeat;
         background-size: cover;
         position: relative;
 
@@ -25,7 +25,7 @@ collecting-register {
             }
 
             .logo {
-                width: 256px;
+                width: 128px;
                 float: right;
             }
             
@@ -71,7 +71,7 @@ collecting-register {
                 z-index: 3;
                 // position: absolute;
                 .logo {
-                    width: 256px;
+                    width: 128px;
                     // margin: 32px auto;
                 }
             }
@@ -90,7 +90,7 @@ collecting-register {
                 }
 
                 .logo {
-                    width: 256px;
+                    width: 128px;
                     // margin: 32px auto;
                 }
 

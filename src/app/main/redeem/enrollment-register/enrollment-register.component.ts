@@ -111,6 +111,10 @@ export class EnrollmentRegisterComponent implements OnInit
             zipCode: [undefined, Validators.required],
             campaignId: [this.campaignId],
             token: [this.token],
+            isSkincare: false,
+            isMakeup: false,
+            isBodycare: false,
+            isSupplements: false,
         });
     }
 
@@ -157,7 +161,12 @@ export class EnrollmentRegisterComponent implements OnInit
             zipCode: this.enrollmentRegisterForm.value.zipCode,
             campaignId: this.campaignId,
             token: this.token, 
+            isSkincare: this.enrollmentRegisterForm.value.isSkincare,
+            isMakeup: this.enrollmentRegisterForm.value.isMakeup,
+            isBodycare: this.enrollmentRegisterForm.value.isBodycare,
+            isSupplements: this.enrollmentRegisterForm.value.isSupplements,
         };
+        //console.log(requestData);
         this._redeemService.register(requestData).then(response => {
             this.isRewardShow = true;
             this.message = response.message;

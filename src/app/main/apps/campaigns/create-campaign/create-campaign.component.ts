@@ -10,16 +10,25 @@ import { CampaignsService } from '../campaigns.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { DatePipe } from '@angular/common';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { Router } from '@angular/router';
 import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
+import { AppDateAdapter, APP_DATE_FORMATS } from 'app/date.adapter';
 
 @Component({
     selector   : 'create-campaign',
     templateUrl: './create-campaign.component.html',
     styleUrls  : ['./create-campaign.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations   : fuseAnimations,
+    providers: [
+        {
+            provide: DateAdapter, useClass: AppDateAdapter
+        },
+        {
+            provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+        }
+    ]
 })
 export class CreateCampaignComponent implements OnInit, OnDestroy
 {

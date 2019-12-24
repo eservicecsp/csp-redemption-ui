@@ -3,16 +3,23 @@ import { Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { Router } from '@angular/router';
 
+import * as moment from 'moment';
+
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { ConsumersService } from '../../consumers/consumers.service';
 
-import { MatTabGroup, MatTabChangeEvent, PageEvent, MatSort, MatPaginator, MatDialog, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
-import { FormControl, FormGroup } from '@angular/forms';
+import { MatTabGroup, MatTabChangeEvent, PageEvent, MatSort, MatPaginator, MatDialog, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatCheckbox, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
+import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
+import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
+import { DatePipe } from '@angular/common';
+import { CampaignsService } from '../../campaigns/campaigns.service';
+import { AppDateAdapter, APP_DATE_FORMATS } from 'app/date.adapter';
 
 
 @Component({
@@ -20,7 +27,15 @@ import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-
     templateUrl  : './dashboards-campaigns.component.html',
     styleUrls    : ['./dashboards-campaigns.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations   : fuseAnimations,
+    providers: [
+        {
+            provide: DateAdapter, useClass: AppDateAdapter
+        },
+        {
+            provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+        }
+    ]
 })
 export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 {
@@ -31,6 +46,9 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     selectedCampaign: any;
     firstName: string;
     dialogRef: any;
+    form: FormGroup;
+    products: any[];
+    disableSelect = new FormControl(false);
     
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -59,6 +77,8 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
     dataSource: any;
+    dataSourceEnrollment: any;
+    dataSourceTransaction: any;
     pageEvent: PageEvent;
     length = 0;
     pageIndex = 0;
@@ -75,10 +95,13 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 
     selection = new SelectionModel<any>(true, []);
     selectionAmount = 0;
-
     smsChecked: boolean;
     emailChecked: boolean;
     channel: string;
+    @ViewChild('allCheckBox', {static: false}) 
+    allCheckBox: MatCheckbox;
+
+    campaignDetail: any[];
 
     constructor(
         private _router: Router,
@@ -87,6 +110,10 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         private _consumersService: ConsumersService,
         public _matDialog: MatDialog,
         private _snackBar: MatSnackBar,
+        private _formBuilder: FormBuilder,
+        private _configurationsProductsService: ConfigurationsProductsService,
+        private datePipe: DatePipe,
+        private _campaignsService: CampaignsService,
     )
     {
         this._unsubscribeAll = new  Subject();
@@ -106,6 +133,18 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 
         this.searchInput = new FormControl('');
         this.dataSource = [];
+        this.form = this._formBuilder.group({
+            name : [''],
+            description : [''],
+            product: [''],
+            startDate : [''],
+            endDate : [''],
+            alertMessage : [''],
+            duplicateMessage : [''],
+            qrCodeNotExistMessage : [''],
+            winMessage : [''],
+
+        }); 
     }
 
     ngOnInit(): void 
@@ -121,6 +160,12 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         .subscribe(_searchText => {
             this.searchText = _searchText;
             this.getTableDataSource();
+        });
+
+        this._configurationsProductsService.getProducts().then(res => {
+            if (res.isSuccess){
+                this.products = res.products;
+            }
         });
     }
 
@@ -141,6 +186,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 
     tabChanged(tabChangeEvent: MatTabChangeEvent): void
     {
+        //this.dataSource = [];
         this.index = tabChangeEvent.index;
         switch (this.selectedCampaign.campaignTypeId){
             case 0:
@@ -150,15 +196,20 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
                 }
             case 1:
                 {
-                    this.getTransactions();
+                    this.getCampaignDetail();
                     break;
                 }
             case 2:
                 {
-                    this.getQrCodes();
+                    this.getTransactions();
                     break;
                 }
             case 3:
+                {
+                    this.getQrCodes();
+                    break;
+                }
+            case 4:
                 {
                     this.getEnrollments();
                     break;
@@ -193,18 +244,48 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         });
     }
 
+    getCampaignDetail(): void
+    {
+        this._dashboardsCampaignsService.getCampaignDetail(this.selectedCampaign.id).then(response => {
+            if (response.isSuccess)
+            {
+                
+                this.campaignDetail = response.campaign;
+                this.form = this._formBuilder.group({
+                    name : [this.campaignDetail['name']],
+                    description : [this.campaignDetail['description']],
+                    product: [this.campaignDetail['productId']],
+                    startDate : [this.datePipe.transform(this.campaignDetail['startDate'], 'yyyy-MM-dd')],
+                    endDate : [this.datePipe.transform(this.campaignDetail['endDate'], 'yyyy-MM-dd')],
+                    alertMessage : [this.campaignDetail['alertMessage']],
+                    duplicateMessage : [this.campaignDetail['duplicateMessage']],
+                    qrCodeNotExistMessage : [this.campaignDetail['qrCodeNotExistMessage']],
+                    winMessage : [this.campaignDetail['winMessage']],
+
+                }); 
+            }
+        }, error => {
+
+        });
+    }
+
     getTableDataSource(): void
     {
+        console.log(this.index);
         switch (this.index){
             case 1: {
-                this.getTransactions();
+                this.getCampaignDetail();
                 break;
             }
             case 2: {
-                this.getQrCodes();
+                this.getTransactions();
                 break;
             }
             case 3: {
+                this.getQrCodes();
+                break;
+            }
+            case 4: {
                 this.getEnrollments();
                 break;
             }
@@ -228,7 +309,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         };
 
         this._dashboardsCampaignsService.getTransactionByCampaignId(requestData).then((response: any) => {
-            this.dataSource = response.data;
+            this.dataSourceTransaction = response.data;
             this.length = response.length;
             this.paginator.length = response.length;
             this.paginator.pageIndex = this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex;
@@ -271,6 +352,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 
     getEnrollments(): void
     {
+        this.selection.clear();
         const requestData = {
             sortActive: this.sort.active ? this.sort.active : null,
             sortDirection: this.sort['_direction'] ? this.sort['_direction'] : null,
@@ -283,7 +365,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         };
 
         this._dashboardsCampaignsService.getEnrollment(requestData).then((response: any) => {
-            this.dataSource  = response.data;
+            this.dataSourceEnrollment  = response.data;
             this.length = response.length;
             this.paginator.length = response.length;
             this.paginator.pageIndex = this.pageEvent ? this.pageEvent.pageIndex : this.pageIndex;
@@ -293,17 +375,18 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
                 this.paginator.pageIndex = 0;
                 this.paginator.pageSize  = requestData.pageSize;
             }
+            this.allCheckBox.checked = false;
         });
     }
 
     generateQrCode(data): void
     {
-        // this.dialogRef = this._matDialog.open(QRDialogComponent, {
-        //     panelClass: 'qr-dialog',
-        //     data      : {
-        //         data
-        //     }
-        // });
+        this.dialogRef = this._matDialog.open(QRDialogComponent, {
+            panelClass: 'qr-dialog',
+            data      : {
+                data
+            }
+        });
 
     }
 
@@ -408,6 +491,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 
     sendSelected(): void
     {
+
         if (this.smsChecked && this.emailChecked)
         {
             this.channel = 'All';
@@ -421,15 +505,35 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
             this.channel = 'Email';
         }
 
-        // this._monitoringCampaignService.sendSelected(this.selection.selected, this.channel).then(res => {
-
-        // });
+        this._dashboardsCampaignsService.sendSelected(this.selection.selected, this.channel, this.selectedCampaign.id).then(res => {
+            if (res.isSuccess === false)
+            {
+                this._snackBar.open(res.message, 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['error-snackbar']
+                });
+            }
+            else
+            {
+                this._snackBar.open('Send data successed', 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['success-snackbar']
+                });
+                this.allCheckBox.checked = false;
+                this.selection.clear();
+            }
+        });
     }
 
     sendAll(): void
     {
-        const requestData = {
-            campaignId: this.selectedCampaign.id
+        const data = {
+            campaignId: this.selectedCampaign.id,
+            filter: this.searchText
         };
 
         if (this.smsChecked && this.emailChecked)
@@ -444,9 +548,60 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         {
             this.channel = 'Email';
         }
+        this._dashboardsCampaignsService.sendAll(data, this.channel, this.selectedCampaign.id).then(res => {
+            if (res.isSuccess === false)
+            {
+                this._snackBar.open(res.message, 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['error-snackbar']
+                });
+            }
+            else
+            {
+                this._snackBar.open('Send data successed', 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['success-snackbar']
+                });
+                this.allCheckBox.checked = false;
+                this.selection.clear();
+            }
+        });
+    }
 
-        // this._monitoringCampaignService.sendSelected(this.selection.selected, this.channel).then(res => {
-
-        // });
+    createCampaign(): void
+    {
+        let data = {
+            Id: this.selectedCampaign.id,
+            Name: this.form.value.name,
+            Description: this.form.value.description,
+            StartDate:  moment(this.form.value.startDate).format('YYYY-MM-DD'),
+            EndDate:  moment(this.form.value.endDate).format('YYYY-MM-DD'),
+            AlertMessage: this.form.value.alertMessage,
+            DuplicateMessage: this.form.value.duplicateMessage,
+            QrCodeNotExistMessage: this.form.value.qrCodeNotExistMessage,
+            WinMessage: this.form.value.winMessage,
+       };
+        this._campaignsService.updateCampaign(data).then(response => {
+            if (response.isSuccess === false){
+                this._snackBar.open(response.message, 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['error-snackbar']
+                });
+            }else{
+                this._snackBar.open('Update capmaign successed', 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['success-snackbar']
+                });
+                //this.selectedCampaignChanged(this.selectedCampaign);
+            }
+        });
     }
 }

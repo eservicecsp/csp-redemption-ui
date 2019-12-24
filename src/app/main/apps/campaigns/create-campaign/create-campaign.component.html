@@ -137,17 +137,17 @@
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
-                        <mat-label>Date out of range message</mat-label>
+                        <mat-label>Alert message for overdue of Campaign</mat-label>
                         <input matInput #alertMessage formControlName="alertMessage" maxlength="255" required>
                         <mat-hint align="end">{{alertMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Date out of range message. is required!</mat-error>
+                        <mat-error>Alert message for overdue of Campaign. is required!</mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex="50">
-                        <mat-label>Duplicate Message</mat-label>
+                        <mat-label>Alert message for duplicate case</mat-label>
                         <input matInput #duplicateMessage formControlName="duplicateMessage" maxlength="255" required>
                         <mat-hint align="end">{{duplicateMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Duplicate Message. is required!</mat-error>
+                        <mat-error>Alert message for duplicate case. is required!</mat-error>
                     </mat-form-field>
 
                 </div>
@@ -155,17 +155,17 @@
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
-                        <mat-label>Code not exist message</mat-label>
+                        <mat-label>Alert message for invalid case</mat-label>
                         <input matInput #qrCodeNotExistMessage formControlName="qrCodeNotExistMessage" maxlength="255" required>
                         <mat-hint align="end">{{qrCodeNotExistMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Code not exist message. is required!</mat-error>
+                        <mat-error>Alert message for invalid case!</mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex="50">
-                        <mat-label>Success Message</mat-label>
+                        <mat-label>Alert message for success case</mat-label>
                         <input matInput #winMessage formControlName="winMessage" maxlength="255" required>
                         <mat-hint align="end">{{winMessage.value.length}} / 255</mat-hint>
-                        <mat-error>Success Message. is required!</mat-error>
+                        <mat-error>Alert message for success case. is required!</mat-error>
                     </mat-form-field>
 
                 </div>

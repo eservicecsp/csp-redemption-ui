@@ -1,5 +1,11 @@
 <div id="consumers" class="page-layout carded fullwidth inner-scroll">
 
+        <!-- SIDEBAR -->
+        <fuse-sidebar class="sidebar main-sidebar" name="subscriptions-sidebar" position="right">
+            <subscriptions-sidebar></subscriptions-sidebar>
+        </fuse-sidebar>
+        <!-- / SIDEBAR -->
+
         <!-- TOP BACKGROUND -->
         <div class="top-bg accent"></div>
         <!-- / TOP BACKGROUND -->
@@ -25,25 +31,20 @@
                 <!-- / APP TITLE -->
     
               
+               
                 <!-- SEARCH -->
                 
-                <div class="search-wrapper mx-32 mx-md-0">
-                    <!-- <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <!-- <div class="search-wrapper mx-32 mx-md-0" style="display: none;">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
                         <input #filter placeholder="Search for a consumer" [formControl]="searchInput">
-                    </div> -->
-                    <div fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="space-around center">
-                        <button mat-icon-button  matTooltip="Download"
-                            matTooltipPosition="above" (click)="downloadFile()">
-                            <mat-icon>cloud_download</mat-icon>
-                        </button>
-
-                        <mat-icon>search</mat-icon>
-                        <input matInput #filter placeholder="Search for a consumer"
-                            [formControl]="searchInput" class="px-16">
                     </div>
-                </div>
+                </div> -->
                 <div class="left-side" fxLayout="row">
+                    <button mat-icon-button  matTooltip="Download"
+                        matTooltipPosition="above" (click)="downloadFile()">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
                     <button mat-icon-button class="sidebar-toggle"
                             matTooltip="Filter"
                             (click)="toggleSidebar('subscriptions-sidebar')">
@@ -72,10 +73,25 @@
                     fusePerfectScrollbar>
 
                 <!-- ID Column -->
-                <ng-container matColumnDef="id">
+                <!-- <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
                     <mat-cell *matCellDef="let consumer">
                         <p class="text-truncate">{{consumer.id}}</p>
+                    </mat-cell>
+                </ng-container> -->
+                <ng-container matColumnDef="checkbox">
+                    <mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox #allCheckBox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
                     </mat-cell>
                 </ng-container>
 
@@ -123,8 +139,34 @@
                 </mat-row>
 
             </mat-table>
-
-            <mat-paginator #paginator
+            <mat-toolbar>
+                <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center" style="background-color: white;">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <div fxLayout="column" fxFlex="1 0 auto">
+                            <section class="example-section" fxLayout="row">
+                                <mat-checkbox class="mr-12" [(ngModel)]="smsChecked">
+                                    Send SMS
+                                </mat-checkbox>
+                                <mat-checkbox class="mr-12" [(ngModel)]="emailChecked">
+                                    Send Email
+                                </mat-checkbox>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="mt-12" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <button mat-raised-button color="primary"
+                            *ngIf="selection.selected.length > 0 && (smsChecked === true || emailChecked === true)"
+                            class="mr-12" (click)="sendSelected()" title="SEND SELECTED">
+                            SEND SELECTED
+                        </button>
+                        <button mat-raised-button color="primary"
+                            *ngIf="smsChecked === true || emailChecked === true" (click)="sendAll()"
+                            title="SEND ALL">
+                            SEND ALL
+                        </button>
+                    </div>
+                    <span class="example-spacer"></span>
+                    <mat-paginator #paginator
                                 showFirstLastButtons
                                 [length]="length"
                                 [pageIndex]="pageIndex"
@@ -133,7 +175,10 @@
                                 (page)="pageEvent = $event"
                                 (page)="Mapdata()"
                             >
-            </mat-paginator>
+                 </mat-paginator>
+                </mat-toolbar-row>
+            </mat-toolbar>
+            
             </div>
             <!-- / CONTENT CARD -->
         </div>

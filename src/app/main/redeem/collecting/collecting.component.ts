@@ -88,9 +88,6 @@ export class CollectingComponent implements OnInit
         this.collectingForm = this._formBuilder.group({
             phone   : ['', [Validators.required]]
         });
-
-        console.log(this.token);
-        console.log(this.campaignId);
     }
 
     collecting(): void
@@ -132,14 +129,10 @@ export class CollectingComponent implements OnInit
             {
                 // this._router.navigate(['redeem/collecting/register', {token: this.token, campaignId: this.campaignId}]);
                 if(response.statusTypeCode === 'DUPLICATE'){
-                    console.log('DUPLICATE');
                 }
                 else if(response.statusTypeCode === 'SUCCESS'){
-                    console.log('SUCCESS');
-                    console.log(response);
                 }
                 else if(response.statusTypeCode === 'FAIL'){
-                    console.log('FAIL');
                 }
                 else{
                     this._router.navigate(['redeem/collecting/register'], {queryParams: {token: this.token, campaignId: this.campaignId, phone: this.collectingForm.value.phone}});

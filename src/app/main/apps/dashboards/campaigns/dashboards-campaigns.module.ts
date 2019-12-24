@@ -20,12 +20,14 @@ import { AuthenticationGuard } from 'app/main/pages/authentication/authenticatio
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
 
 import { AgmCoreModule } from '@agm/core';
-import { MatPaginatorModule, MatSortModule, MatToolbarModule, MatProgressBarModule, MatDialogModule, MatTooltipModule, MatSnackBarModule, MatCheckboxModule, MatInputModule } from '@angular/material';
+import { MatPaginatorModule, MatSortModule, MatToolbarModule, MatProgressBarModule, MatDialogModule, MatTooltipModule, MatSnackBarModule, MatCheckboxModule, MatInputModule, MatDatepickerModule } from '@angular/material';
 import { QRCodeModule } from 'angular2-qrcode';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
 import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
 import { ConsumersService } from '../../consumers/consumers.service';
+import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
+import { CampaignsService } from '../../campaigns/campaigns.service';
 
 const routes: Routes = [
     {
@@ -65,6 +67,7 @@ const routes: Routes = [
         MatToolbarModule,
         MatSnackBarModule,
         NgxChartsModule,
+        MatDatepickerModule,
         
         MatToolbarModule,
         MatCheckboxModule,
@@ -81,7 +84,10 @@ const routes: Routes = [
     providers   : [
         DashboardsCampaignsService,
         AuthenticationGuard,
-        ConsumersService
+        ConsumersService,
+        ConfigurationsProductsService,
+        CampaignsService,
+        DatePipe
     ],
     entryComponents: [
         EnrollmentUploadDialogComponent

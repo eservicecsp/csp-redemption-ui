@@ -64,6 +64,9 @@ consumers {
             min-height: 64px;
         }
 
+        .mat-column-checkbox {
+            flex: 0 1 100px;
+        }
         .consumer {
             position: relative;
             cursor: pointer;

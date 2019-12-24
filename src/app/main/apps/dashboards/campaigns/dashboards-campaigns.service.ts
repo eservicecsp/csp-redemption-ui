@@ -179,6 +179,15 @@ export class DashboardsCampaignsService implements Resolve<any>
 
         });
     }
+    getCampaignDetail(campaignId): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(`${environment.apiBaseUrl}/campaigns/detail/${campaignId}`)
+            .subscribe((response: any) => {
+                resolve(response);
+            }, reject);
+        });
+    }
 
     chartTransaction(campaignId: number): Promise<any>
     {
@@ -194,6 +203,27 @@ export class DashboardsCampaignsService implements Resolve<any>
     {
         return new Promise((resolve, reject) => {
             this._httpClient.get(`${environment.apiBaseUrl}/charts/qrcode/` + campaignId)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+
+    sendAll(data, channel, campaignId): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(`${environment.apiBaseUrl}/enrollments/SendAll?channel=${channel}&campaignId=${campaignId}`, data)
+            .subscribe((response: any) => {
+                resolve(response);
+            }, reject);
+        });
+    }
+    sendSelected(data, channel, campaignId): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            // console.log(data)
+            // resolve({isSuccess: true})
+            this._httpClient.post(`${environment.apiBaseUrl}/enrollments/SendSelected?channel=${channel}&campaignId=${campaignId}`, data)
                 .subscribe((response: any) => {
                     resolve(response);
                 }, reject);

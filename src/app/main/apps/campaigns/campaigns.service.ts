@@ -73,6 +73,15 @@ export class CampaignsService
                 }, reject);
         });
     }
+    updateCampaign(data: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(`${environment.apiBaseUrl}/campaigns/update`, data)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
    
 
 }
