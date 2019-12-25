@@ -68,14 +68,13 @@ export class ConfigurationsPromotionsService implements Resolve<any>
                         resolve(response);
                     }
                     else{
-                        // reject(response);
-                        resolve([]);
+                        reject(response);
                     }
                 }, reject);
         });
     }
 
-    getPromotionsById(id: number): Promise<any>
+    getPromotionById(id: number): Promise<any>
     {
         return new Promise((resolve, reject) => {
             this._httpClient.get(environment.apiBaseUrl + '/promotions/' + id)

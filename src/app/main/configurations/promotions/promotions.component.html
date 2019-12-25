@@ -54,24 +54,13 @@
                            fusePerfectScrollbar>
     
                     <!-- ID Column -->
-                    <ng-container matColumnDef="id">
+                    <!-- <ng-container matColumnDef="id">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
                         <mat-cell *matCellDef="let promotion">
                             <p class="text-truncate">{{promotion.id}}</p>
                         </mat-cell>
-                    </ng-container>
+                    </ng-container> -->
     
-                    <!-- Image Column -->
-                    <ng-container matColumnDef="image">
-                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                        <mat-cell *matCellDef="let promotion">
-                            <img class="promotion-image"
-                                 *ngIf="promotion.attachments && promotion.attachments[promotion.attachments.length-1]" [alt]="promotion.name"
-                                 [src]="promotion.attachments[promotion.attachments.length-1].extension + ',' + promotion.attachments[promotion.attachments.length-1].file"/>
-                            <img *ngIf="!(promotion.attachments && promotion.attachments[promotion.attachments.length-1])"
-                                 [src]="'assets/images/ecommerce/promotion-image-placeholder.png'">
-                        </mat-cell>
-                    </ng-container>
     
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">
@@ -89,15 +78,25 @@
                         </mat-cell>
                     </ng-container>
 
-                    <!-- Category Column -->
-                    <ng-container matColumnDef="createdBy">
+                    <!-- created By Name Column -->
+                    <ng-container matColumnDef="createdByName">
                         <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Created By</mat-header-cell>
                         <mat-cell *matCellDef="let promotion" fxHide fxShow.gt-md>
                             <p class="text-truncate">
-                                {{promotion.createdName}}
+                                {{promotion.createdByName}}
                             </p>
                         </mat-cell>
                     </ng-container>
+
+                    <!-- created Date Column -->
+                    <ng-container matColumnDef="createdDate">
+                            <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Created Date</mat-header-cell>
+                            <mat-cell *matCellDef="let promotion" fxHide fxShow.gt-md>
+                                <p class="text-truncate">
+                                    {{promotion.createdDate}}
+                                </p>
+                            </mat-cell>
+                        </ng-container>
     
                     <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
     

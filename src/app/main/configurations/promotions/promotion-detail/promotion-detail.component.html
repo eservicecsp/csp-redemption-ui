@@ -1,0 +1,98 @@
+<div id="promotion" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/configurations/promotions'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{promotion.name}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='create'">
+                        New Promotion
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Promotion Detail</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button
+                    class="save-promotion-button"
+                    [disabled]="promotionForm.invalid"
+                    *ngIf="pageType ==='new'" (click)="savePromotion()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button
+                    class="save-promotion-button"
+                    [disabled]="promotionForm.invalid"
+                    *ngIf="pageType ==='edit'" (click)="savePromotion()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="promotionForm" [formGroup]="promotionForm" class="promotion w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Basic Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput formControlName="name">
+                                    <mat-error *ngIf="promotionForm.get('name').hasError('required')">
+                                        Name is required
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Description</mat-label>
+                                    <input matInput formControlName="description">
+                                    <mat-error  *ngIf="promotionForm.get('description').hasError('required')">
+                                        Description is required
+                                    </mat-error>
+                                </mat-form-field>
+
+                            </div>
+
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

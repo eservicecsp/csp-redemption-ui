@@ -21,7 +21,7 @@ import { takeUntil } from 'rxjs/internal/operators';
 export class ConfigurationsPromotionsComponent implements OnInit
 {
     dataSource: FilesDataSource | null;
-    displayedColumns = ['id', 'image', 'name', 'description', 'createdBy'];
+    displayedColumns = ['name', 'description', 'createdByName', 'createdDate'];
     isMngPromotion: boolean;
 
     @ViewChild(MatPaginator, {static: true})
