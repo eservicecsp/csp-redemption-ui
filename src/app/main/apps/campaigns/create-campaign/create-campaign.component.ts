@@ -53,6 +53,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
 
+    columnQuantity = [];
+    rowQuantity = [];
+
     constructor(
         private _formBuilder: FormBuilder,
         private _campaignsService: CampaignsService,
@@ -71,7 +74,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
          // Reactive Form
         this.form = this._formBuilder.group({
             Id:  [''],
-            //url : [''],
+            // url : [''],
             name : ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
@@ -90,8 +93,12 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             name : [undefined, Validators.required],
             description : [undefined],
             product: ['', Validators.required],
-           // url : [''],
-            //quantity : [0, Validators.required],
+            // url : [''],
+            // quantity : [0, Validators.required],
+            collectingType: [undefined],
+            rows: [1],
+            columns: [1],
+            rowColumns: this._formBuilder.array([]),
             startDate : [undefined, Validators.required],
             endDate : [undefined, Validators.required],
             createdBy: [0],
@@ -104,7 +111,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
 
         this.PointForm = this._formBuilder.group({
             Id:  [''],
-            //url : [''],
+            // url : [''],
             name : ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
@@ -118,6 +125,26 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             createdBy: [this.userId],
             point: ['', Validators.required]
         });
+
+        this.collectingForm.controls['rows'].valueChanges.subscribe(response => {
+            this.rowQuantity = [];
+            const rows = this.collectingForm.controls['rows'].value;
+            for (let index = 1; index <= rows; index++) {
+                this.rowQuantity.push(index);
+            }
+
+            this.refreshRowColumnTable();
+        });
+
+        this.collectingForm.controls['columns'].valueChanges.subscribe(response => {
+            this.columnQuantity = [];
+            const columns = this.collectingForm.controls['columns'].value;
+            for (let index = 1; index <= columns; index++) {
+                this.columnQuantity.push(index);
+            }
+
+            this.refreshRowColumnTable();
+        });
     }
 
     ngOnInit(): void 
@@ -127,7 +154,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 this.products = res.products;
             }
         });
-        //const campaignId = this._datepipe.transform(new Date(), 'yyyyMMddHHmmssSSS');
+        // const campaignId = this._datepipe.transform(new Date(), 'yyyyMMddHHmmssSSS');
         const campaignId = 'token=[#token#]&campaignId=[#campaignId#]';
 
         this.urlValue = undefined;
@@ -237,6 +264,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
         
         this.urlValue = this.form.value.url;
     }
+
     createCampaign(): void
     {
         let data = {};
@@ -335,5 +363,41 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 this._router.navigate(['/apps/monitoring/campaign']);
             }
         });
+    }
+
+    refreshRowColumnTable(): void
+    {
+        const controls = this.collectingForm.controls['rowColumns'] as FormArray;
+        controls.clear();
+
+        this.rowQuantity.forEach(row => {
+            const rowFC = this._formBuilder.control(row);
+            this.columnQuantity.forEach(column => {
+                const columnFC = this._formBuilder.control(column);
+
+                const attachmentIdFC = this._formBuilder.control(0);
+                const attachmentNameFC = this._formBuilder.control(undefined);
+                const attachmentPathFC = this._formBuilder.control(undefined);
+                const attachmentFileFC = this._formBuilder.control(undefined);
+                const attachmentExtensionFC = this._formBuilder.control(undefined);
+
+                const fileFC = this._formBuilder.group({
+                    id: attachmentIdFC,
+                    name: attachmentNameFC,
+                    path: attachmentPathFC,
+                    file: attachmentFileFC,
+                    extension: attachmentExtensionFC
+                });
+                controls.push(
+                    this._formBuilder.group({
+                        row: rowFC,
+                        column: columnFC,
+                        file: fileFC,
+                    })
+                ) ;
+            });
+        });
+
+        console.log(controls.value);
     }
 }

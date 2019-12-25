@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
-import { MatButtonModule, MatIconModule, MatSlideToggleModule, MatFormFieldModule, MatOptionModule, MatSelectModule, MatInputModule, MatSnackBarModule, MatDatepickerModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatSlideToggleModule, MatFormFieldModule, MatOptionModule, MatSelectModule, MatInputModule, MatSnackBarModule, MatDatepickerModule, MatRadioModule } from '@angular/material';
 import { FuseHighlightModule } from '@fuse/components';
 
 import { CampaignsComponent } from './campaigns.component';
@@ -55,6 +55,7 @@ const routes = [
         QRCodeModule,
         MatSnackBarModule,
         MatDatepickerModule,
+        MatRadioModule,
 
         FuseHighlightModule,
         FuseSharedModule,
