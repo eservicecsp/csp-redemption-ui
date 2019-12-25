@@ -8,6 +8,9 @@ import { FuseSharedModule } from '@fuse/shared.module';
 
 import { FooterComponent } from 'app/layout/components/footer/footer.component';
 
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faChrome, faInternetExplorer, faFirefoxBrowser } from '@fortawesome/free-brands-svg-icons';
+
 @NgModule({
     declarations: [
         FooterComponent
@@ -19,7 +22,9 @@ import { FooterComponent } from 'app/layout/components/footer/footer.component';
         MatIconModule,
         MatToolbarModule,
 
-        FuseSharedModule
+        FuseSharedModule,
+
+        FontAwesomeModule,
     ],
     exports     : [
         FooterComponent
@@ -27,4 +32,7 @@ import { FooterComponent } from 'app/layout/components/footer/footer.component';
 })
 export class FooterModule
 {
+    constructor(private library: FaIconLibrary){
+        library.addIcons(faChrome, faInternetExplorer, faFirefoxBrowser);
+    }
 }

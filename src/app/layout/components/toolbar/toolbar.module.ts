@@ -11,6 +11,10 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { ToolbarComponent } from 'app/layout/components/toolbar/toolbar.component';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faDownload, faFile } from '@fortawesome/free-solid-svg-icons';
+
 @NgModule({
     declarations: [
         ToolbarComponent
@@ -24,7 +28,9 @@ import { AuthenticationService } from 'app/main/pages/authentication/authenticat
 
         FuseSharedModule,
         FuseSearchBarModule,
-        FuseShortcutsModule
+        FuseShortcutsModule,
+
+        FontAwesomeModule,
     ],
     exports     : [
         ToolbarComponent
@@ -35,4 +41,7 @@ import { AuthenticationService } from 'app/main/pages/authentication/authenticat
 })
 export class ToolbarModule
 {
+    constructor(private library: FaIconLibrary){
+        library.addIcons(faDownload, faFile);
+    }
 }
