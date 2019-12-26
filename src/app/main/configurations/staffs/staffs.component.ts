@@ -21,7 +21,7 @@ import { takeUntil } from 'rxjs/internal/operators';
 export class ConfigurationsStaffsComponent implements OnInit
 {
     dataSource: FilesDataSource | null;
-    displayedColumns = ['id', 'name', 'phone', 'email', 'role', 'isActived'];
+    displayedColumns = [ 'name', 'phone', 'email', 'role', 'isActived'];
 
     @ViewChild(MatPaginator, {static: true})
     paginator: MatPaginator;

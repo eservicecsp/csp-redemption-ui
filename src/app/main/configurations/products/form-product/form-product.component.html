@@ -34,6 +34,7 @@
                         <span>Product Detail</span>
                     </div>
                 </div>
+
             </div>
             <!-- / APP TITLE -->
 
@@ -80,6 +81,18 @@
                                     <input matInput formControlName="description">
                                     <mat-error  *ngIf="productForm.get('description').hasError('required')">
                                         Description is required
+                                    </mat-error>
+                                </mat-form-field>
+                                
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Product type</mat-label>
+                                    <mat-select formControlName="productTypeId" >
+                                    <mat-option *ngFor="let productType of productTypes" [value]="productType.id">
+                                        {{productType.name}}
+                                    </mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        Product type <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
 

@@ -76,31 +76,18 @@ configurations-product-types {
             align-items: center;
         }
 
-        .mat-column-id {
-            flex: 0 1 84px;
-        }
-
-        .mat-column-image {
-            flex: 0 1 84px;
-
-            .product-image {
-                width: 52px;
-                height: 52px;
-                border: 1px solid rgba(0, 0, 0, .12);
-            }
-        }
-
-        .mat-column-category {
+        .mat-column-name {
             flex: 0 1 240px;
         }
 
-        .mat-column-price {
-            flex: 0 1 160px;
+        .mat-column-description {
+            flex: 0 1 360px;
         }
 
-        .mat-column-quantity {
-            flex: 0 1 160px;
+        .mat-column-created {
+            flex: 0 1 240px;
         }
+
 
         .mat-column-active {
             flex: 0 1 80px;

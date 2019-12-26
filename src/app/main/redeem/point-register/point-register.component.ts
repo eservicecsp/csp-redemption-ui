@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
@@ -8,6 +8,7 @@ import { RedeemService } from '../redeem.service';
 import { switchMap, zip } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
+import { ConfigurationsProductTypesService } from 'app/main/configurations/product-types/product-types.service';
 
 @Component({
     selector     : 'point-register',
@@ -29,6 +30,8 @@ export class PointRegisterComponent implements OnInit
 
     isRewardShow: boolean;
     message: string;
+
+    productTypes: any[];
 
     /**
      * Constructor
@@ -70,6 +73,12 @@ export class PointRegisterComponent implements OnInit
         this._redeemService.getProvinces().then(response => {
             this.provinces = response.provinces;
         });
+
+        this._redeemService.getProductTypesByCampaignId(this.campaignId).then(res => {
+            if (res){
+                this.productTypes = res;
+            }
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -81,6 +90,8 @@ export class PointRegisterComponent implements OnInit
      */
     ngOnInit(): void
     {
+        
+
         this.pointRegisterForm = this._formBuilder.group({
             id: [0],
             firstName: [undefined, Validators.required],
@@ -95,10 +106,35 @@ export class PointRegisterComponent implements OnInit
             zipCode: [undefined, Validators.required],
             campaignId: [this.campaignId, Validators.required],
             token: [this.token],
-            birthDate:  ['', Validators.required]
+            birthDate:  ['', Validators.required],
+            productType: new FormArray([]),
         });
     }
-
+    onCheckChange(event) {
+        const formArray: FormArray = this.pointRegisterForm.get('productType') as FormArray;
+      
+        /* Selected */
+        if(event.target.checked){
+          // Add a new control in the arrayForm
+          formArray.push(new FormControl(event.target.value));
+        }
+        /* unselected */
+        else{
+          // find the unselected element
+          let i: number = 0;
+      
+          formArray.controls.forEach((ctrl: FormControl) => {
+            if(ctrl.value == event.target.value) {
+              // Remove the unselected element from the arrayForm
+              formArray.removeAt(i);
+              return;
+            }
+      
+            i++;
+          });
+        }
+        console.log(this.pointRegisterForm.get('productType').value)
+    }
     getAmphurs(event): void
     {
         const provinceCode = event.value;
@@ -140,7 +176,8 @@ export class PointRegisterComponent implements OnInit
             zipCode: this.pointRegisterForm.value.zipCode,
             campaignId: this.campaignId,
             token: this.token,
-            birthDate:  moment(this.pointRegisterForm.value.birthDate).format('YYYY-MM-DD')
+            birthDate:  moment(this.pointRegisterForm.value.birthDate).format('YYYY-MM-DD'),
+            productType: this.pointRegisterForm.get('productType').value
         };
     
         this._redeemService.register(requestData).then(response => {

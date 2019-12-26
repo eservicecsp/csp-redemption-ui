@@ -115,4 +115,14 @@ export class RedeemService
                 }, reject);
         });
     }
+    getProductTypesByCampaignId(id: number): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/campaigns/productType/' + id)
+                .subscribe((response: any) => {
+                    resolve(response.productTypes);
+                }, reject);
+
+        });
+    }
 }

@@ -135,6 +135,13 @@
                         </mat-error>
                     </mat-form-field>
     
+                    <div *ngFor="let productType of productTypes; let i=index" class="col-md-2">
+                        <label>
+                            <input type="checkbox" [value]="productType.id" (change)="onCheckChange($event)">
+                            {{productType.name}}
+                        </label>
+                    </div>
+
                     <button type="button" mat-raised-button color="accent" class="submit-button" aria-label="Redeem" 
                     [disabled]="pointRegisterForm.invalid"
                     (click)="register()">

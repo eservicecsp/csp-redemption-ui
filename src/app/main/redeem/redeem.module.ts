@@ -11,6 +11,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PointRegisterComponent } from './point-register/point-register.component';
+import { ConfigurationsProductTypesService } from '../configurations/product-types/product-types.service';
 
 
 
@@ -32,7 +33,7 @@ import { PointRegisterComponent } from './point-register/point-register.componen
 
     ],
     providers: [
-        RedeemService,
+        RedeemService
     ]
 })
 export class RedeemModule

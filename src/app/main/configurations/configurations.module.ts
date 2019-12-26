@@ -34,6 +34,7 @@ import { ConfigurationsProductTypesComponent } from './product-types/product-typ
 import { ConfigurationsProductTypesService } from './product-types/product-types.service';
 import { ConfigurationsPromotionsComponent } from './promotions/promotions.component';
 import { ConfigurationsPromotionsService } from './promotions/promotions.service';
+import { FormProductTypeComponent } from './product-types/form-productType/form-productType.component';
 
 
 const routes: Routes = [
@@ -138,6 +139,16 @@ const routes: Routes = [
         ]
     },
     {
+        path     : 'product-types/:id',
+        component: FormProductTypeComponent,
+        resolve  : {
+            data: ConfigurationsProductTypesService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
         path     : 'promotions',
         component: ConfigurationsPromotionsComponent,
         resolve  : {
@@ -159,6 +170,7 @@ const routes: Routes = [
         FormProductComponent,
         FormDealerComponent,
         FormStaffComponent,
+        FormProductTypeComponent 
 
         
     ],

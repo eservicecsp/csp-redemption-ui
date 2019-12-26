@@ -9,6 +9,7 @@ import { AuthenticationService } from 'app/main/pages/authentication/authenticat
 import { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
+import { ConfigurationsProductTypesService } from '../../product-types/product-types.service';
 
 @Component({
     selector     : 'form-product',
@@ -23,10 +24,11 @@ export class FormProductComponent implements OnInit
         id: [0],
         name   : ['', [Validators.required]],
         description: ['', Validators.required],
+        productTypeId: ['', Validators.required],
         createdBy : this._authenticationService.getRawAccessToken('userId'),
         attachments: this._formBuilder.array([])
     });
-
+    productTypes: any[];
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
 
@@ -42,7 +44,8 @@ export class FormProductComponent implements OnInit
         private _formBuilder: FormBuilder,
         private _snackBar: MatSnackBar,
         private _router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private _configurationsProductTypesService: ConfigurationsProductTypesService
     )
     {
         this.productId = 0;
@@ -64,6 +67,7 @@ export class FormProductComponent implements OnInit
                         this.productForm = this._formBuilder.group({
                             id: this.productId,
                             name   : [response.product.name, [Validators.required]],
+                            productTypeId: [response.product.productTypeId , Validators.required],
                             description: [response.product.description, Validators.required],
                             attachments: attachmentsFA
                         });
@@ -88,6 +92,11 @@ export class FormProductComponent implements OnInit
     ngOnInit(): void
     {
         
+        this._configurationsProductTypesService.getProductTypes().then(res => {
+            if (res.isSuccess){
+                this.productTypes = res.productTypes;
+            }
+        });
     }
 
     getControl(frmGrp: FormGroup, key: string): any {

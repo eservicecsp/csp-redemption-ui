@@ -54,12 +54,12 @@
                            fusePerfectScrollbar>
     
                     <!-- ID Column -->
-                    <ng-container matColumnDef="id">
+                    <!-- <ng-container matColumnDef="id">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
                         <mat-cell *matCellDef="let product">
                             <p class="text-truncate">{{product.id}}</p>
                         </mat-cell>
-                    </ng-container>
+                    </ng-container> -->
     
                     <!-- Image Column -->
                     <ng-container matColumnDef="image">
@@ -86,6 +86,14 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
                         <mat-cell *matCellDef="let product">
                             <p class="text-truncate">{{product.description}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="productType">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Product type</mat-header-cell>
+                        <mat-cell *matCellDef="let product">
+                            <p class="text-truncate">{{product.productTypeName}}</p>
                         </mat-cell>
                     </ng-container>
 
