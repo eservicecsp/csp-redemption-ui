@@ -93,10 +93,9 @@
                     <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
     
                     <mat-row *matRowDef="let promotion; columns: displayedColumns;"
-                             class="promotion"
+                             class="promotion-type"
                              matRipple
-                             [routerLink]="'/configurations/promotion-types/'+promotion.id+'/'+promotion.handle">
-                             <!-- [routerLink]="'/configurations/promotion-types/'+promotion.id+'/'+promotion.handle"> -->
+                             [routerLink]="'/configurations/promotion-types/'+promotion.id">
                     </mat-row>
     
                 </mat-table>

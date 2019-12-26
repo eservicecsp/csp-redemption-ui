@@ -37,6 +37,7 @@ import { ConfigurationsPromotionsService } from './promotions/promotions.service
 import { PromotionDetailComponent } from './promotions/promotion-detail/promotion-detail.component';
 import { ConfigurationsPromotionTypesComponent } from './promotion-types/promotion-types.component';
 import { ConfigurationsPromotionTypesService } from './promotion-types/promotion-types.service';
+import { PromotionTypeDetailComponent } from './promotion-types/promotion-type-detail/promotion-type-detail.component';
 
 
 const routes: Routes = [
@@ -170,6 +171,16 @@ const routes: Routes = [
             AuthenticationGuard
         ]
     },
+    {
+        path     : 'promotion-types/:id',
+        component: PromotionTypeDetailComponent,
+        resolve  : {
+            data: ConfigurationsPromotionTypesService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
 ];
 
 @NgModule({
@@ -184,6 +195,7 @@ const routes: Routes = [
         FormDealerComponent,
         FormStaffComponent,
         PromotionDetailComponent,
+        PromotionTypeDetailComponent,
 
         
     ],

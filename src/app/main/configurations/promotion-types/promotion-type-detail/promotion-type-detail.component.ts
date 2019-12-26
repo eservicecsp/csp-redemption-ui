@@ -3,7 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@an
 
 import { fuseAnimations } from '@fuse/animations';
 
-import { ConfigurationsPromotionsService } from '../promotions.service';
+import { ConfigurationsPromotionTypesService } from '../promotion-types.service';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatSnackBar } from '@angular/material';
@@ -11,40 +11,36 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
 
 @Component({
-    selector     : 'promotion-detail',
-    templateUrl  : './promotion-detail.component.html',
-    styleUrls    : ['./promotion-detail.component.scss'],
+    selector     : 'promotion-type-detail',
+    templateUrl  : './promotion-type-detail.component.html',
+    styleUrls    : ['./promotion-type-detail.component.scss'],
     animations   : fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class PromotionDetailComponent implements OnInit
+export class PromotionTypeDetailComponent implements OnInit
 {
-    promotionForm = this._formBuilder.group({
+    promotionTypeForm = this._formBuilder.group({
         id: [0],
         name   : ['', [Validators.required]],
         description: ['', Validators.required],
-        createdBy: this._authenticationService.getRawAccessToken('userId'),
-        promotionTypeId: [0, [Validators.required]],
-        isActived: [false, [Validators.required]],
+        // createdBy: this._authenticationService.getRawAccessToken('userId'),
+        // promotionTypeId: [0, [Validators.required]],
+        // isActived: [false, [Validators.required]],
     });
 
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
 
     pageType: string;
-
-    promotionId: number;
-    promotion = {
+    promotionTypeId: any;
+    promotionType = {
         id: 0,
         name: undefined,
-        description: undefined,
-        isActived: false,
-        promotionTypeId: 0
+        description: undefined
     };
-    promotionTypes: [];
 
     constructor(
-        private _configurationsPromotionService: ConfigurationsPromotionsService,
+        private _configurationsPromotionTypesService: ConfigurationsPromotionTypesService,
         private _authenticationService: AuthenticationService,
         private _formBuilder: FormBuilder,
         private _snackBar: MatSnackBar,
@@ -52,32 +48,19 @@ export class PromotionDetailComponent implements OnInit
         private route: ActivatedRoute
     )
     {
-        this.promotionId = 0;
-
-        this._configurationsPromotionService.getPromotionTypes().then(response => {
-            if (response.isSuccess){
-                this.promotionTypes = response.promotionTypes;
-            }
-            else {
-
-            }
-        });
-
         this.route.params.subscribe(params => {
-            this.promotionId = params['id'];
-            if (this.promotionId > 0){
+            this.promotionTypeId = params['id'];
+            if (this.promotionTypeId > 0){
                 this.pageType = 'edit';
 
-                this._configurationsPromotionService.getPromotionById(this.promotionId).then(response => {
+                this._configurationsPromotionTypesService.getPromotionTypeById(this.promotionTypeId).then(response => {
                     if (response.isSuccess)
                     {
-                        this.promotion = response.promotion;
-                        this.promotionForm = this._formBuilder.group({
-                            id: this.promotionId,
-                            name   : [this.promotion.name, [Validators.required]],
-                            description: [this.promotion.description, Validators.required],
-                            promotionTypeId: [this.promotion.promotionTypeId, [Validators.required]],
-                            isActived: [this.promotion.isActived, [Validators.required]]
+                        this.promotionType = response.promotionType;
+                        this.promotionTypeForm = this._formBuilder.group({
+                            id: this.promotionTypeId,
+                            name   : [this.promotionType.name, [Validators.required]],
+                            description: [this.promotionType.description, Validators.required],
                         });
                     }
                 });
@@ -110,14 +93,14 @@ export class PromotionDetailComponent implements OnInit
         return (formGroup.controls[fromControl] as FormArray).controls;
     }
 
-    createPromotion(): void
+    createPromotionType(): void
     {
-        console.log(this.promotionForm.value);
+        console.log(this.promotionTypeForm.value);
     }
 
-    updatePromotion(): void
+    updatePromotionType(): void
     {
-        console.log(this.promotionForm.value);
+        console.log(this.promotionTypeForm.value);
     }
 
 }

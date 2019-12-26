@@ -55,16 +55,19 @@ export class ConfigurationsPromotionTypesService implements Resolve<any>
         return new Promise((resolve, reject) => {
             this._httpClient.get(`${environment.apiBaseUrl}/promotionTypes`)
                 .subscribe((response: any) => {
-                    if (response.isSuccess)
-                    {
-                        this.promotionTypes = response.promotionTypes;
-                        this.onPromotionTypesChanged.next(this.promotionTypes);
-                        resolve(response);
-                    }
-                    else
-                    {
-                        reject(response);
-                    }
+                    this.promotionTypes = response.promotionTypes;
+                    this.onPromotionTypesChanged.next(this.promotionTypes);
+                    resolve(response);
+                }, reject);
+        });
+    }
+
+    getPromotionTypeById(id: number): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(`${environment.apiBaseUrl}/promotionTypes/` + id)
+                .subscribe((response: any) => {
+                    resolve(response);
                 }, reject);
         });
     }
