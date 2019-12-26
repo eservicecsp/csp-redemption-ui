@@ -23,7 +23,7 @@ export class PromotionDetailComponent implements OnInit
         id: [0],
         name   : ['', [Validators.required]],
         description: ['', Validators.required],
-        createdBy: this._authenticationService.getRawAccessToken('userId'),
+        createdBy: [0],
         promotionTypeId: [0, [Validators.required]],
         isActived: [false, [Validators.required]],
     });
