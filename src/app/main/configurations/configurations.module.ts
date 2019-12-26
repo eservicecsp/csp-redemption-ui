@@ -35,6 +35,10 @@ import { ConfigurationsProductTypesService } from './product-types/product-types
 import { ConfigurationsPromotionsComponent } from './promotions/promotions.component';
 import { ConfigurationsPromotionsService } from './promotions/promotions.service';
 import { FormProductTypeComponent } from './product-types/form-productType/form-productType.component';
+import { PromotionDetailComponent } from './promotions/promotion-detail/promotion-detail.component';
+import { ConfigurationsPromotionTypesComponent } from './promotion-types/promotion-types.component';
+import { ConfigurationsPromotionTypesService } from './promotion-types/promotion-types.service';
+import { PromotionTypeDetailComponent } from './promotion-types/promotion-type-detail/promotion-type-detail.component';
 
 
 const routes: Routes = [
@@ -158,6 +162,36 @@ const routes: Routes = [
             AuthenticationGuard
         ]
     },
+    {
+        path     : 'promotions/:id',
+        component: PromotionDetailComponent,
+        resolve  : {
+            data: ConfigurationsProductsService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
+        path     : 'promotion-types',
+        component: ConfigurationsPromotionTypesComponent,
+        resolve  : {
+            data: ConfigurationsPromotionTypesService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
+        path     : 'promotion-types/:id',
+        component: PromotionTypeDetailComponent,
+        resolve  : {
+            data: ConfigurationsPromotionTypesService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
 ];
 
 @NgModule({
@@ -167,10 +201,13 @@ const routes: Routes = [
         ConfigurationsProductsComponent,
         ConfigurationsProductTypesComponent,
         ConfigurationsPromotionsComponent,
+        ConfigurationsPromotionTypesComponent,
         FormProductComponent,
         FormDealerComponent,
         FormStaffComponent,
-        FormProductTypeComponent 
+        FormProductTypeComponent, 
+        PromotionDetailComponent,
+        PromotionTypeDetailComponent,
 
         
     ],
@@ -206,6 +243,7 @@ const routes: Routes = [
         ConfigurationsDealersService,
         ConfigurationsProductTypesService,
         ConfigurationsPromotionsService,
+        ConfigurationsPromotionTypesService,
         AuthenticationGuard
     ],
     entryComponents: [

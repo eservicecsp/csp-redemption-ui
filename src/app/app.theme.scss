@@ -96,6 +96,7 @@ $typography: mat-typography-config(
 @import "src/app/main/configurations/dealers/dealers.theme";
 @import "src/app/main/configurations/product-types/product-types.theme";
 @import "src/app/main/configurations/promotions/promotions.theme";
+@import "src/app/main/configurations/promotion-types/promotion-types.theme";
 
 // @import "src/app/main/configurations/products/form-product/form-product.theme";
 
@@ -129,6 +130,7 @@ $typography: mat-typography-config(
     @include configurations-dealers-theme($theme);
     @include configurations-product-types-theme($theme);
     @include configurations-promotions-theme($theme);
+    @include configurations-promotion-types-theme($theme);
 
 
     // Redeem

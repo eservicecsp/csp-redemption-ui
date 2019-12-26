@@ -1,8 +1,8 @@
 @import "src/@fuse/scss/fuse";
 
-configurations-promotions {
+configurations-promotion-types {
 
-    #promotions {
+    #promotion-types {
 
         .top-bg {
 
@@ -54,7 +54,7 @@ configurations-promotions {
         }
     }
 
-    .promotions-table {
+    .promotion-types-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);
         overflow: auto;
@@ -64,7 +64,7 @@ configurations-promotions {
             min-height: 64px;
         }
 
-        .promotion {
+        .promotion-type {
             position: relative;
             cursor: pointer;
             height: 84px;
