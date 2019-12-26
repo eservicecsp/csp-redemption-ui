@@ -23,8 +23,9 @@ export class PromotionDetailComponent implements OnInit
         id: [0],
         name   : ['', [Validators.required]],
         description: ['', Validators.required],
-        createdBy : this._authenticationService.getRawAccessToken('userId'),
-        attachments: this._formBuilder.array([])
+        createdBy: this._authenticationService.getRawAccessToken('userId'),
+        promotionTypeId: [0, [Validators.required]],
+        isActived: [false, [Validators.required]],
     });
 
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
@@ -33,8 +34,8 @@ export class PromotionDetailComponent implements OnInit
     pageType: string;
 
     promotionId: number;
-
     promotion: any;
+    promotionTypes: [];
 
     constructor(
         private _configurationsPromotionService: ConfigurationsPromotionsService,
@@ -50,6 +51,15 @@ export class PromotionDetailComponent implements OnInit
             
         };
 
+        this._configurationsPromotionService.getPromotionTypes().then(response => {
+            if (response.isSuccess){
+                this.promotionTypes = response.promotionTypes;
+            }
+            else {
+
+            }
+        });
+
         this.route.params.subscribe(params => {
             this.promotionId = params['id'];
             if (this.promotionId > 0){
@@ -58,14 +68,15 @@ export class PromotionDetailComponent implements OnInit
                 this._configurationsPromotionService.getPromotionById(this.promotionId).then(response => {
                     if (response.isSuccess)
                     {
+                        console.log(response.promotion)
                         this.promotion = response.promotion;
-
                         this.promotionForm = this._formBuilder.group({
                             id: this.promotionId,
-                            name   : [response.promotion.name, [Validators.required]],
-                            description: [response.promotion.description, Validators.required]
+                            name   : [this.promotion.name, [Validators.required]],
+                            description: [this.promotion.description, Validators.required],
+                            promotionTypeId: [this.promotion.promotionTypeId, [Validators.required]],
+                            isActived: [this.promotion.isActived, [Validators.required]]
                         });
-                        
                     }
                 });
             }
@@ -73,6 +84,7 @@ export class PromotionDetailComponent implements OnInit
             {
                 this.pageType = 'new';
             }
+            
         });
     }
 
@@ -94,6 +106,16 @@ export class PromotionDetailComponent implements OnInit
     
     getControls(formGroup: FormGroup, fromControl: string): any{
         return (formGroup.controls[fromControl] as FormArray).controls;
+    }
+
+    createPromotion(): void
+    {
+        console.log(this.promotionForm.value);
+    }
+
+    updatePromotion(): void
+    {
+        console.log(this.promotionForm.value);
     }
 
 }

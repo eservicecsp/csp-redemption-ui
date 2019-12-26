@@ -35,14 +35,14 @@
             <button mat-raised-button
                     class="save-promotion-button"
                     [disabled]="promotionForm.invalid"
-                    *ngIf="pageType ==='new'" (click)="savePromotion()">
+                    *ngIf="pageType ==='new'" (click)="createPromotion()">
                 <span>ADD</span>
             </button>
 
             <button mat-raised-button
                     class="save-promotion-button"
                     [disabled]="promotionForm.invalid"
-                    *ngIf="pageType ==='edit'" (click)="savePromotion()">
+                    *ngIf="pageType ==='edit'" (click)="updatePromotion()">
                 <span>SAVE</span>
             </button>
         </div>
@@ -78,6 +78,20 @@
                                     </mat-error>
                                 </mat-form-field>
 
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Promotion type</mat-label>
+                                    <mat-select formControlName="promotionTypeId" required>
+                                        <mat-option *ngFor="let promotionType of promotionTypes" [value]="promotionType.id">
+                                        {{promotionType.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error  *ngIf="promotionForm.get('promotionTypeId').hasError('required')">
+                                        Promotion type is required
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-label>Active</mat-label>
+                                <mat-slide-toggle formControlName="isActived"></mat-slide-toggle>
                             </div>
 
                         </mat-tab>

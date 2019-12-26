@@ -8,21 +8,20 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseUtils } from '@fuse/utils';
 
-import { ConfigurationsPromotionsService } from './promotions.service';
+import { ConfigurationsPromotionTypesService } from './promotion-types.service';
 import { takeUntil } from 'rxjs/internal/operators';
 
 @Component({
-    selector     : 'configurations-promotions',
-    templateUrl  : './promotions.component.html',
-    styleUrls    : ['./promotions.component.scss'],
+    selector     : 'configurations-promotion-types',
+    templateUrl  : './promotion-types.component.html',
+    styleUrls    : ['./promotion-types.component.scss'],
     animations   : fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class ConfigurationsPromotionsComponent implements OnInit
+export class ConfigurationsPromotionTypesComponent implements OnInit
 {
     dataSource: FilesDataSource | null;
-    displayedColumns = ['name', 'description', 'isActived', 'created'];
-    isMngPromotion: boolean;
+    displayedColumns = ['name', 'description'];
 
     @ViewChild(MatPaginator, {static: true})
     paginator: MatPaginator;
@@ -37,7 +36,7 @@ export class ConfigurationsPromotionsComponent implements OnInit
     private _unsubscribeAll: Subject<any>;
 
     constructor(
-        private _configurationsPromotionsService: ConfigurationsPromotionsService
+        private _configurationsPromotionTypesService: ConfigurationsPromotionTypesService
     )
     {
         // Set the private defaults
@@ -53,7 +52,7 @@ export class ConfigurationsPromotionsComponent implements OnInit
      */
     ngOnInit(): void
     {
-        this.dataSource = new FilesDataSource(this._configurationsPromotionsService, this.paginator, this.sort);
+        this.dataSource = new FilesDataSource(this._configurationsPromotionTypesService, this.paginator, this.sort);
 
         fromEvent(this.filter.nativeElement, 'keyup')
             .pipe(
@@ -70,10 +69,6 @@ export class ConfigurationsPromotionsComponent implements OnInit
                 this.dataSource.filter = this.filter.nativeElement.value;
             });
     }
-
-    mngPromotion(): void{
-        this.isMngPromotion = true;
-    }
 }
 
 export class FilesDataSource extends DataSource<any>
@@ -84,19 +79,19 @@ export class FilesDataSource extends DataSource<any>
     /**
      * Constructor
      *
-     * @param {ConfigurationsPromotionsService} _configurationsPromotionsService
+     * @param {ConfigurationsPromotionTypesService} _configurationsPromotionTypesService
      * @param {MatPaginator} _matPaginator
      * @param {MatSort} _matSort
      */
     constructor(
-        private _configurationsPromotionsService: ConfigurationsPromotionsService,
+        private _configurationsPromotionTypesService: ConfigurationsPromotionTypesService,
         private _matPaginator: MatPaginator,
         private _matSort: MatSort
     )
     {
         super();
 
-        this.filteredData = this._configurationsPromotionsService.promotions;
+        this.filteredData = this._configurationsPromotionTypesService.promotionTypes;
     }
 
     /**
@@ -107,7 +102,7 @@ export class FilesDataSource extends DataSource<any>
     connect(): Observable<any[]>
     {
         const displayDataChanges = [
-            this._configurationsPromotionsService.onPromotionsChanged,
+            this._configurationsPromotionTypesService.onPromotionTypesChanged,
             this._matPaginator.page,
             this._filterChange,
             this._matSort.sortChange
@@ -116,7 +111,7 @@ export class FilesDataSource extends DataSource<any>
         return merge(...displayDataChanges)
             .pipe(
                 map(() => {
-                        let data = this._configurationsPromotionsService.promotions.slice();
+                        let data = this._configurationsPromotionTypesService.promotionTypes.slice();
 
                         data = this.filterData(data);
 

@@ -1,4 +1,4 @@
-<div id="promotions" class="page-layout carded fullwidth inner-scroll">
+<div id="promotion-types" class="page-layout carded fullwidth inner-scroll">
 
         <!-- TOP BACKGROUND -->
         <div class="top-bg accent"></div>
@@ -16,10 +16,10 @@
                 <div class="logo mb-24 mb-md-0"
                      fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                        shopping_cart
+                        shopping_basket
                     </mat-icon>
                     <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                        Promotions
+                        Promotion Types
                     </span>
                 </div>
                 <!-- / APP TITLE -->
@@ -28,16 +28,16 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="Search for a promotion">
+                        <input #filter placeholder="Search for a promotion type">
                     </div>
                 </div>
                 <!-- / SEARCH -->
     
                 <!-- ADD BUTTON -->
                 <button mat-raised-button
-                        [routerLink]="'/configurations/promotions/create'"
+                        [routerLink]="'/configurations/promotion-types/new'"
                         class="add-promotion-button fuse-white mt-24 mt-md-0">
-                    <span>ADD NEW PROMOTION</span>
+                    <span>ADD NEW PROMOTION TYPE</span>
                 </button>
                 <!-- / ADD BUTTON -->
     
@@ -45,9 +45,9 @@
             <!-- / HEADER -->
     
             <!-- CONTENT CARD -->
-            <div class="content-card" >
+            <div class="content-card">
     
-                <mat-table class="promotions-table"
+                <mat-table class="promotion-types-table"
                            #table [dataSource]="dataSource"
                            matSort
                            [@animateStagger]="{value:'50'}"
@@ -61,7 +61,6 @@
                         </mat-cell>
                     </ng-container> -->
     
-    
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
@@ -69,53 +68,35 @@
                             <p class="text-truncate">{{promotion.name}}</p>
                         </mat-cell>
                     </ng-container>
-
-                    <!-- Name Column -->
+    
+                    <!-- Category Column -->
                     <ng-container matColumnDef="description">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
-                        <mat-cell *matCellDef="let promotion">
-                            <p class="text-truncate">{{promotion.description}}</p>
-                        </mat-cell>
-                    </ng-container>
-
-                    <!-- Active Column -->
-                    <ng-container matColumnDef="isActived">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
-                        <mat-cell *matCellDef="let promotion" fxHide fxShow.gt-xs>
-                            <mat-icon *ngIf="promotion.isActived" class="active-icon green-600 s-16">check</mat-icon>
-                            <mat-icon *ngIf="!promotion.isActived" class="active-icon red-500 s-16">close</mat-icon>
-                        </mat-cell>
-                    </ng-container>
-
-                    <!-- created By Name Column -->
-                    <ng-container matColumnDef="created">
-                        <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Created</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Description</mat-header-cell>
                         <mat-cell *matCellDef="let promotion" fxHide fxShow.gt-md>
-                            <p class="text-truncate">
-                                {{promotion.createdByName}}
-                            <br/>
-                                {{promotion.createdDate}}
+                            <p class="category text-truncate">
+                                {{promotion.description}}
                             </p>
                         </mat-cell>
                     </ng-container>
-
-                    <!-- created Date Column -->
-                    <ng-container matColumnDef="createdDate">
-                            <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Created Date</mat-header-cell>
-                            <mat-cell *matCellDef="let promotion" fxHide fxShow.gt-md>
-                                <p class="text-truncate">
-                                    {{promotion.createdDate}}
-                                </p>
-                            </mat-cell>
-                        </ng-container>
+    
+                    
+    
+                    <!-- Active Column -->
+                    <!-- <ng-container matColumnDef="active">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
+                        <mat-cell *matCellDef="let promotion" fxHide fxShow.gt-xs>
+                            <mat-icon *ngIf="promotion.active" class="active-icon green-600 s-16">check</mat-icon>
+                            <mat-icon *ngIf="!promotion.active" class="active-icon red-500 s-16">close</mat-icon>
+                        </mat-cell>
+                    </ng-container> -->
     
                     <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
     
                     <mat-row *matRowDef="let promotion; columns: displayedColumns;"
                              class="promotion"
                              matRipple
-                             [routerLink]="['/configurations/promotions/', promotion.id]">
-                             <!-- [routerLink]="'/configurations/promotions/'+promotion.id+'/'+promotion.handle"> -->
+                             [routerLink]="'/configurations/promotion-types/'+promotion.id+'/'+promotion.handle">
+                             <!-- [routerLink]="'/configurations/promotion-types/'+promotion.id+'/'+promotion.handle"> -->
                     </mat-row>
     
                 </mat-table>
