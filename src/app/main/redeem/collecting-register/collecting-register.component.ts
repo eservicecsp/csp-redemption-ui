@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
@@ -39,6 +39,8 @@ export class CollectingRegisterComponent implements OnInit
     totalPieces = 0;
     msgWinner = '';
     isWinner: boolean;
+
+    productTypes: any[];
 
     /**
      * Constructor
@@ -84,6 +86,12 @@ export class CollectingRegisterComponent implements OnInit
         this.isShowReward03 = false;
         this.isShowReward04 = false;
         this.isShowReward05 = false;
+
+        this._redeemService.getProductTypesByCampaignId(this.campaignId).then(res => {
+            if (res){
+                this.productTypes = res;
+            }
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -109,10 +117,34 @@ export class CollectingRegisterComponent implements OnInit
             zipCode: [undefined, Validators.required],
             campaignId: [this.campaignId, Validators.required],
             token: [this.token],
-            birthDate:  [undefined, Validators.required]
+            birthDate:  [undefined, Validators.required],
+            productType: new FormArray([]),
         });
     }
-
+    onCheckChange(event) {
+        const formArray: FormArray = this.collectingRegisterForm.get('productType') as FormArray;
+      
+        /* Selected */
+        if(event.target.checked){
+          // Add a new control in the arrayForm
+          formArray.push(new FormControl(event.target.value));
+        }
+        /* unselected */
+        else{
+          // find the unselected element
+          let i: number = 0;
+      
+          formArray.controls.forEach((ctrl: FormControl) => {
+            if(ctrl.value == event.target.value) {
+              // Remove the unselected element from the arrayForm
+              formArray.removeAt(i);
+              return;
+            }
+      
+            i++;
+          });
+        }
+    }
     getAmphurs(event): void
     {
         const provinceCode = event.value;
@@ -154,7 +186,8 @@ export class CollectingRegisterComponent implements OnInit
             zipCode: this.collectingRegisterForm.value.zipCode,
             campaignId: this.campaignId,
             token: this.token,
-            birthDate:  moment(this.collectingRegisterForm.value.birthDate).format('YYYY-MM-DD')
+            birthDate:  moment(this.collectingRegisterForm.value.birthDate).format('YYYY-MM-DD'),
+            productType: this.collectingRegisterForm.get('productType').value
         };
 
         this._redeemService.register(requestData).then(response => {
