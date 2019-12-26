@@ -84,7 +84,7 @@ export class ConfigurationsPromotionsService implements Resolve<any>
         });
     }
 
-    saveProduct(data: any): Promise<any>
+    createPromotion(data: any): Promise<any>
     {
         return new Promise((resolve, reject) => {
             this._httpClient.post(`${environment.apiBaseUrl}/promotions/create`, data)
@@ -94,7 +94,7 @@ export class ConfigurationsPromotionsService implements Resolve<any>
         });
     }
 
-    updateProduct(data: any): Promise<any>
+    updatePromotion(data: any): Promise<any>
     {
         return new Promise((resolve, reject) => {
             this._httpClient.post(`${environment.apiBaseUrl}/promotions/update`, data)

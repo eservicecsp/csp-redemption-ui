@@ -112,12 +112,28 @@ export class PromotionDetailComponent implements OnInit
 
     createPromotion(): void
     {
-        console.log(this.promotionForm.value);
+        this._configurationsPromotionService.createPromotion(this.promotionForm.value).then(response => {
+            if (response.isSuccess){
+                this._router.navigate(['configurations/promotions']);
+            } else {
+                console.error('fail');
+            }
+        }, error => {
+           console.error(error); 
+        });
     }
 
     updatePromotion(): void
     {
-        console.log(this.promotionForm.value);
+        this._configurationsPromotionService.updatePromotion(this.promotionForm.value).then(response => {
+            if (response.isSuccess){
+                this._router.navigate(['configurations/promotions']);
+            } else {
+                console.error('fail');
+            }
+        }, error => {
+           console.error(error); 
+        });
     }
 
 }
