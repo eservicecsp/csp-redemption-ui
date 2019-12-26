@@ -78,6 +78,14 @@
                         </mat-cell>
                     </ng-container>
 
+                    <!-- Promotion Type Column -->
+                    <ng-container matColumnDef="promotionType">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Promotion Type</mat-header-cell>
+                        <mat-cell *matCellDef="let promotion">
+                            <p class="text-truncate">{{promotion.promotionType.name}}</p>
+                        </mat-cell>
+                    </ng-container>
+
                     <!-- Active Column -->
                     <ng-container matColumnDef="isActived">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
@@ -98,16 +106,6 @@
                             </p>
                         </mat-cell>
                     </ng-container>
-
-                    <!-- created Date Column -->
-                    <ng-container matColumnDef="createdDate">
-                            <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Created Date</mat-header-cell>
-                            <mat-cell *matCellDef="let promotion" fxHide fxShow.gt-md>
-                                <p class="text-truncate">
-                                    {{promotion.createdDate}}
-                                </p>
-                            </mat-cell>
-                        </ng-container>
     
                     <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
     
