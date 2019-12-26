@@ -51,6 +51,7 @@ export class PromotionTypeDetailComponent implements OnInit
         this.route.params.subscribe(params => {
             this.promotionTypeId = params['id'];
             if (this.promotionTypeId > 0){
+                console.log(this.promotionTypeId)
                 this.pageType = 'edit';
 
                 this._configurationsPromotionTypesService.getPromotionTypeById(this.promotionTypeId).then(response => {
@@ -95,12 +96,28 @@ export class PromotionTypeDetailComponent implements OnInit
 
     createPromotionType(): void
     {
-        console.log(this.promotionTypeForm.value);
+        this._configurationsPromotionTypesService.createPromotionType(this.promotionTypeForm.value).then(response => {
+            if (response.isSuccess){
+                this._router.navigate(['configurations/promotion-types']);
+            } else {
+                console.error('fail');
+            }
+        }, error => {
+           console.error(error); 
+        });
     }
 
     updatePromotionType(): void
     {
-        console.log(this.promotionTypeForm.value);
+        this._configurationsPromotionTypesService.updatePromotionType(this.promotionTypeForm.value).then(response => {
+            if (response.isSuccess){
+                this._router.navigate(['configurations/promotion-types']);
+            } else {
+                console.error('fail');
+            }
+        }, error => {
+           console.error(error); 
+        });
     }
 
 }

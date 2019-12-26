@@ -71,4 +71,24 @@ export class ConfigurationsPromotionTypesService implements Resolve<any>
                 }, reject);
         });
     }
+
+    createPromotionType(data: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(`${environment.apiBaseUrl}/promotionTypes/create`, data)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+
+    updatePromotionType(data: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(`${environment.apiBaseUrl}/promotionTypes/update`, data)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
 }
