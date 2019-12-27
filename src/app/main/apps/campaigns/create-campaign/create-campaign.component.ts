@@ -74,7 +74,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
          // Reactive Form
         this.form = this._formBuilder.group({
             Id:  [''],
-            // url : [''],
             name : ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
@@ -93,11 +92,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             name : [undefined, Validators.required],
             description : [undefined],
             product: ['', Validators.required],
-            // url : [''],
-            // quantity : [0, Validators.required],
             collectingType: [undefined],
-            rows: [1],
-            columns: [1],
+            rows: [{value: 0}, [Validators.required]],
+            columns: [{value: 0}, [Validators.required]],
             rowColumns: this._formBuilder.array([]),
             startDate : [undefined, Validators.required],
             endDate : [undefined, Validators.required],
@@ -111,7 +108,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
 
         this.PointForm = this._formBuilder.group({
             Id:  [''],
-            // url : [''],
             name : ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
@@ -397,7 +393,14 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 ) ;
             });
         });
+        console.log(this.collectingForm.value);
+    }
 
-        console.log(controls.value);
+    collectingTypeRadioChange(event): void {
+        if (event.value === '1'){
+            this.collectingForm.patchValue({
+                rows: 1,
+            });
+        }
     }
 }

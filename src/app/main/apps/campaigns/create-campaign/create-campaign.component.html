@@ -310,14 +310,33 @@
 
                 </div>
 
-                <mat-radio-group aria-label="Select an option" formControlName="collectingType">
-                    <mat-radio-button value="1" class="pr-6">Linear Collecting</mat-radio-button>
-                    <mat-radio-button value="2" class="pr-6">Matrix Collecting</mat-radio-button>
+                <mat-radio-group aria-label="Select an option" formControlName="collectingType" >
+                    <mat-radio-button value="1" class="pr-6" (change)="collectingTypeRadioChange($event)">Linear Collecting</mat-radio-button>
+                    <mat-radio-button value="2" class="pr-6" (change)="collectingTypeRadioChange($event)">Matrix Collecting</mat-radio-button>
                 </mat-radio-group>
                
-                <div *ngIf="collectingForm.controls['collectingType'].value === '1'" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mb-24">
-                    Linear Collecting
-                    
+                <div *ngIf="collectingForm.controls['collectingType'].value === '1'" fxLayout="column" class="mb-24">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+                        <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                            <mat-label>Peices</mat-label>
+                            <input matInput  formControlName="columns" maxlength="255" required>
+                            <mat-error>Alert message for success case. is required!</mat-error>
+                        </mat-form-field>
+                        <!-- <mat-form-field appearance="outline" fxFlex="50">
+                            <mat-label>Row</mat-label>
+                            <input matInput  formControlName="rows" maxlength="255" required>
+                            <mat-hint align="end">{{winMessage.value.length}} / 255</mat-hint>
+                        </mat-form-field> -->
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+                        <table fxFlex="100">
+                            <tr *ngFor="let row of rowQuantity; let i = index;" style="height: 100px;">
+                                <th *ngFor="let column of columnQuantity; let j = index;">
+                                    {{i+1}}:{{j+1}}
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
                 <div *ngIf="collectingForm.controls['collectingType'].value === '2'" class="mb-24" fxLayout="column">
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
@@ -344,7 +363,7 @@
                     
                 </div>
 
-                <div formArrayName="peices" fxLayout="column" fxLayout.gt-xs="row wrap" fxFlex="100" >
+                <!-- <div formArrayName="peices" fxLayout="column" fxLayout.gt-xs="row wrap" fxFlex="100" >
                     <div *ngFor="let peice of peices.controls; let i = index" class="peice-card mb-16" fxFlex="19" >
                         <div class="p-16 light-green-700 peice-card-header" fxLayout="row" fxLayoutAlign="space-between center">
                             <div class="pr-16">
@@ -368,7 +387,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                </div>  
+                </div>   -->
                 
 
                 <button type="button" mat-raised-button color="accent" class="mr-0"
