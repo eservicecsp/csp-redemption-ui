@@ -109,7 +109,8 @@ export class ConsumersService implements Resolve<any>
         .set('isSkincare', filters['isSkincare'])
         .set('isMakeup', filters['isMakeup'])
         .set('isBodycare', filters['isBodycare'])
-        .set('isSupplement', filters['isSupplement']);
+        .set('isSupplement', filters['isSupplement'])
+        .set('productTypes', filters['productTypes']);
         return this._httpClient.get(environment.apiBaseUrl + '/consumers/download', {responseType: 'blob', params: params});
         
     }
