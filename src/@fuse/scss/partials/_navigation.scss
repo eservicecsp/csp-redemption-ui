@@ -44,6 +44,11 @@
             > .nav-link-title {
                 flex: 1 1 auto;
                 white-space: nowrap;
+                transform: scale(1,0.9); 
+                -webkit-transform: scale(1,0.9); 
+                -moz-transform: scale(1,0.9); 
+                -ms-transform: scale(1,0.9); 
+                -o-transform: scale(1,0.9); 
             }
 
             .nav-link-badge {

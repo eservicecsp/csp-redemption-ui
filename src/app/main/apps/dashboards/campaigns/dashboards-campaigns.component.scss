@@ -70,7 +70,14 @@
                 min-height: 192px !important;
                 max-height: 192px !important;
             }
-            
+
+            .welcome-message {
+                transform: scale(1,0.9); 
+                -webkit-transform: scale(1,0.9); 
+                -moz-transform: scale(1,0.9); 
+                -ms-transform: scale(1,0.9); 
+                -o-transform: scale(1,0.9); 
+            }
         }
 
         > .content {

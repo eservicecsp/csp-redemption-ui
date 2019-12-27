@@ -28,7 +28,7 @@
                     class="user-button">
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <fa-icon [icon]="['fas','download']" class="s-16 mr-12"></fa-icon>
-                    <span class="username mr-12" fxHide fxShow.gt-sm>User Manual</span>
+                    <span class="username h3 mr-12" fxHide fxShow.gt-sm>User Manual</span>
                     <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
                 </div>
             </button>
@@ -36,8 +36,10 @@
             <mat-menu #downloadMenu="matMenu" [overlapTrigger]="false">
 
                 <button mat-menu-item>
-                    <fa-icon [icon]="['fas','file']" class="s-16 mr-12"></fa-icon>
-                    <span>CSP-Redemption</span>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <fa-icon [icon]="['fas','file']" class="s-16 mr-12"></fa-icon>
+                        <span class="h3">CSP-Redemption</span>
+                    </div>
                 </button>
 
             </mat-menu>
@@ -48,7 +50,7 @@
                     class="user-button">
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <mat-icon class="s-16 mr-12" fxHide.xs>business</mat-icon>
-                    <span class="username mr-12" fxHide fxShow.gt-sm>CSP</span>
+                    <span class="username h3 mr-12" fxHide fxShow.gt-sm>CSP</span>
                     <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
                 </div>
             </button>
@@ -56,13 +58,17 @@
             <mat-menu #companyMenu="matMenu" [overlapTrigger]="false">
 
                 <button mat-menu-item>
-                    <mat-icon>account_circle</mat-icon>
-                    <span>System Admin</span>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>account_circle</mat-icon>
+                        <span class="h3">System Admin</span>
+                    </div>
                 </button>
 
                 <button mat-menu-item class="">
-                    <mat-icon>account_circle</mat-icon>
-                    <span>User</span>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>account_circle</mat-icon>
+                        <span class="h3">User</span>
+                    </div>
                 </button>
 
             </mat-menu>
@@ -71,33 +77,35 @@
                     class="user-button">
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <img class="avatar mr-0 mr-sm-16" src="assets/images/avatars/Mod.jpg">
-                    <span class="username mr-12" fxHide fxShow.gt-sm>{{firstName}} {{lastName}}</span>
+                    <span class="username h3 mr-12" fxHide fxShow.gt-sm>{{firstName}} {{lastName}}</span>
                     <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
                 </div>
             </button>
 
             <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
 
-                <button mat-menu-item>
-                    <mat-icon>account_circle</mat-icon>
-                    <span>My Profile</span>
+                <button mat-menu-item class="">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>account_circle</mat-icon>
+                        <span class="h3">My Profile</span>
+                    </div>
                 </button>
 
                 <button mat-menu-item class="">
-                    <mat-icon>mail</mat-icon>
-                    <span>Inbox</span>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>mail</mat-icon>
+                        <span class="h3">Inbox</span>
+                    </div>
                 </button>
 
                 <button mat-menu-item class="" (click)="logout()">
-                    <mat-icon>exit_to_app</mat-icon>
-                    <span>Logout</span>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>exit_to_app</mat-icon>
+                        <span class="h3">Logout</span>
+                    </div>
                 </button>
 
             </mat-menu>
-
-            <!-- <div class="toolbar-separator"></div> -->
-
-            <!-- <fuse-search-bar (input)="search($event)"></fuse-search-bar> -->
 
             <div class="toolbar-separator"></div>
 
@@ -106,7 +114,7 @@
                     [matMenuTriggerFor]="languageMenu">
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <img class="flag mr-8" [src]="'assets/icons/flags/'+selectedLanguage.flag+'.png'">
-                    <span class="iso text-uppercase">{{selectedLanguage.id}}</span>
+                    <span class="iso text-uppercase h3">{{selectedLanguage.id}}</span>
                 </div>
             </button>
 
@@ -115,27 +123,11 @@
                 <button mat-menu-item *ngFor="let lang of languages" (click)="setLanguage(lang)">
                     <span fxLayout="row" fxLayoutAlign="start center">
                         <img class="flag mr-16" [src]="'assets/icons/flags/'+lang.flag+'.png'">
-                        <span class="iso">{{lang.title}}</span>
+                        <span class="iso h3">{{lang.title}}</span>
                     </span>
                 </button>
 
             </mat-menu>
-
-            <!-- <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
-
-            <button mat-icon-button
-                    class="quick-panel-toggle-button"
-                    (click)="toggleSidebarOpen('quickPanel')"
-                    aria-label="Toggle quick panel">
-                <mat-icon class="secondary-text">format_list_bulleted</mat-icon>
-            </button>
-
-            <div class="toolbar-separator" *ngIf="!hiddenNavbar && rightNavbar" fxHide fxShow.gt-xs></div>
-
-            <button mat-icon-button class="navbar-toggle-button"
-                    *ngIf="!hiddenNavbar && rightNavbar" (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
-                <mat-icon class="secondary-text">menu</mat-icon>
-            </button> -->
 
         </div>
 

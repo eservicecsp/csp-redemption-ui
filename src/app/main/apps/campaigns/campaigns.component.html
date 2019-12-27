@@ -1,69 +1,26 @@
 <div id="cards" class="page-layout simple fullwidth">
-    <!-- HEADER -->
+
     <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
 
-        <!-- <div fxLayout="column" fxLayoutAlign="center start">
-
-            <div class="logo mb-24 mb-md-0"
-                 fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                    shopping_basket
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Campaigns
-                </span>
-            </div>
-
-        </div> -->
-
-        <!-- APP TITLE -->
         <div fxLayout="row" fxLayoutAlign="start center">
 
             <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/dashboards/campaigns'">
                 <mat-icon>arrow_back</mat-icon>
             </button>
 
-            <!-- <div class="product-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                    shopping_basket
-                </mat-icon>
-            </div> -->
-
             <div fxLayout="column" fxLayoutAlign="start start"
                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 <div class="h2">
                     Campaigns
                 </div>
-                <div class="subtitle secondary-text">
-                    <span>Create New Campaign</span>
+                <div class="h3 light secondary-text">
+                    Create New Campaign
                 </div>
             </div>
         </div>
-        <!-- / APP TITLE -->
-
-        <!-- <div fxLayout="column" fxLayoutAlign="center start">
-            <div fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="secondary-text s-18">home</mat-icon>
-                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
-                <span class="secondary-text">Campaigns</span>
-            </div>
-            <div fxLayout="row">
-                <mat-icon class="mr-12">home</mat-icon>
-                <div class="h2">Campaigns</div>
-            </div>
-           
-        </div> -->
-
-        <!-- <div>
-            <mat-slide-toggle color="primary" (change)="toggleView()">
-                View Source
-            </mat-slide-toggle>
-        </div> -->
 
     </div>
-    <!-- / HEADER -->
-
-    <!-- CONTENT -->
+    
     <div class="content">
 
         <div class="cards">
@@ -79,12 +36,7 @@
         
                             <div class="p-16">
                                 <div class="h1">{{campaignType.title}}</div>
-                                <!-- <div class="h4 secondary-text">{{campaignType.subTitle}}</div> -->
                             </div>
-        
-                            <!-- <div class="p-16 pt-0 line-height-1.75">
-                                {{campaignType.description}}
-                            </div> -->
         
                             <div class="p-8 pt-0" fxLayout="row" fxLayoutAlign="start center">
                                 <button mat-button color="accent" (click)="createCampaign(campaignType)">CREATE</button>
@@ -99,6 +51,5 @@
         </div>
 
     </div>
-    <!-- / CONTENT -->
     
 </div>
