@@ -60,13 +60,13 @@
             <label class="example-margin mt-12">
                 <b>Favourite</b>
             </label>
-            <!-- <div fxLayout="column" fxLayoutAlign="start start" fxFlex="1 0 auto"> -->
-                <section class="example-section" fxLayout="column" fxLayoutAlign="start start">
-                        <mat-checkbox class="example-margin" [(ngModel)]="isSkincare">Skincare</mat-checkbox>
-                        <mat-checkbox class="example-margin" [(ngModel)]="isMakeup">Makeup</mat-checkbox>
-                        <mat-checkbox class="example-margin" [(ngModel)]="isBodycare">Bodycare</mat-checkbox>
-                        <mat-checkbox class="example-margin" [(ngModel)]="isSupplements">Supplements</mat-checkbox>
-                </section>
+
+            <div *ngFor="let productType of productTypes; let i=index" class="col-md-2">
+                <label>
+                    <input type="checkbox" [value]="productType.id" (change)="onCheckChange($event)">
+                    {{productType.name}}
+                </label>
+            </div>
     
             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mt-36">
                 <button mat-raised-button (click)="sendFilter()" fxFlex="100">

@@ -22,6 +22,7 @@ import { MatPaginatorModule, MatSortModule, MatDialogModule, MatTooltipModule, M
 import { ConsumerUploadDialogComponent } from './consumer-upload/consumer-upload.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { SubscriptionsSidebarComponent } from './sidebar/subscriptions-sidebar.component';
+import { ConfigurationsProductTypesService } from 'app/main/configurations/product-types/product-types.service';
 
 
 const routes: Routes = [
@@ -80,7 +81,8 @@ const routes: Routes = [
     ],
     providers   : [
         ConsumersService,
-        AuthenticationGuard
+        AuthenticationGuard,
+        ConfigurationsProductTypesService
     ],
     entryComponents: [
         ConsumerUploadDialogComponent

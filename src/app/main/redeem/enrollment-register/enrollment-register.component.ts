@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
@@ -35,6 +35,8 @@ export class EnrollmentRegisterComponent implements OnInit
 
     isRewardShow: boolean;
     message: string;
+
+    productTypes: any[];
 
     /**
      * Constructor
@@ -82,6 +84,12 @@ export class EnrollmentRegisterComponent implements OnInit
         this._redeemService.getProvinces().then(response => {
             this.provinces = response.provinces;
         });
+
+        this._redeemService.getProductTypesByCampaignId(this.campaignId).then(res => {
+            if (res){
+                this.productTypes = res;
+            }
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -115,9 +123,33 @@ export class EnrollmentRegisterComponent implements OnInit
             isMakeup: false,
             isBodycare: false,
             isSupplements: false,
+            productType: new FormArray([]),
         });
     }
-
+    onCheckChange(event) {
+        const formArray: FormArray = this.enrollmentRegisterForm.get('productType') as FormArray;
+      
+        /* Selected */
+        if(event.target.checked){
+          // Add a new control in the arrayForm
+          formArray.push(new FormControl(event.target.value));
+        }
+        /* unselected */
+        else{
+          // find the unselected element
+          let i: number = 0;
+      
+          formArray.controls.forEach((ctrl: FormControl) => {
+            if(ctrl.value == event.target.value) {
+              // Remove the unselected element from the arrayForm
+              formArray.removeAt(i);
+              return;
+            }
+      
+            i++;
+          });
+        }
+    }
     getAmphurs(event): void
     {
         const provinceCode = event.value;
@@ -152,7 +184,7 @@ export class EnrollmentRegisterComponent implements OnInit
             lastName: this.enrollmentRegisterForm.value.lastName,
             email: this.enrollmentRegisterForm.value.email,
             birthDate: moment(this.enrollmentRegisterForm.value.birthDate).format('YYYY-MM-DD'),
-            phone   : this.phone,
+            Phone   : this.enrollmentRegisterForm.value.phone,
             address1   : this.enrollmentRegisterForm.value.address1,
             address2   : null,
             tumbolCode: this.enrollmentRegisterForm.value.tumbolCode,
@@ -165,9 +197,10 @@ export class EnrollmentRegisterComponent implements OnInit
             isMakeup: this.enrollmentRegisterForm.value.isMakeup,
             isBodycare: this.enrollmentRegisterForm.value.isBodycare,
             isSupplements: this.enrollmentRegisterForm.value.isSupplements,
+            productType: this.enrollmentRegisterForm.get('productType').value
         };
         //console.log(requestData);
-        this._redeemService.register(requestData).then(response => {
+        this._redeemService.registerConsumerEnrollment(requestData).then(response => {
             this.isRewardShow = true;
             this.message = response.message;
             

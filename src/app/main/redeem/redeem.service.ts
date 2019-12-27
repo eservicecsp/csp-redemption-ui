@@ -125,4 +125,23 @@ export class RedeemService
 
         });
     }
+
+    registerEnrollment(requestData): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(environment.apiBaseUrl + '/redemption/enrollment', requestData)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+    registerConsumerEnrollment(requestData): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(environment.apiBaseUrl + '/redemption/consumer', requestData)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
 }

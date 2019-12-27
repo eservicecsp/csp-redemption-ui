@@ -74,6 +74,9 @@ export class EnrollmentComponent implements OnInit
         this.enrollmentForm = this._formBuilder.group({
             phone   : ['', [Validators.required]],
             code   : ['', [Validators.required]],
+            firstName : ['', [Validators.required]],
+            lastName : ['', [Validators.required]],
+            email : ['', [Validators.required, Validators.email]],
         });
 
     }
@@ -85,51 +88,58 @@ export class EnrollmentComponent implements OnInit
             token   : this.token,
             code : this.enrollmentForm.value.code,
             campaignId: this.campaignId,
+            firstName : this.enrollmentForm.value.firstName,
+            lastName : this.enrollmentForm.value.lastName,
+            email : this.enrollmentForm.value.email,
         };
 
-        this._redeemService.isExist(requestData).then(response => {
-            if (response.isExist)
-            {
-                this.isRewardShow = true;
-                this.message = response.message;
-            }
-            else
-            {
-                if (response.statusTypeCode === 'DUPLICATE'){
+        this._redeemService.registerEnrollment(requestData).then(response => {
+            console.log(response);
+            this.isRewardShow = true;
+            this.message = response.message;
 
-                }
-                else if(response.statusTypeCode === 'SUCCESS'){
+            // if (response.isExist)
+            // {
+            //     this.isRewardShow = true;
+            //     this.message = response.message;
+            // }
+            // else
+            // {
+                // if (response.statusTypeCode === 'DUPLICATE'){
 
-                }
-                else if(response.statusTypeCode === 'FAIL'){
+                // }
+                // else if(response.statusTypeCode === 'SUCCESS'){
 
-                }
-                else{
+                // }
+                // else if(response.statusTypeCode === 'FAIL'){
+
+                // }
+                // else{
                    
-                    let consumerId = 0;
-                    let FirstName = null;
-                    let LastName = null;
-                    let Email = null;
+                //     let consumerId = 0;
+                //     let FirstName = null;
+                //     let LastName = null;
+                //     let Email = null;
 
-                    if ( response.consumer != null){
-                        consumerId = response.consumer.id;
-                        FirstName = response.consumer.firstName;
-                        LastName = response.consumer.lastName;
-                        Email = response.consumer.email;
-                    }
-                    this._router.navigate(['redeem/enrollment/register'], {queryParams: {
-                                                                                        phone: this.enrollmentForm.value.phone,
-                                                                                        token: this.token, 
-                                                                                        campaignId: this.campaignId, 
-                                                                                        code: this.enrollmentForm.value.code,
-                                                                                        consumerId : consumerId,
-                                                                                        firstName: FirstName,
-                                                                                        lastName: LastName,
-                                                                                        email: Email,
-                                                                                    }});
-                }
+                //     if ( response.consumer != null){
+                //         consumerId = response.consumer.id;
+                //         FirstName = response.consumer.firstName;
+                //         LastName = response.consumer.lastName;
+                //         Email = response.consumer.email;
+                //     }
+                //     this._router.navigate(['redeem/enrollment/register'], {queryParams: {
+                //                                                                         phone: this.enrollmentForm.value.phone,
+                //                                                                         token: this.token, 
+                //                                                                         campaignId: this.campaignId, 
+                //                                                                         code: this.enrollmentForm.value.code,
+                //                                                                         consumerId : consumerId,
+                //                                                                         firstName: FirstName,
+                //                                                                         lastName: LastName,
+                //                                                                         email: Email,
+                //                                                                     }});
+                // }
                 
-            }
+           // }
         });
     }
 }

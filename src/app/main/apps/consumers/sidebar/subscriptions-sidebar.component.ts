@@ -1,6 +1,9 @@
 import { Component,  } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { ConsumersService } from '../consumers.service';
+import { FormControl, FormArray } from '@angular/forms';
+import { RedeemService } from 'app/main/redeem/redeem.service';
+import { ConfigurationsProductTypesService } from 'app/main/configurations/product-types/product-types.service';
 
 @Component({
     selector   : 'subscriptions-sidebar',
@@ -115,11 +118,18 @@ export class SubscriptionsSidebarComponent
     ];
     phone: string;
     email: string
+    productTypes: any[];
+    selectedProductTypes: any[] = [];
     constructor(
-        private _consumersService: ConsumersService
+        private _consumersService: ConsumersService,
+        private _configurationsProductTypesService: ConfigurationsProductTypesService,
         )
     {
-        
+        this._configurationsProductTypesService.getProductTypes().then(res => {
+            if (res.isSuccess){
+                this.productTypes = res.productTypes;
+            }
+        });
     }
 
     sendFilter(): void
@@ -133,9 +143,26 @@ export class SubscriptionsSidebarComponent
             isSkincare: this.isSkincare,
             isMakeup: this.isMakeup,
             isBodycare: this.isBodycare,
-            isSupplements: this.isSupplements, 
+            isSupplements: this.isSupplements,
+            productTypes: this.selectedProductTypes
         };
         // console.log(filters);
         this._consumersService.onFiltersChanged.next(filters);
+    }
+    onCheckChange(event) {
+      
+        if(event.target.checked){
+          // Add a new control in the arrayForm
+          this.selectedProductTypes.push(event.target.value);
+          
+        }
+        // /* unselected */
+         else{
+           // find the unselected element
+            const index = this.selectedProductTypes.indexOf(event.target.value, 0);
+            if (index > -1) {
+                this.selectedProductTypes.splice(index, 1);
+            }
+         }  
     }
 }
