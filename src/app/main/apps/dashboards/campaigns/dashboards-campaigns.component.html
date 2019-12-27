@@ -9,7 +9,7 @@
                 </div>
                 <div fxLayout="row">
                     <div class="selected-campaign">
-                        {{selectedCampaign.name}}
+                        <span class="h3-light">{{selectedCampaign.name}}</span>
                     </div>
                     <button mat-icon-button class="campaign-selector" [matMenuTriggerFor]="campaignsMenu"
                         aria-label="Select campaign">
@@ -17,7 +17,7 @@
                     </button>
                     <mat-menu #campaignsMenu="matMenu">
                         <button mat-menu-item *ngFor="let campaign of campaigns" (click)="selectedCampaignChanged(campaign)">
-                            <span>{{campaign.name}}</span>
+                            <span class="h3-light">{{campaign.name}}</span>
                         </button>
                     </mat-menu>
                 </div>
@@ -111,9 +111,9 @@
                                 <mat-form-field appearance="outline" fxFlex="100">
                                     <mat-label>Product</mat-label>
                                     <mat-select formControlName="product" >
-                                    <mat-option *ngFor="let product of products" [value]="product.id">
-                                        {{product.name}}
-                                    </mat-option>
+                                        <mat-option *ngFor="let product of products" [value]="product.id">
+                                            {{product.name}}
+                                        </mat-option>
                                     </mat-select>
                                     <mat-error>
                                         Product <strong>required</strong>
