@@ -71,6 +71,7 @@ export class ConsumersComponent implements OnInit
     isMakeup = false;
     isBodycare = false;
     isSupplements = false;
+    productTypes: any[];
 
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -125,7 +126,6 @@ export class ConsumersComponent implements OnInit
         //     });
         this._consumersService.onFiltersChanged.subscribe(filter => {
             this.filters = filter;
-
             this.startAge = filter.startAge;
             this.endAge = filter.endAge;
             this.birthOfMonth = filter.birthOfMonth;
@@ -135,6 +135,7 @@ export class ConsumersComponent implements OnInit
             this.isMakeup = filter.isMakeup;
             this.isBodycare = filter.isBodycare;
             this.isSupplements = filter.isSupplements;
+            this.productTypes = filter.productTypes;
             this.Mapdata();
             
         });
@@ -229,7 +230,7 @@ export class ConsumersComponent implements OnInit
                 this.paginator.pageSize  = data.pageSize;
             }
            // dialogRef.close();
-           this.allCheckBox.checked = false;
+            this.allCheckBox.checked = false;
             this._fuseSidebarService.getSidebar('subscriptions-sidebar').close();
         });
     }
@@ -250,7 +251,8 @@ export class ConsumersComponent implements OnInit
             isSkincare : this.isSkincare,
             isMakeup : this.isMakeup,
             isBodycare : this.isBodycare,
-            isSupplement : this.isSupplements
+            isSupplement : this.isSupplements,
+            productTypes : this.productTypes
         };
         this._consumersService.downloadFile(data).subscribe(response => {
             const newBlob = new Blob([response], {type: 'text/plain'});
@@ -382,6 +384,7 @@ export class ConsumersComponent implements OnInit
             isMakeup: this.isMakeup,
             isBodycare: this.isBodycare,
             isSupplements: this.isSupplements, 
+            productTypes : this.productTypes
         };
 
         if (this.smsChecked && this.emailChecked)
