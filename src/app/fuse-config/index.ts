@@ -10,28 +10,28 @@ import { FuseConfig } from '@fuse/types';
 
 export const fuseConfig: FuseConfig = {
     // Color themes can be defined in src/app/app.theme.scss
-    colorTheme      : 'theme-green-light',
+    colorTheme      : 'theme-karmart-light',
     customScrollbars: true,
     layout          : {
         style    : 'vertical-layout-1',
         width    : 'fullwidth',
         navbar   : {
-            primaryBackground  : 'fuse-navy-50', // fuse-navy-700
-            secondaryBackground: 'brown', // fuse-navy-900
+            primaryBackground  : 'karmart-light-50', // nav main
+            secondaryBackground: 'karmart-light-600', // nav top
             folded             : false,
             hidden             : false,
             position           : 'left',
-            variant            : 'vertical-style-2' // vertical-style-1
+            variant            : 'vertical-style-2'
         },
         toolbar  : {
-            customBackgroundColor: false,
-            background           : 'fuse-white-500',
+            customBackgroundColor: true,
+            background           : 'karmart-light-900',
             hidden               : false,
             position             : 'below-static'
         },
         footer   : {
             customBackgroundColor: true,
-            background           : 'brown', // fuse-navy-900
+            background           : 'karmart-light-900',  // footer
             hidden               : false,
             position             : 'below-fixed'
         },

@@ -39,6 +39,9 @@ import { PromotionDetailComponent } from './promotions/promotion-detail/promotio
 import { ConfigurationsPromotionTypesComponent } from './promotion-types/promotion-types.component';
 import { ConfigurationsPromotionTypesService } from './promotion-types/promotion-types.service';
 import { PromotionTypeDetailComponent } from './promotion-types/promotion-type-detail/promotion-type-detail.component';
+import { ConfigurationsBrandsComponent } from './brands/brands.component';
+import { ConfigurationsBrandsService } from './brands/brands.service';
+import { BrandDetailComponent } from './brands/brand-detail/brand-detail.component';
 
 
 const routes: Routes = [
@@ -192,6 +195,26 @@ const routes: Routes = [
             AuthenticationGuard
         ]
     },
+    {
+        path     : 'brands',
+        component: ConfigurationsBrandsComponent,
+        resolve  : {
+            data: ConfigurationsBrandsService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
+        path     : 'brands/:id',
+        component: BrandDetailComponent,
+        resolve  : {
+            data: ConfigurationsBrandsService
+        },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
 ];
 
 @NgModule({
@@ -202,12 +225,14 @@ const routes: Routes = [
         ConfigurationsProductTypesComponent,
         ConfigurationsPromotionsComponent,
         ConfigurationsPromotionTypesComponent,
+        ConfigurationsBrandsComponent,
         FormProductComponent,
         FormDealerComponent,
         FormStaffComponent,
         FormProductTypeComponent, 
         PromotionDetailComponent,
         PromotionTypeDetailComponent,
+        BrandDetailComponent
 
         
     ],
@@ -244,6 +269,8 @@ const routes: Routes = [
         ConfigurationsProductTypesService,
         ConfigurationsPromotionsService,
         ConfigurationsPromotionTypesService,
+        ConfigurationsBrandsService,
+
         AuthenticationGuard
     ],
     entryComponents: [

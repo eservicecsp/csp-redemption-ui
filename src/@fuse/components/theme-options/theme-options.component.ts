@@ -185,25 +185,49 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                 this.form.patchValue({
                     layout: {
                         width    : 'fullwidth',
+                        // navbar   : {
+                        //     primaryBackground  : 'fuse-navy-700',
+                        //     secondaryBackground: 'fuse-navy-900',
+                        //     folded             : false,
+                        //     hidden             : false,
+                        //     position           : 'left',
+                        //     variant            : 'vertical-style-1'
+                        // },
+                        // toolbar  : {
+                        //     background           : 'fuse-white-500',
+                        //     customBackgroundColor: false,
+                        //     hidden               : false,
+                        //     position             : 'below-static'
+                        // },
+                        // footer   : {
+                        //     background           : 'fuse-navy-900',
+                        //     customBackgroundColor: true,
+                        //     hidden               : false,
+                        //     position             : 'below-static'
+                        // },
+                        // sidepanel: {
+                        //     hidden  : false,
+                        //     position: 'right'
+                        // }
                         navbar   : {
-                            primaryBackground  : 'fuse-navy-700',
-                            secondaryBackground: 'fuse-navy-900',
+                            primaryBackground  : 'karmart-light-50', // fuse-navy-700
+                            secondaryBackground: 'karmart-light-900', // fuse-navy-900
                             folded             : false,
                             hidden             : false,
                             position           : 'left',
-                            variant            : 'vertical-style-1'
+                            variant            : 'vertical-style-2' // vertical-style-1
                         },
                         toolbar  : {
-                            background           : 'fuse-white-500',
                             customBackgroundColor: false,
+                            background           : 'karmart-light-900',
                             hidden               : false,
                             position             : 'below-static'
                         },
                         footer   : {
-                            background           : 'fuse-navy-900',
                             customBackgroundColor: true,
+                            background           : 'karmart-light-900', // fuse-navy-900 // footer
                             hidden               : false,
-                            position             : 'below-static'
+                            position             : 'below-fixed'
                         },
                         sidepanel: {
                             hidden  : false,
