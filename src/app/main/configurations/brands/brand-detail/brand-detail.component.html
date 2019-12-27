@@ -1,0 +1,134 @@
+<div id="brand" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/configurations/brands'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{brand.code}} - {{brand.name}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='create'">
+                        New Brand
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Brand Detail</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button
+                    class="save-brand-button"
+                    [disabled]="brandForm.invalid"
+                    *ngIf="pageType ==='new'" (click)="createBrand()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button
+                    class="save-brand-button"
+                    [disabled]="brandForm.invalid"
+                    *ngIf="pageType ==='edit'" (click)="updateBrand()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="brandForm" [formGroup]="brandForm" class="brand w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Basic Information">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Code</mat-label>
+                                    <input matInput formControlName="code">
+                                    <mat-error  *ngIf="brandForm.get('code').hasError('required')">
+                                        Code is required
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput formControlName="name">
+                                    <mat-error *ngIf="brandForm.get('name').hasError('required')">
+                                        Name is required
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <!-- <mat-label>Active</mat-label>
+                                <mat-slide-toggle formControlName="isOwner"></mat-slide-toggle> -->
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Brand Administrator">
+                            <div class="tab-content p-24" fusePerfectScrollbar formGroupName="staff">
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput formControlName="email">
+                                    <!-- <mat-error  *ngIf="brandForm.get('staff').controls[].hasError('required')">
+                                        Code is required
+                                    </mat-error> -->
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Password</mat-label>
+                                    <input matInput formControlName="password">
+                                    <!-- <mat-error *ngIf="brandForm.get('name').hasError('required')">
+                                        Name is required
+                                    </mat-error> -->
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput formControlName="firstName">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput formControlName="lastName">
+                                </mat-form-field>
+
+                                <!-- <mat-label>Active</mat-label>
+                                <mat-slide-toggle formControlName="isOwner"></mat-slide-toggle> -->
+                            </div>
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
