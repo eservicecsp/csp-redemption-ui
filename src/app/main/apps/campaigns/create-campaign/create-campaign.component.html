@@ -256,7 +256,41 @@
                         </mat-form-field>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <div formArrayName="collectingData">
+                            <div *ngFor="let data of getControls(collectingForm, 'collectingData'); let i = index;"
+                                style="height: 100px;">
+                                <div [formGroupName]="i">
+                                    <mat-form-field>
+                                        <mat-label>Row</mat-label>
+                                        <input matInput formControlName="row" required>
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-label>Column</mat-label>
+                                        <input matInput formControlName="column" required>
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-label>Quantity</mat-label>
+                                        <input matInput formControlName="quantity" required>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="100"
+                                        hintLabel="File size must smaller than 1 MB">
+                                        <mat-label>Attachment</mat-label>
+                                        <input matInput placeholder="Attachment name" formControlName="name" readonly>
+                                        <input #fileInput hidden type="file" accept="image/x-png,image/jpeg"
+                                            (change)="onSelectFile($event, data.controls)" />
+                                        <button mat-button *ngIf="data.value.name" matSuffix mat-icon-button
+                                            aria-label="Clear" (click)="clearAttachFile(data.controls)">
+                                            <mat-icon>delete_forever</mat-icon>
+                                        </button>
+                                        <button mat-button *ngIf="!data.value.name" matSuffix mat-icon-button
+                                            aria-label="Clear" (click)="fileInput.click()">
+                                            <mat-icon>folder_open</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
 
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div *ngIf="collectingForm.controls['collectingType'].value === '2' || collectingForm.controls['collectingType'].value === '3'"
