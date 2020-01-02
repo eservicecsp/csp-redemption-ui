@@ -419,8 +419,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
 
         // Main Control
         this.collectingForm.patchValue({
-            row: row,
-            column: column
+            rows: row,
+            columns: column
         });
 
         // Sub Control

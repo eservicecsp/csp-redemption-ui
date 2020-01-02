@@ -133,6 +133,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 
         this.searchInput = new FormControl('');
         this.dataSource = [];
+        this.dataSourceEnrollment = [];
         this.form = this._formBuilder.group({
             name : [''],
             waste: [0],
@@ -252,7 +253,6 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
             {
                 
                 this.campaignDetail = response.campaign;
-                console.log(this.campaignDetail);
                 this.form = this._formBuilder.group({
                     name : [this.campaignDetail['name']],
                     waste : [this.campaignDetail['waste']],
@@ -273,7 +273,6 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 
     getTableDataSource(): void
     {
-        console.log(this.index);
         switch (this.index){
             case 1: {
                 this.getCampaignDetail();
@@ -451,7 +450,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     isAllSelected(): any 
     {
         const numSelected = this.selection.selected.length;
-        const page = this.dataSource.length;
+        const page = this.dataSourceEnrollment.length;
 
         if (numSelected === page){
             return true;
@@ -477,7 +476,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     selectRows(): void
     {
         for (let index = 0; index < this.paginator.pageSize; index++) {
-          this.selection.select(this.dataSource[index]);
+          this.selection.select(this.dataSourceEnrollment[index]);
           this.selectionAmount = this.selection.selected.length;
         }
     }

@@ -87,6 +87,8 @@ export class ConsumersComponent implements OnInit
         // Set the private defaults
         this._unsubscribeAll = new Subject();
 
+        this.dataSource = [];
+
         //this.searchInput = new FormControl('');
     }
 
