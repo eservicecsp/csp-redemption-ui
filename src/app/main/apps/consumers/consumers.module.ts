@@ -23,6 +23,7 @@ import { ConsumerUploadDialogComponent } from './consumer-upload/consumer-upload
 import { FileUploadModule } from 'ng2-file-upload';
 import { SubscriptionsSidebarComponent } from './sidebar/subscriptions-sidebar.component';
 import { ConfigurationsProductTypesService } from 'app/main/configurations/product-types/product-types.service';
+import { ConsumerPromotionDialogComponent } from './consumer-promotion/consumer-promotion.component';
 
 
 const routes: Routes = [
@@ -42,7 +43,8 @@ const routes: Routes = [
     declarations: [
         ConsumersComponent,
         ConsumerUploadDialogComponent,
-        SubscriptionsSidebarComponent
+        SubscriptionsSidebarComponent,
+        ConsumerPromotionDialogComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -85,7 +87,8 @@ const routes: Routes = [
         ConfigurationsProductTypesService
     ],
     entryComponents: [
-        ConsumerUploadDialogComponent
+        ConsumerUploadDialogComponent,
+        ConsumerPromotionDialogComponent
     ]
 })
 export class ConsumersModule

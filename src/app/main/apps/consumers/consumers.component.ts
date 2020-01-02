@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Inject } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
@@ -11,10 +11,11 @@ import { FuseUtils } from '@fuse/utils';
 import { ConsumersService } from './consumers.service';
 import { takeUntil } from 'rxjs/internal/operators';
 import { FileUploader } from 'ng2-file-upload';
-import { MatDialog, MatDialogRef, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatCheckbox } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatCheckbox, MAT_DIALOG_DATA } from '@angular/material';
 import { ConsumerUploadDialogComponent } from './consumer-upload/consumer-upload.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { ConsumerPromotionDialogComponent } from './consumer-promotion/consumer-promotion.component';
 // import { ConfigurationsConsumerUploadComponent } from '../consumer-upload/consumer-upload.component';
 
 @Component({
@@ -335,45 +336,75 @@ export class ConsumersComponent implements OnInit
 
     sendSelected(): void
     {
-        if (this.smsChecked && this.emailChecked)
-        {
-            this.channel = 'All';
-        }
-        else if (this.smsChecked)
-        {
-            this.channel = 'SMS';
-        }
-        else
-        {
-            this.channel = 'Email';
-        }
-
-        this._consumersService.sendSelected(this.selection.selected, this.channel).then(res => {
-            if (res.isSuccess === false)
-            {
-                this._snackBar.open(res.message, 'Close', {
-                    duration: 5000,
-                    horizontalPosition: this.horizontalPosition,
-                    verticalPosition: this.verticalPosition,
-                    panelClass: ['error-snackbar']
-                });
-            }
-            else
-            {
-                this._snackBar.open('Send data successed', 'Close', {
-                    duration: 5000,
-                    horizontalPosition: this.horizontalPosition,
-                    verticalPosition: this.verticalPosition,
-                    panelClass: ['success-snackbar']
-                });
-                this.allCheckBox.checked = false;
-                this.selection.clear();
+        this.dialogRef = this._matDialog.open(ConsumerPromotionDialogComponent, {
+            panelClass: 'consumer-promotion-dialog',
+            data      : {
+                // Don't send anything
             }
         });
+        this.dialogRef.afterClosed()
+            .subscribe(dialogResponse => {
+                if ( !dialogResponse )
+                {
+                    return;
+                }
+                const actionType: string = dialogResponse[0];
+                const formData: FormGroup = dialogResponse[1];
+                switch ( actionType )
+                {
+                    case 'send':
+                        const data = formData.getRawValue();
+                        if (this.smsChecked && this.emailChecked)
+                        {
+                            this.channel = 'All';
+                        }
+                        else if (this.smsChecked)
+                        {
+                            this.channel = 'SMS';
+                        }
+                        else
+                        {
+                            this.channel = 'Email';
+                        }
+
+                        this._consumersService.sendSelected(this.selection.selected, this.channel, data.promotion).then(res => {
+                            if (res.isSuccess === false)
+                            {
+                                this._snackBar.open(res.message, 'Close', {
+                                    duration: 5000,
+                                    horizontalPosition: this.horizontalPosition,
+                                    verticalPosition: this.verticalPosition,
+                                    panelClass: ['error-snackbar']
+                                });
+                            }
+                            else
+                            {
+                                this._snackBar.open('Send data successed', 'Close', {
+                                    duration: 5000,
+                                    horizontalPosition: this.horizontalPosition,
+                                    verticalPosition: this.verticalPosition,
+                                    panelClass: ['success-snackbar']
+                                });
+                                this.allCheckBox.checked = false;
+                                this.selection.clear();
+                            }
+                        });
+
+                        break;
+                }
+            });
+
+        
     }
 
     sendAll(): void
     {
+        this.dialogRef = this._matDialog.open(ConsumerPromotionDialogComponent, {
+            panelClass: 'consumer-promotion-dialog',
+            data      : {
+                // Don't send anything
+            }
+        });
         const data = {
             startAge : this.startAge ? this.startAge : 0,
             endAge : this.endAge ? this.endAge : 120,
@@ -387,44 +418,62 @@ export class ConsumersComponent implements OnInit
             productTypes : this.productTypes
         };
 
-        if (this.smsChecked && this.emailChecked)
-        {
-            this.channel = 'All';
-        }
-        else if (this.smsChecked)
-        {
-            this.channel = 'SMS';
-        }
-        else
-        {
-            this.channel = 'Email';
-        }
+        this.dialogRef.afterClosed()
+            .subscribe(dialogResponse => {
+                if ( !dialogResponse )
+                {
+                    return;
+                }
+                const actionType: string = dialogResponse[0];
+                const formData: FormGroup = dialogResponse[1];
+                switch ( actionType )
+                {
+                    case 'send':
+                        const data = formData.getRawValue();
+                        if (this.smsChecked && this.emailChecked)
+                        {
+                            this.channel = 'All';
+                        }
+                        else if (this.smsChecked)
+                        {
+                            this.channel = 'SMS';
+                        }
+                        else
+                        {
+                            this.channel = 'Email';
+                        }
 
-        this._consumersService.sendAll(data, this.channel).then(res => {
-            if (res.isSuccess === false)
-            {
-                this._snackBar.open(res.message, 'Close', {
-                    duration: 5000,
-                    horizontalPosition: this.horizontalPosition,
-                    verticalPosition: this.verticalPosition,
-                    panelClass: ['error-snackbar']
-                });
-            }
-            else
-            {
-                this._snackBar.open('Send data successed', 'Close', {
-                    duration: 5000,
-                    horizontalPosition: this.horizontalPosition,
-                    verticalPosition: this.verticalPosition,
-                    panelClass: ['success-snackbar']
-                });
-                this.allCheckBox.checked = false;
-                this.selection.clear();
-            }
-        });
+                        this._consumersService.sendAll(data, this.channel, data.promotion).then(res => {
+                            if (res.isSuccess === false)
+                            {
+                                this._snackBar.open(res.message, 'Close', {
+                                    duration: 5000,
+                                    horizontalPosition: this.horizontalPosition,
+                                    verticalPosition: this.verticalPosition,
+                                    panelClass: ['error-snackbar']
+                                });
+                            }
+                            else
+                            {
+                                this._snackBar.open('Send data successed', 'Close', {
+                                    duration: 5000,
+                                    horizontalPosition: this.horizontalPosition,
+                                    verticalPosition: this.verticalPosition,
+                                    panelClass: ['success-snackbar']
+                                });
+                                this.allCheckBox.checked = false;
+                                this.selection.clear();
+                            }
+                        });
+
+                        break;
+                }
+            });
     }
 
 }
+
+
 
 export class FilesDataSource extends DataSource<any>
 {

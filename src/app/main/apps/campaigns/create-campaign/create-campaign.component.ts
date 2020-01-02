@@ -74,6 +74,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
          // Reactive Form
         this.form = this._formBuilder.group({
             Id:  [''],
+            waste:  ['', Validators.required],
             name : ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
@@ -90,6 +91,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
         this.collectingForm = this._formBuilder.group({
             Id:  [''],
             name : [undefined, Validators.required],
+            waste:  ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
             collectingType: [undefined],
@@ -109,6 +111,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
         this.PointForm = this._formBuilder.group({
             Id:  [''],
             name : ['', Validators.required],
+            waste:  ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
             quantity : ['', Validators.required],
@@ -268,6 +271,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
         if (this.campaignType.id === 3){ // Enrollment & Member
             data = {
                 Name: this.form.value.name,
+                Waste: this.form.value.waste,
                 Description: this.form.value.description,
                 CampaignTypeId: this.campaignType.id,
                 Url: this.url,
@@ -291,6 +295,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
         if (this.campaignType.id === 2){ // Point & Reward
             data = {
                 Name: this.PointForm.value.name,
+                Waste: this.PointForm.value.waste,
                 Description: this.PointForm.value.description,
                 CampaignTypeId: this.campaignType.id,
                 Url: this.url,
@@ -320,6 +325,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
            });
             data = {
                 Name: this.collectingForm.value.name,
+                Waste: this.collectingForm.value.waste,
                 Description: this.collectingForm.value.description,
                 CampaignTypeId: this.campaignType.id,
                 Url: this.url,

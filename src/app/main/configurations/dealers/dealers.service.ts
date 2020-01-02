@@ -100,4 +100,55 @@ export class ConfigurationsDealersService implements Resolve<any>
                 }, reject);
         });
     }
+
+    getProvinces(): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/address/provinces')
+                .subscribe((response: any) => {
+                    if (response.isSuccess)
+                    {
+                        resolve(response);
+                    }
+                    else
+                    {
+                        reject(response);
+                    }
+                }, reject);
+        });
+    }
+
+    getAmphurs(provinceCode: number): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/address/amphurs/' + provinceCode)
+                .subscribe((response: any) => {
+                    if (response.isSuccess)
+                    {
+                        resolve(response);
+                    }
+                    else
+                    {
+                        reject(response);
+                    }
+                }, reject);
+        });
+    }
+
+    getTumbols(amphurCode: number): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/address/tumbols/' + amphurCode)
+                .subscribe((response: any) => {
+                    if (response.isSuccess)
+                    {
+                        resolve(response);
+                    }
+                    else
+                    {
+                        reject(response);
+                    }
+                }, reject);
+        });
+    }
 }

@@ -115,23 +115,39 @@ export class ConsumersService implements Resolve<any>
         
     }
 
-    sendAll(data, channel): Promise<any>
+    sendAll(data, channel, promotion): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.post(`${environment.apiBaseUrl}/consumers/SendAll?channel=${channel}`, data)
+            this._httpClient.post(`${environment.apiBaseUrl}/consumers/SendAll?channel=${channel}&promotion=${promotion}`, data)
             .subscribe((response: any) => {
                 resolve(response);
             }, reject);
         });
     }
-    sendSelected(data, channel): Promise<any>
+    sendSelected(data, channel, promotion): Promise<any>
     {
         return new Promise((resolve, reject) => {
             // console.log(data)
             // resolve({isSuccess: true})
-            this._httpClient.post(`${environment.apiBaseUrl}/consumers/SendSelected?channel=${channel}`, data)
+            this._httpClient.post(`${environment.apiBaseUrl}/consumers/SendSelected?channel=${channel}&promotion=${promotion}`, data)
                 .subscribe((response: any) => {
                     resolve(response);
+                }, reject);
+        });
+    }
+
+    getPromotions(): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/promotions')
+                .subscribe((response: any) => {
+                    if (response.isSuccess)
+                    {
+                        resolve(response);
+                    }
+                    else{
+                        reject(response);
+                    }
                 }, reject);
         });
     }

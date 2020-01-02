@@ -47,6 +47,17 @@
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
     
                         <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Dealr no.</mat-label>
+                            <input matInput formControlName="branchNo">
+                            <mat-error *ngIf="dealerForm.get('branchNo').hasError('required')">
+                                Dealr no is required
+                            </mat-error>
+                        </mat-form-field>
+    
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+    
+                        <mat-form-field appearance="outline" fxFlex="100">
                             <mat-label>Name</mat-label>
                             <input matInput formControlName="name">
                             <mat-error *ngIf="dealerForm.get('name').hasError('required')">
@@ -107,7 +118,68 @@
                         </mat-form-field>
     
                     </div>
-            
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+    
+                        <mat-form-field appearance="outline" fxFlex="49">
+                            <mat-label>Address</mat-label>
+                            <input matInput formControlName="address1">
+                            <mat-error>
+                                Address is required
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="49">
+                            <mat-label>Province</mat-label>
+                            <mat-select formControlName="provinceCode" (selectionChange)="getAmphurs($event)">
+                              <mat-option *ngFor="let province of provinces" [value]="province.code">{{province.nameTh}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                Province is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+    
+                        <mat-form-field appearance="outline" fxFlex="49">
+                            <mat-label>Amphur</mat-label>
+                            <mat-select formControlName="amphurCode" (selectionChange)="getTumbols($event)">
+                            <mat-option *ngFor="let amphur of amphurs" [value]="amphur.code">{{amphur.nameTh}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                Amphur is required
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="49">
+                            <mat-label>Tumbol</mat-label>
+                            <mat-select formControlName="tumbolCode" (selectionChange)="getZipcode($event)">
+                            <mat-option *ngFor="let tumbol of tumbols" [value]="tumbol.code">{{tumbol.nameTh}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                Tumbol is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+
+                    <!-- <mat-form-field appearance="outline">
+                        <mat-label>Tumbol</mat-label>
+                        <input matInput formControlName="tumbol">
+                        <mat-icon matSuffix class="secondary-text">phone_iphone</mat-icon>
+                        <mat-error>
+                            Tumbol is required
+                        </mat-error>
+                    </mat-form-field> -->
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Zip Code</mat-label>
+                        <input matInput formControlName="zipCode">
+                        <mat-error>
+                            Zip Code is required
+                        </mat-error>
+                    </mat-form-field>
                     
             
                     <button mat-raised-button color="accent" class="submit-button" aria-label="SAVE"

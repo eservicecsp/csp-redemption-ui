@@ -71,15 +71,15 @@
 
                 </div>
 
-                <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
                     <mat-form-field appearance="outline" fxFlex="100">
-                        <mat-label>Url (Auto-Generate)</mat-label>
-                        <input matInput formControlName="url" [readonly]="true">
-                        <mat-icon matSuffix>url</mat-icon>
+                        <mat-label>Waste (%)</mat-label>
+                        <input matInput type="number" formControlName="waste">
+                        <mat-error>Waste is required!</mat-error>
                     </mat-form-field>
 
-                </div> -->
+                </div>
 
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
@@ -221,6 +221,11 @@
                     <mat-error>Campaign name is required!</mat-error>
                 </mat-form-field>
 
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Waste (%)</mat-label>
+                    <input matInput type="number" formControlName="waste">
+                    <mat-error>Waste is required!</mat-error>
+                </mat-form-field>
                 <!-- <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Url</mat-label>
                     <input matInput formControlName="url" [readonly]="true">
@@ -424,6 +429,12 @@
                     <input matInput #name formControlName="name" maxlength="100" required>
                     <mat-hint align="end">{{name.value.length}} / 100</mat-hint>
                     <mat-error>Campaign name is required!</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Waste (%)</mat-label>
+                    <input matInput type="number" formControlName="waste">
+                    <mat-error>Waste is required!</mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex="100">
