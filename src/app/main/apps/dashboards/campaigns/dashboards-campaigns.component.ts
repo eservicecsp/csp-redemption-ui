@@ -135,6 +135,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         this.dataSource = [];
         this.form = this._formBuilder.group({
             name : [''],
+            waste: [0],
             description : [''],
             product: [''],
             startDate : [''],
@@ -251,8 +252,10 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
             {
                 
                 this.campaignDetail = response.campaign;
+                console.log(this.campaignDetail);
                 this.form = this._formBuilder.group({
                     name : [this.campaignDetail['name']],
+                    waste : [this.campaignDetail['waste']],
                     description : [this.campaignDetail['description']],
                     product: [this.campaignDetail['productId']],
                     startDate : [this.datePipe.transform(this.campaignDetail['startDate'], 'yyyy-MM-dd')],
@@ -261,7 +264,6 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
                     duplicateMessage : [this.campaignDetail['duplicateMessage']],
                     qrCodeNotExistMessage : [this.campaignDetail['qrCodeNotExistMessage']],
                     winMessage : [this.campaignDetail['winMessage']],
-
                 }); 
             }
         }, error => {

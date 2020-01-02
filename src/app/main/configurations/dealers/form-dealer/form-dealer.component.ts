@@ -23,6 +23,10 @@ export class FormDealerComponent implements OnInit
     verticalPosition: MatSnackBarVerticalPosition = 'top';
     dealerId: number;
 
+    provinces: any[];
+    amphurs: any[];
+    tumbols: any[];
+
 
     constructor(
         private _configurationsDealersService: ConfigurationsDealersService,
@@ -33,7 +37,9 @@ export class FormDealerComponent implements OnInit
         private route: ActivatedRoute
     )
     {
-        
+        this._configurationsDealersService.getProvinces().then(response => {
+            this.provinces = response.provinces;
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -48,11 +54,18 @@ export class FormDealerComponent implements OnInit
         this.dealerId = 0;
         this.dealerForm = this._formBuilder.group({
             Id: this.dealerId,
+            branchNo: [null, Validators.required],
             name   : [null, Validators.required],
             email: [null, [Validators.required, Validators.email]],
             TaxNo: [null, Validators.required],
             phone: [null, Validators.required],
             tel: [null, Validators.required],
+            address1   : [null, Validators.required],
+            address2   : [null],
+            tumbolCode: [null, Validators.required],
+            amphurCode: [null, Validators.required],
+            provinceCode: [null, Validators.required],
+            zipCode: [null, Validators.required],
             createdBy : this._authenticationService.getRawAccessToken('userId')
 
         });
@@ -62,13 +75,33 @@ export class FormDealerComponent implements OnInit
             if (this.dealerId){
                 this._configurationsDealersService.getDealer(this.dealerId).then(response => {
                     if (response.isSuccess === true){
+                        if ( response.dealer.amphurCode != null){
+                            
+                            this._configurationsDealersService.getAmphurs(response.dealer.provinceCode).then( response => {
+                                this.amphurs = response.amphurs;
+                            });
+                        }
+                        if ( response.dealer.tumbolCode != null){
+
+                            this._configurationsDealersService.getTumbols(response.dealer.amphurCode).then( response => {
+                                this.tumbols = response.tumbols;
+                            });
+                        }
+
                         this.dealerForm = this._formBuilder.group({
                             Id: this.dealerId,
+                            branchNo: [response.dealer.branchNo, Validators.required],
                             name   : [response.dealer.name, Validators.required],
                             email: [response.dealer.email, [Validators.required, Validators.email]],
                             TaxNo: [response.dealer.taxNo, Validators.required],
                             phone: [response.dealer.phone, Validators.required],
-                            tel: [response.dealer.tel, Validators.required]
+                            tel: [response.dealer.tel, Validators.required],
+                            address1   : [response.dealer.address1, Validators.required],
+                            address2   : [response.dealer.address2],
+                            tumbolCode: [response.dealer.tumbolCode, Validators.required],
+                            amphurCode: [response.dealer.amphurCode, Validators.required],
+                            provinceCode: [response.dealer.provinceCode, Validators.required],
+                            zipCode: [response.dealer.zipCode, Validators.required],
                         });
                     }
                 });
@@ -118,6 +151,32 @@ export class FormDealerComponent implements OnInit
             });
         }
         
+    }
+
+    getAmphurs(event): void
+    {
+        const provinceCode = event.value;
+        this._configurationsDealersService.getAmphurs(provinceCode).then(response => {
+            this.amphurs = response.amphurs;
+        });
+    }
+
+    getTumbols(event): void
+    {
+        const amphurCode = event.value;
+        this._configurationsDealersService.getTumbols(amphurCode).then(response => {
+            this.tumbols = response.tumbols;
+        });
+    }
+
+    getZipcode(event): void
+    {
+        const tumbolCode = event.value;
+        const tumbol = this.tumbols.find(x=>x.code === tumbolCode);
+        if (tumbol.zipCode)
+        {
+            this.dealerForm.controls['zipCode'].patchValue( tumbol.zipCode);
+        }
     }
 
 
