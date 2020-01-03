@@ -1,13 +1,9 @@
 <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
-
     <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
-
         <div fxLayout="row" fxLayoutAlign="start center">
-
             <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/campaigns'">
                 <mat-icon>arrow_back</mat-icon>
             </button>
-
             <div fxLayout="column" fxLayoutAlign="start start"
                 [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 <div class="h2">
@@ -18,60 +14,42 @@
                 </div>
             </div>
         </div>
-
         <button mat-raised-button type="button" (click)="generateQrCode()">
             Create
         </button>
     </div>
-
     <div class="content p-24">
-
         <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" *ngIf="campaignType.id === 3">
-
-            <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
-                name="form" [formGroup]="form">
-
+            <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="form">
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="100">
                         <mat-label>Name</mat-label>
                         <input matInput #name formControlName="name" maxlength="300" required>
                         <mat-hint align="end">{{name.value.length}} / 300</mat-hint>
                         <mat-error>Name. is required!</mat-error>
                     </mat-form-field>
-
                 </div>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="100">
                         <mat-label>Waste (%)</mat-label>
                         <input matInput type="number" formControlName="waste">
                         <mat-error>Waste is required!</mat-error>
                     </mat-form-field>
-
                 </div>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="100">
                         <mat-label>Quantity</mat-label>
                         <input matInput type="number" formControlName="quantity">
                         <mat-error>Quantity is required!</mat-error>
                     </mat-form-field>
-
                 </div>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="100">
                         <mat-label>Description</mat-label>
                         <textarea matInput formControlName="description"></textarea>
                     </mat-form-field>
-
                 </div>
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="100">
                         <mat-label>Product</mat-label>
                         <mat-select formControlName="product">
@@ -83,11 +61,8 @@
                             Product <strong>required</strong>
                         </mat-error>
                     </mat-form-field>
-
                 </div>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Start Date</mat-label>
                         <input matInput [matDatepicker]="dpStartDate" placeholder="Start Date"
@@ -95,7 +70,6 @@
                         <mat-datepicker-toggle matSuffix [for]="dpStartDate"></mat-datepicker-toggle>
                         <mat-datepicker #dpStartDate></mat-datepicker>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" fxFlex="50">
                         <mat-label>End Date</mat-label>
                         <input matInput [matDatepicker]="dpEndDate" placeholder="End Date" formControlName="endDate"
@@ -103,29 +77,23 @@
                         <mat-datepicker-toggle matSuffix [for]="dpEndDate"></mat-datepicker-toggle>
                         <mat-datepicker #dpEndDate></mat-datepicker>
                     </mat-form-field>
-
                 </div>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Alert message for overdue of Campaign</mat-label>
                         <input matInput #alertMessage formControlName="alertMessage" maxlength="255" required>
                         <mat-hint align="end">{{alertMessage.value.length}} / 255</mat-hint>
                         <mat-error>Alert message for overdue of Campaign. is required!</mat-error>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" fxFlex="50">
                         <mat-label>Alert message for duplicate case</mat-label>
                         <input matInput #duplicateMessage formControlName="duplicateMessage" maxlength="255" required>
                         <mat-hint align="end">{{duplicateMessage.value.length}} / 255</mat-hint>
                         <mat-error>Alert message for duplicate case. is required!</mat-error>
                     </mat-form-field>
-
                 </div>
 
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Alert message for invalid case</mat-label>
                         <input matInput #qrCodeNotExistMessage formControlName="qrCodeNotExistMessage" maxlength="255"
@@ -140,58 +108,35 @@
                         <mat-hint align="end">{{winMessage.value.length}} / 255</mat-hint>
                         <mat-error>Alert message for success case. is required!</mat-error>
                     </mat-form-field>
-
                 </div>
-
                 <button mat-raised-button color="accent" type="button" (click)="createCampaign()"
                     [disabled]="form.invalid" class="mt-12">
                     Create
                 </button>
             </form>
-
-
             <div class="mat-card form-errors-model p-24 mat-elevation-z4" *ngIf="urlValue">
                 <div class="h2 mb-24">Your QR Code</div>
                 <qr-code [value]="urlValue" [size]="256"></qr-code>
             </div>
-
         </div>
-
         <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" *ngIf="campaignType.id === 1">
-
             <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex
                 name="collectingForm" [formGroup]="collectingForm">
-
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Name</mat-label>
                     <input matInput #name formControlName="name" maxlength="100" required>
                     <mat-hint align="end">{{name.value.length}} / 100</mat-hint>
                     <mat-error>Campaign name is required!</mat-error>
                 </mat-form-field>
-
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Waste (%)</mat-label>
                     <input matInput type="number" formControlName="waste">
                     <mat-error>Waste is required!</mat-error>
                 </mat-form-field>
-                <!-- <mat-form-field appearance="outline" fxFlex="100">
-                    <mat-label>Url</mat-label>
-                    <input matInput formControlName="url" [readonly]="true">
-                    <mat-icon matSuffix>url</mat-icon>
-                    <mat-error>Url is required!</mat-error>
-                </mat-form-field> -->
-
-                <!-- <mat-form-field appearance="outline" fxFlex="100">
-                    <mat-label>Quantity</mat-label>
-                    <input matInput type="number" formControlName="quantity">
-                    <mat-error>Quantity is required!</mat-error>
-                </mat-form-field> -->
-
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Description</mat-label>
                     <textarea matInput formControlName="description"></textarea>
                 </mat-form-field>
-
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Product</mat-label>
                     <mat-select formControlName="product">
@@ -203,9 +148,7 @@
                         Product <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Start Date</mat-label>
                         <input matInput [matDatepicker]="dpStartDate" formControlName="startDate"
@@ -216,7 +159,6 @@
                             Start date is <strong>required</strong>
                         </mat-error>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" fxFlex="50">
                         <mat-label>End Date</mat-label>
                         <input matInput [matDatepicker]="dpEndDate" formControlName="endDate" placeholder="End Date"
@@ -228,27 +170,21 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Alert message for overdue of Campaign</mat-label>
                         <input matInput #alertMessage formControlName="alertMessage" maxlength="255" required>
                         <mat-hint align="end">{{alertMessage.value.length}} / 255</mat-hint>
                         <mat-error>This feild is required!</mat-error>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" fxFlex="50">
                         <mat-label>Alert message for duplicate case</mat-label>
                         <input matInput #duplicateMessage formControlName="duplicateMessage" maxlength="255" required>
                         <mat-hint align="end">{{duplicateMessage.value.length}} / 255</mat-hint>
                         <mat-error>This feild is required!</mat-error>
                     </mat-form-field>
-
                 </div>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Alert message for invalid case</mat-label>
                         <input matInput #qrCodeNotExistMessage formControlName="qrCodeNotExistMessage" maxlength="255"
@@ -256,16 +192,13 @@
                         <mat-hint align="end">{{qrCodeNotExistMessage.value.length}} / 255</mat-hint>
                         <mat-error>This feild is required!</mat-error>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" fxFlex="50">
                         <mat-label>Alert message for success case</mat-label>
                         <input matInput #winMessage formControlName="winMessage" maxlength="255" required>
                         <mat-hint align="end">{{winMessage.value.length}} / 255</mat-hint>
                         <mat-error>This feild is required!</mat-error>
                     </mat-form-field>
-
                 </div>
-
                 <mat-radio-group aria-label="Select an option" formControlName="collectingType">
                     <mat-radio-button value="1" class="pr-6" (change)="collectingTypeRadioChange($event)">Linear
                         Collecting</mat-radio-button>
@@ -274,111 +207,212 @@
                     <mat-radio-button value="3" class="pr-6" (change)="collectingTypeRadioChange($event)">Matrix
                         Collecting (2 x 3)</mat-radio-button>
                 </mat-radio-group>
-
                 <div *ngIf="collectingForm.controls['collectingType'].value === '1'" fxLayout="column" class="mb-24">
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                         <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                             <mat-label>Peices</mat-label>
-                            <input matInput formControlName="rows" maxlength="255" required>
+                            <input matInput formControlName="rows" maxlength="255" type="number" required>
                             <mat-error>Peice number is required!</mat-error>
                         </mat-form-field>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
-                    </div>
-                </div>
-                <div *ngIf="collectingForm.controls['collectingType'].value === '2' || collectingForm.controls['collectingType'].value === '3'"
-                    class="mb-24" fxLayout="column">
-                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                        <div formArrayName="collectingData">
-                            <div *ngFor="let data of getControls(collectingForm, 'collectingData'); let i = index;"
-                                style="height: 100px;">
-                                <div [formGroupName]="i">
-                                    <mat-form-field>
-                                        <mat-label>Row</mat-label>
-                                        <input matInput formControlName="row" required>
-                                    </mat-form-field>
-                                    <mat-form-field>
-                                        <mat-label>Column</mat-label>
-                                        <input matInput formControlName="column" required>
-                                    </mat-form-field>
-                                    <mat-form-field>
-                                        <mat-label>Quantity</mat-label>
-                                        <input matInput formControlName="quantity" required>
-                                    </mat-form-field>
-                                    <mat-form-field appearance="outline" fxFlex="100"
-                                        hintLabel="File size must smaller than 1 MB">
-                                        <mat-label>Attachment</mat-label>
-                                        <input matInput placeholder="Attachment name" formControlName="name" readonly>
-                                        <input #fileInput hidden type="file" accept="image/x-png,image/jpeg"
-                                            (change)="onSelectFile($event, data.controls)" />
-                                        <button mat-button *ngIf="data.value.name" matSuffix mat-icon-button
-                                            aria-label="Clear" (click)="clearAttachFile(data.controls)">
-                                            <mat-icon>delete_forever</mat-icon>
-                                        </button>
-                                        <button mat-button *ngIf="!data.value.name" matSuffix mat-icon-button
-                                            aria-label="Clear" (click)="fileInput.click()">
-                                            <mat-icon>folder_open</mat-icon>
-                                        </button>
-                                    </mat-form-field>
+                        <div formArrayName="collectingData" fxFlex="100">
+                            <div *ngFor="let data of getControls(collectingForm, 'collectingData'); let i = index;" class="mb-12 linear-card">
+                                <div [formGroupName]="i" fxLayout="column">
+                                    <div class="linear-card-header p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                                        <div class="h1 font-weight-300" style="color: white;">Peice {{i + 1}}</div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="height: 200px">
+                                        <div fxFlex="25">
+                                            <img style="max-width: 150px; border: 1px solid;" class="ml-24" src="{{data.value.file}}" alt="">
+                                        </div>
+                                        <div fxFlex="75" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                            <mat-form-field appearance="outline" class="mr-12" fxFlex="30">
+                                                <mat-label>Quantity</mat-label>
+                                                <input matInput formControlName="quantity" required>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="60"
+                                                hintLabel="File size must smaller than 1 MB">
+                                                <mat-label>Attachment</mat-label>
+                                                <input matInput placeholder="Attachment name" formControlName="name" readonly>
+                                                <input #fileInput hidden type="file" accept="image/x-png,image/jpeg" (change)="onSelectFile($event, data.controls)" />
+                                                <button type="button" mat-button *ngIf="data.value.name" matSuffix mat-icon-button aria-label="Clear" (click)="clearAttachFile(data.controls)">
+                                                    <mat-icon>delete_forever</mat-icon>
+                                                </button>
+                                                <button type="button" mat-button *ngIf="!data.value.name" matSuffix mat-icon-button aria-label="Clear" (click)="fileInput.click()">
+                                                    <mat-icon>folder_open</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
 
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-                <button type="button" mat-raised-button color="accent" class="mr-0" (click)="test()">
-                    TEST
-                </button>
-                <button mat-raised-button color="accent" type="button" (click)="createCampaign()"
-                    [disabled]="collectingForm.invalid" class="mt-12">
+                <div *ngIf="collectingForm.controls['collectingType'].value === '2' || collectingForm.controls['collectingType'].value === '3'"
+                    class="mb-24" fxLayout="column">
+                    <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                        <div fxFlex="40" class="pr-16">     
+                            <div class="example-image-card">
+                                <div class="example-image-card-header p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <div class="h1 font-weight-300" style="color: white;">Example Collecting Image</div>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="center center" class="p-16">
+                                    <table *ngIf="collectingForm.controls['collectingType'].value === '2'">
+                                        <tr>
+                                            <td>
+                                                <div class="collecting-image-cell">
+                                                    <img src="{{getControls(collectingForm, 'collectingData')[0].value.file}}" alt="">
+                                                    <div class="position">1:1</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="collecting-image-cell">
+                                                    <img src="{{getControls(collectingForm, 'collectingData')[1].value.file}}" alt="">
+                                                    <div class="position">1:2</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="collecting-image-cell">
+                                                    <img src="{{getControls(collectingForm, 'collectingData')[2].value.file}}" alt="">
+                                                    <div class="position">2:1</div>
+                                                </div>
+                                                
+                                            </td>
+                                            <td>
+                                                <div class="collecting-image-cell">
+                                                    <img src="{{getControls(collectingForm, 'collectingData')[3].value.file}}" alt="">
+                                                    <div class="position">2:2</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table *ngIf="collectingForm.controls['collectingType'].value === '3'">
+                                        <tr>
+                                            <td>
+                                                <div class="collecting-image-cell">
+                                                    <img src="{{getControls(collectingForm, 'collectingData')[0].value.file}}" alt="">
+                                                    <div class="position">1:1</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="collecting-image-cell">
+                                                    <img src="{{getControls(collectingForm, 'collectingData')[1].value.file}}" alt="">
+                                                    <div class="position">1:2</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="collecting-image-cell">
+                                                    <img src="{{getControls(collectingForm, 'collectingData')[2].value.file}}" alt="">
+                                                    <div class="position">2:1</div>
+                                                </div>
+                                                
+                                            </td>
+                                            <td>
+                                                <div class="collecting-image-cell">
+                                                    <img src="{{getControls(collectingForm, 'collectingData')[3].value.file}}" alt="">
+                                                    <div class="position">2:2</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="collecting-image-cell">
+                                                    <img src="{{getControls(collectingForm, 'collectingData')[4].value.file}}" alt="">
+                                                    <div class="position">3:1</div>
+                                                </div>
+                                                
+                                            </td>
+                                            <td>
+                                                <div class="collecting-image-cell">
+                                                    <img src="{{getControls(collectingForm, 'collectingData')[5].value.file}}" alt="">
+                                                    <div class="position">3:2</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>   
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="60">
+                            <div formArrayName="collectingData">
+                                <div *ngFor="let data of getControls(collectingForm, 'collectingData'); let i = index;"
+                                    style="height: 100px;">
+                                    <div [formGroupName]="i">
+                                        <!-- <img src="{{data.controls['file'].value}}" style="max-width: 100px;"/> -->
+                                        <mat-form-field appearance="outline" class="mr-12">
+                                            <mat-label>Position</mat-label>
+                                            <input matInput value="{{data.controls['row'].value}} : {{data.controls['column'].value}}" disabled>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" class="mr-12">
+                                            <mat-label>Quantity</mat-label>
+                                            <input matInput formControlName="quantity" required>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline"
+                                            hintLabel="File size must smaller than 1 MB">
+                                            <mat-label>Attachment</mat-label>
+                                            <input matInput placeholder="Attachment name" formControlName="name" readonly>
+                                            <input #fileInput hidden type="file" accept="image/x-png,image/jpeg"
+                                                (change)="onSelectFile($event, data.controls)" />
+                                            <button type="button" mat-button *ngIf="data.value.name" matSuffix mat-icon-button
+                                                aria-label="Clear" (click)="clearAttachFile(data.controls)">
+                                                <mat-icon>delete_forever</mat-icon>
+                                            </button>
+                                            <button type="button" mat-button *ngIf="!data.value.name" matSuffix mat-icon-button
+                                                aria-label="Clear" (click)="fileInput.click()">
+                                                <mat-icon>folder_open</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button mat-raised-button color="accent" type="button" (click)="createCampaign()" [disabled]="collectingForm.invalid" class="mt-12">
                     Create campaign
                 </button>
-
             </form>
             <div class="mat-card form-errors-model p-24 mat-elevation-z4" *ngIf="urlValue">
                 <div class="h2 mb-24">Your QR Code</div>
                 <qr-code [value]="urlValue" [size]="256"></qr-code>
             </div>
         </div>
-
         <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" *ngIf="campaignType.id === 2">
-            <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex name="PointForm"
-                [formGroup]="PointForm">
-
+            <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex name="PointForm" [formGroup]="PointForm">
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Name</mat-label>
                     <input matInput #name formControlName="name" maxlength="100" required>
                     <mat-hint align="end">{{name.value.length}} / 100</mat-hint>
                     <mat-error>Campaign name is required!</mat-error>
                 </mat-form-field>
-
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Waste (%)</mat-label>
                     <input matInput type="number" formControlName="waste">
                     <mat-error>Waste is required!</mat-error>
                 </mat-form-field>
-
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Quantity</mat-label>
                     <input matInput type="number" formControlName="quantity">
                     <mat-error>Quantity is required!</mat-error>
                 </mat-form-field>
-
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Point</mat-label>
                     <input matInput type="number" formControlName="point">
                     <mat-icon matSuffix>Point</mat-icon>
                     <mat-error>Point is required!</mat-error>
                 </mat-form-field>
-
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Description</mat-label>
                     <textarea matInput formControlName="description"></textarea>
                 </mat-form-field>
-
                 <mat-form-field appearance="outline" fxFlex="100">
                     <mat-label>Product</mat-label>
                     <mat-select formControlName="product">
@@ -390,9 +424,7 @@
                         Product <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Start Date</mat-label>
                         <input matInput [matDatepicker]="dpStartDate" formControlName="startDate"
@@ -403,7 +435,6 @@
                             Start date is <strong>required</strong>
                         </mat-error>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" fxFlex="50">
                         <mat-label>End Date</mat-label>
                         <input matInput [matDatepicker]="dpEndDate" formControlName="endDate" placeholder="End Date"
@@ -415,27 +446,21 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Alert message for overdue of Campaign</mat-label>
                         <input matInput #alertMessage formControlName="alertMessage" maxlength="255" required>
                         <mat-hint align="end">{{alertMessage.value.length}} / 255</mat-hint>
                         <mat-error>Alert message for overdue of Campaign. is required!</mat-error>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" fxFlex="50">
                         <mat-label>Alert message for duplicate case</mat-label>
                         <input matInput #duplicateMessage formControlName="duplicateMessage" maxlength="255" required>
                         <mat-hint align="end">{{duplicateMessage.value.length}} / 255</mat-hint>
                         <mat-error>Alert message for duplicate case. is required!</mat-error>
                     </mat-form-field>
-
                 </div>
-
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Alert message for invalid case</mat-label>
                         <input matInput #qrCodeNotExistMessage formControlName="qrCodeNotExistMessage" maxlength="255"
@@ -443,22 +468,17 @@
                         <mat-hint align="end">{{qrCodeNotExistMessage.value.length}} / 255</mat-hint>
                         <mat-error>Alert message for invalid case. is required!</mat-error>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" fxFlex="50">
                         <mat-label>Alert message for success case</mat-label>
                         <input matInput #winMessage formControlName="winMessage" maxlength="255" required>
                         <mat-hint align="end">{{winMessage.value.length}} / 255</mat-hint>
                         <mat-error>Alert message for success case. is required!</mat-error>
                     </mat-form-field>
-
                 </div>
-                <button mat-raised-button color="accent" type="button" (click)="createCampaign()"
-                    [disabled]="PointForm.invalid" class="mt-12">
+                <button mat-raised-button color="accent" type="button" (click)="createCampaign()" [disabled]="PointForm.invalid" class="mt-12">
                     Create campaign
                 </button>
-
             </form>
-
             <div class="mat-card form-errors-model p-24 mat-elevation-z4" *ngIf="urlValue">
                 <div class="h2 mb-24">Your QR Code</div>
                 <qr-code [value]="urlValue" [size]="256"></qr-code>
