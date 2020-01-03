@@ -26,7 +26,7 @@ export class BrandDetailComponent implements OnInit
         staff: this._formBuilder.group({
             id: [0],
             email: [undefined, [Validators.required]],
-            password: [undefined, [Validators.required]],
+            //password: [undefined, [Validators.required]],
             firstName: [undefined, [Validators.required]],
             lastName: [undefined, [Validators.required]],
             phone: [undefined, [Validators.required]],
@@ -50,7 +50,7 @@ export class BrandDetailComponent implements OnInit
         staff: {
             id: 0,
             email: undefined,
-            password: undefined,
+            //password: undefined,
             firstName: undefined,
             lastName: undefined,
             phone: undefined,
@@ -81,18 +81,19 @@ export class BrandDetailComponent implements OnInit
                     {
                         this.brand = response.brand;
                         this.brandForm = this._formBuilder.group({
+                            id : this.brandId,
                             code: [{value: this.brand.code, disabled: true}, [Validators.required]],
                             name   : [this.brand.name, [Validators.required]],
                             isOwner: [this.brand.isOwner, Validators.required],
                             staff: this._formBuilder.group({
-                                id: [this.brand.staff.id, [Validators.required]],
-                                email: [this.brand.staff.email, [Validators.required]],
-                                password: [this.brand.staff.password, [Validators.required]],
+                                id: [this.brand.staff.id],
+                                email: [{value: this.brand.staff.email, disabled: true}, [Validators.required]], 
+                                //password: [this.brand.staff.password, [Validators.required]],
                                 firstName: [this.brand.staff.firstName],
                                 lastName: [this.brand.staff.lastName],
                                 phone: [this.brand.staff.phone],
-                                roleId: [this.brand.staff.roleId, [Validators.required]],
-                                brandId: [this.brand.staff.brandId, [Validators.required]],
+                                roleId: [this.brand.staff.roleId],
+                                brandId: [this.brand.staff.brandId],
                                 isActived: [this.brand.staff.isActived, [Validators.required]],
                             })
                         });
@@ -114,6 +115,20 @@ export class BrandDetailComponent implements OnInit
             else
             {
                 this.pageType = 'new';
+                this.brandForm = this._formBuilder.group({
+                    code: [ null, [Validators.required, Validators.maxLength(5), Validators.minLength(3)]],
+                    name   : [ null, [Validators.required]],
+                    isOwner: [false],
+                    staff: this._formBuilder.group({
+                        id: [0],
+                        email: [null, [Validators.required, Validators.email]],
+                        //password: [this.brand.staff.password, [Validators.required]],
+                        firstName: [null, [Validators.required]],
+                        lastName: [null, [Validators.required]],
+                        phone: [null, [Validators.required]],
+                        isActived: [null],
+                    })
+                });
             }
             
         });
@@ -141,27 +156,69 @@ export class BrandDetailComponent implements OnInit
 
     createBrand(): void
     {
-        this._configurationsBrandService.createBrand(this.brandForm.value).then(response => {
+        const data = {
+            brand : this.brandForm.value,
+            staff : this.brandForm.get('staff').value,
+        };
+        console.log(data);
+        this._configurationsBrandService.createBrand(data).then(response => {
+            console.log(response);
             if (response.isSuccess){
+                this._snackBar.open('save data successed', 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['success-snackbar']
+                });
                 this._router.navigate(['configurations/brands']);
             } else {
-                console.error('fail');
+                this._snackBar.open(response.message, 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['error-snackbar']
+                });
             }
         }, error => {
-           console.error(error); 
+            this._snackBar.open(error, 'Close', {
+                duration: 5000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                panelClass: ['error-snackbar']
+            });
         });
     }
 
     updateBrand(): void
     {
-        this._configurationsBrandService.updateBrand(this.brandForm.value).then(response => {
+        const data = {
+            brand : this.brandForm.value,
+            staff : this.brandForm.get('staff').value,
+        };
+        this._configurationsBrandService.updateBrand(data).then(response => {
             if (response.isSuccess){
+                this._snackBar.open('Update data successed', 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['success-snackbar']
+                });
                 this._router.navigate(['configurations/brands']);
             } else {
-                console.error('fail');
+                this._snackBar.open(response.message, 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['error-snackbar']
+                });
             }
         }, error => {
-           console.error(error); 
+            this._snackBar.open(error, 'Close', {
+                duration: 5000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                panelClass: ['error-snackbar']
+            });
         });
     }
 
