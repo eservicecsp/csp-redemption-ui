@@ -148,6 +148,20 @@
                         Product <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Dealers</mat-label>
+                    <mat-select placeholder="Dealers" formControlName="dealers" multiple>
+                        <mat-select-trigger>
+                            {{dealers.value ? dealers.value[0].name : ''}}
+                            <span *ngIf="dealers.value?.length > 1" class="example-additional-selection">
+                                (+{{dealers.value.length - 1}} {{dealers.value?.length === 2 ? 'other' : 'others'}})
+                            </span>
+                            </mat-select-trigger>
+                        <mat-option *ngFor="let dealer of dealerList" [value]="dealer">
+                            {{dealer.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Start Date</mat-label>
@@ -245,9 +259,7 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
-                                    
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -376,6 +388,9 @@
                         </div>
                     </div>
                 </div>
+                <button  mat-raised-button color="accent" type="button" (click)="test()">
+                    Test
+                </button>
                 <button mat-raised-button color="accent" type="button" (click)="createCampaign()" [disabled]="collectingForm.invalid" class="mt-12">
                     Create campaign
                 </button>

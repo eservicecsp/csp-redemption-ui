@@ -14,6 +14,7 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { Router } from '@angular/router';
 import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'app/date.adapter';
+import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
 
 @Component({
     selector   : 'create-campaign',
@@ -51,6 +52,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
 
+    dealerList: [];
+
     columnQuantity = [];
     rowQuantity = [];
 
@@ -59,6 +62,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
         private _campaignsService: CampaignsService,
         private _authenticationService: AuthenticationService,
         private _configurationsProductsService: ConfigurationsProductsService,
+        private _configurationsDealersService: ConfigurationsDealersService,
         private _datepipe: DatePipe,
         private _snackBar: MatSnackBar,
         private _router: Router,
@@ -69,6 +73,13 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
         this._unsubscribeAll = new Subject();
 
         this.userId = this._authenticationService.getRawAccessToken('userId');
+
+        this._configurationsDealersService.getDealers().then(response => {
+            if (response.isSuccess) {
+                this.dealerList = response.dealers;
+            }
+        });
+        
          // Reactive Form
         this.form = this._formBuilder.group({
             waste:  ['', Validators.required],
@@ -94,8 +105,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             product: ['', Validators.required],
             collectingType: [undefined],
             rows: [{value: 0}, [Validators.required]],
+            dealers: [undefined],
             columns: [{value: 0}, [Validators.required, Validators.max(3)]],
-            rowColumnData: this._formBuilder.array([]),
+            // rowColumnData: this._formBuilder.array([]),
             collectingData: this._formBuilder.array([]),
             startDate : [undefined, Validators.required],
             endDate : [undefined, Validators.required],
@@ -133,7 +145,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                     this.rowQuantity.push(row);
                 }
             }
-            this.refreshRowColumnData();
         });
 
         this.collectingForm.controls['columns'].valueChanges.subscribe(columns => {
@@ -510,35 +521,43 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
         extensionControl.setValue(undefined);
     }
 
-    refreshRowColumnData(): void {
-        const controls = this.collectingForm.controls['rowColumnData'] as FormArray;
-        controls.clear();
+    // refreshRowColumnData(): void {
+    //     const controls = this.collectingForm.controls['rowColumnData'] as FormArray;
+    //     controls.clear();
 
-        this.rowQuantity.forEach(row => {
-            const rowFC = this._formBuilder.control(row);
-            this.columnQuantity.forEach(column => {
-                const columnFC = this._formBuilder.control(column);
+    //     this.rowQuantity.forEach(row => {
+    //         const rowFC = this._formBuilder.control(row);
+    //         this.columnQuantity.forEach(column => {
+    //             const columnFC = this._formBuilder.control(column);
 
-                const attachmentIdFC = this._formBuilder.control(0);
-                const attachmentNameFC = this._formBuilder.control(undefined);
-                const attachmentPathFC = this._formBuilder.control(undefined);
-                const attachmentFileFC = this._formBuilder.control(undefined);
-                const attachmentExtensionFC = this._formBuilder.control(undefined);
+    //             const attachmentIdFC = this._formBuilder.control(0);
+    //             const attachmentNameFC = this._formBuilder.control(undefined);
+    //             const attachmentPathFC = this._formBuilder.control(undefined);
+    //             const attachmentFileFC = this._formBuilder.control(undefined);
+    //             const attachmentExtensionFC = this._formBuilder.control(undefined);
 
-                const quantityFC = this._formBuilder.control(0);
-                controls.push(
-                    this._formBuilder.group({
-                        row: rowFC,
-                        column: columnFC,
-                        quantity: quantityFC,
-                        id: attachmentIdFC,
-                        name: attachmentNameFC,
-                        path: attachmentPathFC,
-                        file: attachmentFileFC,
-                        extension: attachmentExtensionFC
-                    })
-                ) ;
-            });
-        });
+    //             const quantityFC = this._formBuilder.control(0);
+    //             controls.push(
+    //                 this._formBuilder.group({
+    //                     row: rowFC,
+    //                     column: columnFC,
+    //                     quantity: quantityFC,
+    //                     id: attachmentIdFC,
+    //                     name: attachmentNameFC,
+    //                     path: attachmentPathFC,
+    //                     file: attachmentFileFC,
+    //                     extension: attachmentExtensionFC
+    //                 })
+    //             ) ;
+    //         });
+    //     });
+    // }
+
+    get dealers(): FormArray {
+        return this.collectingForm.get('dealers') as FormArray;
+    }
+
+    test(): void {
+        console.log(this.collectingForm.value);
     }
 }

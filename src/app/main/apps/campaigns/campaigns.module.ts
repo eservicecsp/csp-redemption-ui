@@ -15,6 +15,7 @@ import { CampaignsService } from './campaigns.service';
 import { QRCodeModule } from 'angular2-qrcode';
 import { DatePipe } from '@angular/common';
 import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
+import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
 
 const routes = [
     {
@@ -69,6 +70,7 @@ const routes = [
         CampaignsService,
         DatePipe,
         ConfigurationsProductsService,
+        ConfigurationsDealersService,
     ]
 })
 
