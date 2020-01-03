@@ -22,7 +22,7 @@
                     <div class="h2" *ngIf="pageType ==='edit'">
                         {{brand.code}} - {{brand.name}}
                     </div>
-                    <div class="h2" *ngIf="pageType ==='create'">
+                    <div class="h2" *ngIf="pageType ==='new'">
                         New Brand
                     </div>
                     <div class="h3 light secondary-text">
@@ -68,6 +68,9 @@
                                     <mat-error  *ngIf="brandForm.get('code').hasError('required')">
                                         Code is required
                                     </mat-error>
+                                    <mat-error  *ngIf="!brandForm.get('code').hasError('required') && (brandForm.get('code').hasError('maxlength') || brandForm.get('code').hasError('minlength') )">
+                                        The code must be 3-5 characters.
+                                    </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
@@ -90,31 +93,40 @@
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>Email</mat-label>
                                     <input matInput formControlName="email">
-                                    <!-- <mat-error  *ngIf="brandForm.get('staff').controls[].hasError('required')">
-                                        Code is required
-                                    </mat-error> -->
+                                    <mat-error *ngIf="brandForm.controls['staff'].get('email').hasError('required')">
+                                        Email is required
+                                    </mat-error>
+                                    <mat-error *ngIf="brandForm.controls['staff'].get('email').hasError('email')">
+                                        Please enter a valid email address
+                                    </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Password</mat-label>
-                                    <input matInput formControlName="password">
-                                    <!-- <mat-error *ngIf="brandForm.get('name').hasError('required')">
-                                        Name is required
-                                    </mat-error> -->
+                                    <mat-label>Phone</mat-label>
+                                    <input matInput formControlName="phone">
+                                    <mat-error *ngIf="brandForm.controls['staff'].get('phone').hasError('required')">
+                                        Phone is required
+                                    </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>First Name</mat-label>
                                     <input matInput formControlName="firstName">
+                                    <mat-error *ngIf="brandForm.controls['staff'].get('firstName').hasError('required')">
+                                        First name is required
+                                    </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput formControlName="lastName">
+                                    <mat-error *ngIf="brandForm.controls['staff'].get('lastName').hasError('required')">
+                                        Last name is required
+                                    </mat-error>
                                 </mat-form-field>
 
-                                <!-- <mat-label>Active</mat-label>
-                                <mat-slide-toggle formControlName="isOwner"></mat-slide-toggle> -->
+                                <mat-label>Active</mat-label>
+                                <mat-slide-toggle formControlName="isActived"></mat-slide-toggle>
                             </div>
                         </mat-tab>
 
