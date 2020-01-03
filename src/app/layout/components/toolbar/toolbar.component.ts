@@ -30,6 +30,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
     firstName: string;
     lastName: string;
+    email: string;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -97,6 +98,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         this.firstName = this._authenticationService.getRawAccessToken('firstName');
         this.lastName = this._authenticationService.getRawAccessToken('lastName');
+        this.email = this._authenticationService.getRawAccessToken('email');
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
@@ -180,5 +182,17 @@ export class ToolbarComponent implements OnInit, OnDestroy
     {
         this._authenticationService.logout();
         this._router.navigate(['pages/auth/login']);
+    }
+
+    /**
+     * Reset password
+     */
+    resetPassword(): void 
+    {
+        this._authenticationService.getResetPasswordToken(this.email).then(response => {
+            if (response.isSuccess){
+                this._router.navigate(['pages/auth/reset-password'], { queryParams: { email: this.email, token: response.token} });
+            }
+        });
     }
 }

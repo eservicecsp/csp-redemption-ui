@@ -9,35 +9,23 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { User } from './user.model';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable()
-export class AuthenticationService{
+export class AuthenticationService
+{
     private _jwtHelper = new JwtHelperService();
+
     constructor(
         private _httpClient: HttpClient,
         private _fuseNavigationService: FuseNavigationService)
     {
-
+        // Set the defaults
     }
 
     login(user: User): Promise<any>
     {   
         return new Promise((resolve, reject) => {
-            // setTimeout(() => {
-            //     const response = {
-            //         isSuccess: true,
-            //         message: undefined
-            //     };
-            //     if (user.email === 'suppapornpong.p@chanwanich.com' && user.password === 'P@ssw0rd')
-            //     {
-            //         resolve(response);
-            //     }
-            //     else 
-            //     {
-            //         reject();
-            //     }
-            // }, 3000);
-            
             this._httpClient.post(environment.apiBaseUrl + '/staffs/login', user)
             .subscribe((response: any) => {
                 if (this.setSession(response))
@@ -197,4 +185,24 @@ export class AuthenticationService{
     //             }, reject);
     //     });
     // }
+
+    getResetPasswordToken(email: string): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/staffs/ResetPasswordToken?email=' + email)
+                .subscribe(response => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+
+    resetPassword(staff: any): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.post(environment.apiBaseUrl + '/staffs/ResetPassword', staff)
+                .subscribe(response => {
+                    resolve(response);
+                }, reject);
+        });
+    }
 }
