@@ -98,7 +98,12 @@ export class LoginComponent implements OnInit
             {
                 this.isLoading = false;
                 this._fuseProgressBarService.hide();
-                this._router.navigate([this.returnUrl]);
+                if (response.resetPasswordToken){
+                    this._router.navigate(['pages/auth/reset-password'], { queryParams: { email: this.loginForm.value.email, token: response.resetPasswordToken} });
+                }
+                else{
+                    this._router.navigate([this.returnUrl]);
+                }
             }
             else 
             {
