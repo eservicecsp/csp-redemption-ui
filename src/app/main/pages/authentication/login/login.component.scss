@@ -5,7 +5,7 @@ login {
     #login {
         width: 100%;
         overflow: hidden;
-        background: url('/csp-redemption-ui/assets/images/backgrounds/dark-material-bg.jpg') no-repeat;
+        background: url('/assets/images/backgrounds/karmart-bg.jpg') no-repeat;
         background-size: cover;
 
         #login-intro {
@@ -16,7 +16,9 @@ login {
             }
 
             .logo {
-                width: 128px;
+                // width: 128px;
+                width: 256px;
+                margin-left: -30px;
                 margin-bottom: 32px;
             }
 
