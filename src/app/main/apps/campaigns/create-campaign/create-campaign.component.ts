@@ -83,7 +83,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
          // Reactive Form
         this.form = this._formBuilder.group({
             waste:  ['', Validators.required],
-            id:  [''],
+            id:  0,
             name : ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
@@ -94,11 +94,12 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             duplicateMessage : ['', Validators.required],
             qrCodeNotExistMessage : ['', Validators.required],
             winMessage : ['', Validators.required],
-            createdBy: [this.userId]
+            createdBy: [this.userId],
+            CampaignTypeId : 0,
         });       
         
         this.collectingForm = this._formBuilder.group({
-            id:  [''],
+            id:  0,
             name : [undefined, Validators.required],
             waste:  ['', Validators.required],
             description : [undefined],
@@ -116,11 +117,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             duplicateMessage : [undefined, Validators.required],
             qrCodeNotExistMessage : [undefined, Validators.required],
             winMessage : [undefined, Validators.required],
-            // peices: this._formBuilder.array([])
+            CampaignTypeId : 0,
         });
 
         this.PointForm = this._formBuilder.group({
-            id:  [''],
+            id:  0,
             name : ['', Validators.required],
             waste:  ['', Validators.required],
             description : [undefined],
@@ -133,7 +134,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             qrCodeNotExistMessage : ['', Validators.required],
             winMessage : ['', Validators.required],
             createdBy: [this.userId],
-            point: ['', Validators.required]
+            point: ['', Validators.required],
+            CampaignTypeId : 0,
         });
 
         this.collectingForm.controls['rows'].valueChanges.subscribe(rows => {
@@ -273,6 +275,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 WinMessage: this.form.value.winMessage,
                 CreatedBy: this.userId,
             };
+            this.form.controls['CampaignTypeId'].setValue(this.campaignType.id);
             campaign = {
                 Peices : [],
                 Point: 0,
@@ -296,6 +299,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 WinMessage: this.PointForm.value.winMessage,
                 CreatedBy: this.userId,
             };
+            this.PointForm.controls['CampaignTypeId'].setValue(this.campaignType.id);
             campaign = {
                 Peices : [],
                 Point: this.PointForm.value.point,
@@ -327,32 +331,34 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 WinMessage: this.collectingForm.value.winMessage,
                 CreatedBy: this.userId,
            };
-            
+            this.collectingForm.controls['CampaignTypeId'].setValue(this.campaignType.id);
             campaign = {
                 //    Peices : arrayPeices,
                 Point: 0,
-                Campaign: data,
-                Product: this.collectingForm.value.product
+                Campaign: this.collectingForm.value,
+                Product: this.collectingForm.value.product,
+                
             };
         }
-        // this._campaignsService.createOrder(campaign).then(response => {
-        //     if (response.isSuccess === false){
-        //         this._snackBar.open(response.message, 'Close', {
-        //             duration: 5000,
-        //             horizontalPosition: this.horizontalPosition,
-        //             verticalPosition: this.verticalPosition,
-        //             panelClass: ['error-snackbar']
-        //         });
-        //     }else{
-        //         this._snackBar.open('Send data successed', 'Close', {
-        //             duration: 5000,
-        //             horizontalPosition: this.horizontalPosition,
-        //             verticalPosition: this.verticalPosition,
-        //             panelClass: ['success-snackbar']
-        //         });
-        //         this._router.navigate(['/apps/monitoring/campaign']);
-        //     }
-        // });
+        console.log(campaign)
+        this._campaignsService.createOrder(campaign).then(response => {
+            if (response.isSuccess === false){
+                this._snackBar.open(response.message, 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['error-snackbar']
+                });
+            }else{
+                this._snackBar.open('Send data successed', 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['success-snackbar']
+                });
+                this._router.navigate(['/apps/monitoring/campaign']);
+            }
+        });
     }
 
     refreshRowColumnTable(): void
@@ -469,7 +475,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
     }
 
     onSelectFile(event, form: FormGroup): void {
-        console.log(form)
+        //console.log(form)
         if (event.target.files && event.target.files[0]) {
             const filesAmount = event.target.files.length;
             const idFC = form['id'] as FormControl;
