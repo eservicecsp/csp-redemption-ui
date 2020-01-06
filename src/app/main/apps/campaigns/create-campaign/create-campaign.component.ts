@@ -87,6 +87,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             name : ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
+            //dealers: [undefined],
             quantity : ['', Validators.required],
             startDate : ['', Validators.required],
             endDate : ['', Validators.required],
@@ -117,7 +118,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             duplicateMessage : [undefined, Validators.required],
             qrCodeNotExistMessage : [undefined, Validators.required],
             winMessage : [undefined, Validators.required],
-            CampaignTypeId : 0,
+            campaignTypeId : 0,
+            url: [undefined]
         });
 
         this.PointForm = this._formBuilder.group({
@@ -126,6 +128,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             waste:  ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
+            //dealers: [undefined],
             quantity : ['', Validators.required],
             startDate : ['', Validators.required],
             endDate : ['', Validators.required],
@@ -275,7 +278,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 WinMessage: this.form.value.winMessage,
                 CreatedBy: this.userId,
             };
-            this.form.controls['CampaignTypeId'].setValue(this.campaignType.id);
+            this.form.controls['campaignTypeId'].setValue(this.campaignType.id);
             campaign = {
                 Peices : [],
                 Point: 0,
@@ -299,7 +302,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 WinMessage: this.PointForm.value.winMessage,
                 CreatedBy: this.userId,
             };
-            this.PointForm.controls['CampaignTypeId'].setValue(this.campaignType.id);
+            this.PointForm.controls['campaignTypeId'].setValue(this.campaignType.id);
             campaign = {
                 Peices : [],
                 Point: this.PointForm.value.point,
@@ -321,7 +324,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 Description: this.collectingForm.value.description,
                 CampaignTypeId: this.campaignType.id,
                 Url: this.url,
-                // Quantity: Quantity,
                 // TotalPeice : this.peices.controls.length, 
                 StartDate:  moment(this.collectingForm.value.startDate).format('YYYY-MM-DD'),
                 EndDate:  moment(this.collectingForm.value.endDate).format('YYYY-MM-DD'),
@@ -331,7 +333,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 WinMessage: this.collectingForm.value.winMessage,
                 CreatedBy: this.userId,
            };
-            this.collectingForm.controls['CampaignTypeId'].setValue(this.campaignType.id);
+            this.collectingForm.controls['campaignTypeId'].setValue(this.campaignType.id);
+            this.collectingForm.controls['url'].setValue(this.url);
             campaign = {
                 //    Peices : arrayPeices,
                 Point: 0,
