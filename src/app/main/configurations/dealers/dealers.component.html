@@ -60,6 +60,14 @@
                             <p class="text-truncate">{{dealer.id}}</p>
                         </mat-cell>
                     </ng-container>
+
+                    <!-- Branch No Column -->
+                    <ng-container matColumnDef="branchNo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Branch No.</mat-header-cell>
+                        <mat-cell *matCellDef="let dealer">
+                            <p class="text-truncate">{{dealer.branchNo}}</p>
+                        </mat-cell>
+                    </ng-container>
     
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">

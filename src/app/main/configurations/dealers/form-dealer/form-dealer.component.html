@@ -47,10 +47,10 @@
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
     
                         <mat-form-field appearance="outline" fxFlex="100">
-                            <mat-label>Dealr no.</mat-label>
+                            <mat-label>Branch no.</mat-label>
                             <input matInput formControlName="branchNo">
                             <mat-error *ngIf="dealerForm.get('branchNo').hasError('required')">
-                                Dealr no is required
+                                Branch no. is required!
                             </mat-error>
                         </mat-form-field>
     
@@ -61,7 +61,7 @@
                             <mat-label>Name</mat-label>
                             <input matInput formControlName="name">
                             <mat-error *ngIf="dealerForm.get('name').hasError('required')">
-                                Name is required
+                                Name is required!
                             </mat-error>
                         </mat-form-field>
     
@@ -72,12 +72,12 @@
                             <mat-label>Email</mat-label>
                             <input matInput formControlName="email">
                             <mat-error  *ngIf="dealerForm.get('email').hasError('required')">
-                                Email is required
+                                Email is required!
                             </mat-error>
                             <mat-error
                             *ngIf="!dealerForm.get('email').hasError('required') &&
                                     dealerForm.get('email').hasError('email')">
-                            Please enter a valid email address
+                                Please enter a valid email address!
                         </mat-error>
                         </mat-form-field>
     
