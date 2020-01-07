@@ -140,6 +140,7 @@ $typography: mat-typography-config(
 @import "src/app/main/configurations/promotions/promotions.theme";
 @import "src/app/main/configurations/promotion-types/promotion-types.theme";
 @import "src/app/main/configurations/brands/brands.theme";
+@import "src/app/main/configurations/roles/roles.theme";
 
 // Redeem
 @import "src/app/main/redeem/collecting/collecting.theme";
@@ -174,6 +175,7 @@ $typography: mat-typography-config(
     @include configurations-promotions-theme($theme);
     @include configurations-promotion-types-theme($theme);
     @include configurations-brands-theme($theme);
+    @include configurations-roles-theme($theme);
 
     // Redeem
     @include redeem-collecting-theme($theme);
