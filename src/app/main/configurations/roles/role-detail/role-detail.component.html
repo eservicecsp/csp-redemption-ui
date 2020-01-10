@@ -1,0 +1,109 @@
+<div id="role" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/configurations/roles'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{role.name}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='create'">
+                        New Role
+                    </div>
+                    <div class="h3 secondary-text">
+                        <span>Role Detail</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button
+                    class="save-role-button"
+                    [disabled]="roleForm.invalid"
+                    *ngIf="pageType ==='new'" (click)="createRole()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button
+                    class="save-role-button"
+                    [disabled]="roleForm.invalid"
+                    *ngIf="pageType ==='edit'" (click)="updateRole()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="roleForm" [formGroup]="roleForm" class="role w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Basic Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput formControlName="name">
+                                    <mat-error *ngIf="roleForm.get('name').hasError('required')">
+                                        Name is required
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Description</mat-label>
+                                    <input matInput formControlName="description">
+                                    <mat-error  *ngIf="roleForm.get('description').hasError('required')">
+                                        Description is required
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Functions</mat-label>
+                                    <mat-select formControlName="functions" multiple>
+                                        <mat-option *ngFor="let function of functions" [value]="function.id" [disabled]="function.level === 0">
+                                        {{function.description}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <!-- <mat-label>Active</mat-label>
+                                <mat-slide-toggle formControlName="isActived"></mat-slide-toggle> -->
+                            </div>
+
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

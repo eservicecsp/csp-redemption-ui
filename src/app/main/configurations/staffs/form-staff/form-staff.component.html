@@ -97,7 +97,7 @@
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                        <mat-form-field fxFlex="100">
+                        <mat-form-field appearance="outline" fxFlex="100">
                             <mat-label>Roles</mat-label>
                             <mat-select formControlName="roleId" required>
                                 <mat-option *ngFor="let role of roles" [value]="role.id">

@@ -1,4 +1,4 @@
-<div id="product-types" class="page-layout carded fullwidth inner-scroll">
+<div id="roles" class="page-layout carded fullwidth inner-scroll">
 
         <!-- TOP BACKGROUND -->
         <div class="top-bg accent"></div>
@@ -16,10 +16,10 @@
                 <div class="logo mb-24 mb-md-0"
                      fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                        shopping_basket
+                        account_circle
                     </mat-icon>
                     <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                        Product Types
+                        Roles
                     </span>
                 </div>
                 <!-- / APP TITLE -->
@@ -28,16 +28,16 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="Search for a product type">
+                        <input #filter placeholder="Search for a role">
                     </div>
                 </div>
                 <!-- / SEARCH -->
     
                 <!-- ADD BUTTON -->
                 <button mat-raised-button
-                        [routerLink]="'/configurations/product-types/new'"
-                        class="add-product-button fuse-white mt-24 mt-md-0">
-                    <span>ADD NEW PRODUCT TYPE</span>
+                        [routerLink]="'/configurations/roles/create'"
+                        class="add-role-button fuse-white mt-24 mt-md-0">
+                    <span>ADD NEW ROLE</span>
                 </button>
                 <!-- / ADD BUTTON -->
     
@@ -47,61 +47,36 @@
             <!-- CONTENT CARD -->
             <div class="content-card">
     
-                <mat-table class="product-types-table"
+                <mat-table class="roles-table"
                            #table [dataSource]="dataSource"
                            matSort
                            [@animateStagger]="{value:'50'}"
                            fusePerfectScrollbar>
     
-
-    
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                        <mat-cell *matCellDef="let productType">
-                            <p class="text-truncate">{{productType.name}}</p>
+                        <mat-cell *matCellDef="let role">
+                            <p class="text-truncate">{{role.name}}</p>
                         </mat-cell>
                     </ng-container>
     
-                    <!-- Category Column -->
+                    <!-- Description Column -->
                     <ng-container matColumnDef="description">
-                        <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Description</mat-header-cell>
-                        <mat-cell *matCellDef="let productType" fxHide fxShow.gt-md>
-                            <p class="category text-truncate">
-                                {{productType.description}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                    <!-- Price Column -->
-                    <ng-container matColumnDef="created">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Created</mat-header-cell>
-                        <mat-cell *matCellDef="let productType" fxHide fxShow.gt-xs>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Description</mat-header-cell>
+                        <mat-cell *matCellDef="let role" fxHide fxShow.gt-xs>
                             <p class="price text-truncate">
-                                {{productType.createdByName}}<br/>
-                                {{productType.createdDate| date:'yyyy-MM-dd'}}<br/>
-                                {{productType.createdDate| date:'hh:mm:ss'}}
+                                {{role.description}}
                             </p>
                         </mat-cell>
                     </ng-container>
- 
-    
-                    <!-- Active Column -->
-                    <ng-container matColumnDef="active">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
-                        <mat-cell *matCellDef="let productType" fxHide fxShow.gt-xs>
-                            <mat-icon *ngIf="productType.isActived" class="active-icon green-600 s-16">check</mat-icon>
-                            <mat-icon *ngIf="!productType.isActived" class="active-icon red-500 s-16">close</mat-icon>
-                        </mat-cell>
-                    </ng-container>
-    
+
                     <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
     
-                    <mat-row *matRowDef="let productType; columns: displayedColumns;"
-                             class="product"
+                    <mat-row *matRowDef="let role; columns: displayedColumns;"
+                             class="role"
                              matRipple
-                             [routerLink]="['/configurations/product-types', productType.id]">
-                             <!-- [routerLink]="'/configurations/product-types/'+product.id+'/'+product.handle"> -->
+                             [routerLink]="['/configurations/roles', role.id]">
                     </mat-row>
     
                 </mat-table>
