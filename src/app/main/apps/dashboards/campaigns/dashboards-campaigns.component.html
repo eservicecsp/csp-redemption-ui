@@ -33,10 +33,25 @@
                             <div class="fuse-widget-front">
                                 <div class="px-16 border-bottom" fxLayout="row wrap"
                                     fxLayoutAlign="space-between center">
+                                    <div fxFlex class="py-16 h3">Province</div>
+                                </div>
+                                <div class="row wrap">
+                                    <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+                                        <ngx-charts-pie-chart  [scheme]="colorScheme"
+                                            [results]="provinceChart" [gradient]="gradient" [legend]="showLegend" >
+                                        </ngx-charts-pie-chart>
+                                    </div>
+                                </div>
+                            </div>
+                        </fuse-widget>
+                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="50">
+                            <div class="fuse-widget-front">
+                                <div class="px-16 border-bottom" fxLayout="row wrap"
+                                    fxLayoutAlign="space-between center">
                                     <div fxFlex class="py-16 h3">Transactions</div>
                                 </div>
                                 <div class="row wrap">
-                                    <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="70">
+                                    <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
                                         <ngx-charts-bar-vertical [view]="view" [scheme]="colorScheme"
                                             [results]="transactionChart" [gradient]="gradient" [xAxis]="showXAxis"
                                             [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
@@ -47,14 +62,14 @@
                                 </div>
                             </div>
                         </fuse-widget>
-                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100">
+                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="50">
                             <div class="fuse-widget-front">
                                 <div class="px-16 border-bottom" fxLayout="row wrap"
                                     fxLayoutAlign="space-between center">
                                     <div fxFlex class="py-16 h3">QrCode</div>
                                 </div>
                                 <div class="row wrap">
-                                    <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="50">
+                                    <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
                                         <ngx-charts-bar-vertical [view]="view" [scheme]="colorScheme"
                                             [results]="qrCodeChart" [gradient]="gradient" [xAxis]="showXAxis"
                                             [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
@@ -65,6 +80,7 @@
                                 </div>
                             </div>
                         </fuse-widget>
+                        
                     </div>
                 </mat-tab>
 
@@ -72,7 +88,7 @@
                 <mat-tab label="Detail">
                     <div class="widget-group" fxLayout="row wrap" fxFlex="100" [@animateStagger]="{value:'50'}">
                         <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
-                            fxFlex="1 0 auto" name="form" [formGroup]="form">
+                            fxFlex="1 0 auto" name="form" [formGroup]="form" class="form">
 
                             <!-- <div class="h2">Create Packaging</div>
                             <div class="h4 mb-24 secondary-text">{{currentDate | date: 'yyyy-MM-dd'}}</div> -->
@@ -89,7 +105,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex="100">
                                     <mat-label>Waste (%)</mat-label>
-                                    <input matInput type="number" formControlName="waste">
+                                    <input matInput type="number" formControlName="waste" readonly>
                                     <mat-error>Waste is required!</mat-error>
                                 </mat-form-field>
             
@@ -118,7 +134,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex="100">
                                     <mat-label>Product</mat-label>
-                                    <mat-select formControlName="product" >
+                                    <mat-select formControlName="product" [disabled]="true" >
                                         <mat-option *ngFor="let product of products" [value]="product.id">
                                             {{product.name}}
                                         </mat-option>
@@ -129,7 +145,19 @@
                                 </mat-form-field>
 
                             </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="campaignTypeId == 1">
 
+                                <mat-form-field appearance="outline" fxFlex="100">
+                                    <mat-label>Dealers</mat-label>
+                                    <mat-select placeholder="Dealers" formControlName="dealers" multiple [disabled]="true">
+                                        <mat-option *ngFor="let dealer of dealerList" [value]="dealer.id">
+                                            {{dealer.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                            </div>
+                            
                             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 
                                 <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
@@ -176,14 +204,116 @@
 
                             </div>
 
-                           
+                            <div *ngIf="campaignTypeId == 1">
+                                <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+                                    <div fxFlex="40" class="pr-16">     
+                                        <div class="example-image-card">
+                                            <div class="example-image-card-header p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                                                <div class="h1 font-weight-300" style="color: rgb(5, 5, 5);">Example Collecting Image</div>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutAlign="center center" class="p-16">
+                                                <table *ngIf="collectingType == 1">
+                                                    <tr *ngFor="let item of collectingData">
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img class="product-image" [src]="item.extension + ',' + item.file"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table *ngIf="collectingType == 2">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img class="product-image" [src]="collectingData[0].extension + ',' + collectingData[0].file"/>
+                                                                <div class="position">1:1</div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img class="product-image" [src]="collectingData[1].extension + ',' + collectingData[1].file"/>
+                                                                <div class="position">1:2</div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img class="product-image" [src]="collectingData[2].extension + ',' + collectingData[2].file"/>
+                                                                <div class="position">2:1</div>
+                                                            </div>
+                                                            
+                                                        </td>
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img class="product-image" [src]="collectingData[3].extension + ',' + collectingData[3].file"/>
+                                                                <div class="position">2:2</div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table *ngIf="collectingType == 3">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img [src]="collectingData[0].extension + ',' + collectingData[0].file">
+                                                                <div class="position">1:1</div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img [src]="collectingData[1].extension + ',' + collectingData[1].file">
+                                                                <div class="position">1:2</div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img [src]="collectingData[2].extension + ',' + collectingData[2].file">
+                                                                <div class="position">2:1</div>
+                                                            </div>
+                                                            
+                                                        </td>
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img [src]="collectingData[3].extension + ',' + collectingData[3].file">
+                                                                <div class="position">2:2</div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img [src]="collectingData[4].extension + ',' + collectingData[4].file">
+                                                                <div class="position">3:1</div>
+                                                            </div>
+                                                            
+                                                        </td>
+                                                        <td>
+                                                            <div class="collecting-image-cell">
+                                                                <img [src]="collectingData[5].extension + ',' + collectingData[5].file">
+                                                                <div class="position">3:2</div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <button mat-raised-button color="accent" type="button" 
                                 (click)="createCampaign()" 
                                 [disabled]="form.invalid"
                                 class="mt-12">
                                 Update
                             </button>
+                            
                         </form>
+                       
                     </div>
                 </mat-tab>
 
@@ -210,7 +340,7 @@
                                     [@animateStagger]="{value:'50'}"
                                     fusePerfectScrollbar>
 
-                                    <ng-container matColumnDef="id">
+                                    <ng-container matColumnDef="id" class="table-row">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
                                         <mat-cell *matCellDef="let transaction">
                                             <p class="text-truncate">{{transaction.id}}</p>
@@ -323,6 +453,10 @@
                                     fxLayoutAlign="space-between center">
                                     <div fxFlex class="h3">Code</div>
                                     <div fxFlex="0 1 auto" fxLayout="row">
+                                        <button mat-icon-button aria-label="import file icon button" matTooltip="Download"
+                                            matTooltipPosition="above" (click)="downloadConsumer()">
+                                            <mat-icon>cloud_download</mat-icon>
+                                        </button>
                                         <mat-icon>search</mat-icon>
                                         <input matInput #filter placeholder="Search for a code"
                                             [formControl]="searchInput" class="px-16">
@@ -459,6 +593,7 @@
                                     (matSortChange)="getEnrollments()"
                                     [@animateStagger]="{value:'50'}"
                                     fusePerfectScrollbar>
+
                                     <ng-container matColumnDef="checkbox">
                                         <mat-header-cell *matHeaderCellDef>
                                             <mat-checkbox #allCheckBox (change)="$event ? masterToggle() : null"

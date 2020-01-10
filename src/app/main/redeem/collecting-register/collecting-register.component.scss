@@ -9,7 +9,7 @@ collecting-register {
     
     #collecting-register {
         width: 100%;
-        background: url('/assets/images/backgrounds/karmart-bg.jpg') no-repeat;
+        background: url('/csp-redemption-ui/assets/images/backgrounds/karmart-bg.jpg') no-repeat;
         background-size: cover;
         position: relative;
 
@@ -204,6 +204,43 @@ collecting-register {
                     }
                 }
             }
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+    
+        table {
+            td {
+                width: 150px;
+                height: 150px;
+                
+                .collecting-image-cell{
+                    position: relative;
+    
+                    img {
+                        max-width: 150px; 
+                    }
+                }
+                // .black-white {
+                //     -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+                //     filter: grayscale(100%);
+                // }
+                .position {
+                    padding-top: 7px;	
+                    padding-right: 7px;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    // display: none;
+                }
+                
+            }
+            .img_grayscale {
+                -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+                filter: grayscale(100%);
+            }
+    
+            
         }
     }
 }

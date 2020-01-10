@@ -22,6 +22,8 @@ export class PointComponent implements OnInit
 
     isRewardShow: boolean;
     message: string;
+    latitude: string;
+    longitude: string;
 
     /**
      * Constructor
@@ -74,6 +76,14 @@ export class PointComponent implements OnInit
         this.pointForm = this._formBuilder.group({
             phone   : ['', [Validators.required]]
         });
+        this._redeemService.getPosition().then(position =>
+            {
+                this.latitude = position.coords.latitude;
+                this.longitude = position.coords.longitude;
+            }, error => {
+                this.latitude = null;
+                this.longitude = null;
+        });
     }
 
     point(): void
@@ -82,8 +92,9 @@ export class PointComponent implements OnInit
             phone  : this.pointForm.value.phone,
             token   : this.token,
             campaignId: this.campaignId,
+            latitude: this.latitude,
+            longitude: this.longitude
         };
-
         this._redeemService.isExist(requestData).then(response => {
             if (response.isExist)
             {
@@ -110,4 +121,5 @@ export class PointComponent implements OnInit
             }
         });
     }
+
 }

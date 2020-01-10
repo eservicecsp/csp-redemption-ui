@@ -144,4 +144,24 @@ export class RedeemService
                 }, reject);
         });
     }
+    getPosition(): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            console.log(navigator.geolocation);
+            if (navigator.geolocation)
+            {
+                navigator.geolocation.getCurrentPosition(position => {
+                    console.log(position)
+                    resolve(position);
+                },
+                err => {
+                    reject(err);
+                });
+            }
+            else
+            {
+                reject();
+            }
+        });
+    }
 }

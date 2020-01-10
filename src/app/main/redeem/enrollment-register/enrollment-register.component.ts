@@ -19,6 +19,8 @@ import * as moment from 'moment';
 export class EnrollmentRegisterComponent implements OnInit
 {
     enrollmentRegisterForm: FormGroup;
+    latitude: string;
+    longitude: string;
 
     token: string;
     campaignId: number;
@@ -101,7 +103,14 @@ export class EnrollmentRegisterComponent implements OnInit
      */
     ngOnInit(): void
     {
-
+        this._redeemService.getPosition().then(position =>
+            {
+                this.latitude = position.coords.latitude;
+                this.longitude = position.coords.longitude;
+            }, error => {
+                this.latitude = null;
+                this.longitude = null;
+        });
         
         this.enrollmentRegisterForm = this._formBuilder.group({
             id: this.consumerId,
@@ -197,7 +206,9 @@ export class EnrollmentRegisterComponent implements OnInit
             isMakeup: this.enrollmentRegisterForm.value.isMakeup,
             isBodycare: this.enrollmentRegisterForm.value.isBodycare,
             isSupplements: this.enrollmentRegisterForm.value.isSupplements,
-            productType: this.enrollmentRegisterForm.get('productType').value
+            productType: this.enrollmentRegisterForm.get('productType').value,
+            latitude: this.latitude,
+            longitude: this.longitude
         };
         //console.log(requestData);
         this._redeemService.registerConsumerEnrollment(requestData).then(response => {

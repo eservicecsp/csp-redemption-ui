@@ -107,7 +107,9 @@
             }
         }
     }
+   
     .transactions-table {
+        
         .mat-column-id {
             flex: 0 1 100px;
         }
@@ -206,6 +208,46 @@
 
         .active-icon {
             border-radius: 50%;
+        }
+    }
+    .mat-checkbox-inner-container {
+        background-color: #E1E1E1;
+    } 
+    mat-row {
+        height: 30px !important;
+    }
+    .form{
+        table, th, td {
+            border: 1px solid black;
+        }
+    
+        table {
+            td {
+                width: 150px;
+                height: 150px;
+                
+                .collecting-image-cell{
+                    position: relative;
+    
+                    img {
+                        max-width: 150px; 
+                    }
+                }
+                // .black-white {
+                //     -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+                //     filter: grayscale(100%);
+                // }
+                .position {
+                    padding-top: 7px;	
+                    padding-right: 7px;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    // display: none;
+                }
+            }
+    
+            
         }
     }
 }

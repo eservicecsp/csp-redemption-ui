@@ -28,6 +28,7 @@ import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-
 import { ConsumersService } from '../../consumers/consumers.service';
 import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
 import { CampaignsService } from '../../campaigns/campaigns.service';
+import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
 
 const routes: Routes = [
     {
@@ -87,7 +88,8 @@ const routes: Routes = [
         ConsumersService,
         ConfigurationsProductsService,
         CampaignsService,
-        DatePipe
+        DatePipe,
+        ConfigurationsDealersService
     ],
     entryComponents: [
         EnrollmentUploadDialogComponent

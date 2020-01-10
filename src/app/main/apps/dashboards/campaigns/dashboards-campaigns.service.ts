@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from 'environments/environment';
@@ -208,6 +208,15 @@ export class DashboardsCampaignsService implements Resolve<any>
                 }, reject);
         });
     }
+    charProvince(campaignId: number): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(`${environment.apiBaseUrl}/charts/province/` + campaignId)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
 
     sendAll(data, channel, campaignId): Promise<any>
     {
@@ -228,5 +237,15 @@ export class DashboardsCampaignsService implements Resolve<any>
                     resolve(response);
                 }, reject);
         });
+    }
+
+    downloadConsumer( campaignId, campaignTypeId): Observable<Blob>
+    {
+
+        const params = new HttpParams()
+        .set('campaignId', campaignId)
+        .set('campaignTypeId', campaignTypeId);
+        return this._httpClient.get(environment.apiBaseUrl + '/campaigns/download', {responseType: 'blob', params: params});
+        
     }
 }

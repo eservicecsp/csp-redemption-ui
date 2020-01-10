@@ -10,7 +10,9 @@ export class FooterComponent
     /**
      * Constructor
      */
+    year = '2020';
     constructor()
     {
+
     }
 }

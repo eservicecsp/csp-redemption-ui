@@ -10,7 +10,7 @@ import { AuthenticationService } from 'app/main/pages/authentication/authenticat
 import { ConsumersService } from '../../consumers/consumers.service';
 
 import { MatTabGroup, MatTabChangeEvent, PageEvent, MatSort, MatPaginator, MatDialog, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatCheckbox, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
 
@@ -20,6 +20,7 @@ import { ConfigurationsProductsService } from 'app/main/configurations/products/
 import { DatePipe } from '@angular/common';
 import { CampaignsService } from '../../campaigns/campaigns.service';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'app/date.adapter';
+import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
 
 
 @Component({
@@ -49,6 +50,13 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     form: FormGroup;
     products: any[];
     disableSelect = new FormControl(false);
+    campaignTypeId: number;
+    collectingType: number;
+    setRows: number;
+    setColumns: number;
+    collectingData: any[];
+    dealerList: [];
+    dealers: [];
     
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -59,13 +67,15 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     // chart
     transactionChart: [];
     qrCodeChart: [];
+    provinceChart: [];
     showXAxis = true;
     showYAxis = true;
     gradient = false;
     showLegend = true;
     showXAxisLabel = true;
-    xAxisLabel = 'Type';
+    xAxisLabel = 'Status';
     xAxisLabelQr = 'Type';
+    xAxisLabelProvinces = 'Provinces';
     showYAxisLabel = true;
     yAxisLabel = 'Transaction';
     yAxisLabelQr = 'Code';
@@ -87,7 +97,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     pageSizeOptions: number[] = [5, 10, 25, 100];
     sortActive: string;
     sortDirection: string;
-    transactionDisplayedColumns = ['id', 'fullName', 'email', 'phone', 'token', 'code', 'point', 'status',  'message', 'createDate'];
+    transactionDisplayedColumns = [ 'fullName', 'email', 'phone', 'token', 'code', 'point', 'status',  'message', 'createDate'];
     qrCodeDisplayedColumns = ['token', 'peice', 'code', 'point', 'fullName', 'email',  'phone', 'createDate', 'actions'];
     enrollmentDisplayedColumns = ['checkbox', 'firstName', 'lastName' , 'phone',  'email'];
     searchInput: FormControl;
@@ -114,6 +124,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         private _configurationsProductsService: ConfigurationsProductsService,
         private datePipe: DatePipe,
         private _campaignsService: CampaignsService,
+        private _configurationsDealersService: ConfigurationsDealersService,
     )
     {
         this._unsubscribeAll = new  Subject();
@@ -124,12 +135,19 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         if (this.campaigns && this.campaigns.length > 0)
         {
             this.selectedCampaign = this.campaigns[0];
+            this.campaignTypeId = this.selectedCampaign.campaignTypeId;
             this.getCharts();
         }
         else
         {
             this._router.navigate(['apps/campaigns']);
         }
+
+        this._configurationsDealersService.getDealers().then(response => {
+            if (response.isSuccess) {
+                this.dealerList = response.dealers;
+            }
+        });
 
         this.searchInput = new FormControl('');
         this.dataSource = [];
@@ -145,6 +163,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
             duplicateMessage : [''],
             qrCodeNotExistMessage : [''],
             winMessage : [''],
+            dealers: [undefined]
 
         }); 
     }
@@ -182,15 +201,18 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         this.tabGroup.selectedIndex = 0;
         this.index = 0;
         this.selectedCampaign = campaign;
+        
+        this.campaignTypeId = this.selectedCampaign.campaignTypeId;
 
         this.getCharts();
     }
 
     tabChanged(tabChangeEvent: MatTabChangeEvent): void
     {
+        this.campaignTypeId = this.selectedCampaign.campaignTypeId;
         //this.dataSource = [];
         this.index = tabChangeEvent.index;
-        switch (this.selectedCampaign.campaignTypeId){
+        switch (this.index){
             case 0:
                 {
                     this.getCharts();
@@ -244,6 +266,16 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         }, error => {
 
         });
+        this.provinceChart = [];
+        this._dashboardsCampaignsService.charProvince(this.selectedCampaign.id).then(response => {
+            if (response.isSuccess)
+            {
+                this.provinceChart = response.charts;
+                console.log(this.provinceChart);
+            }
+        }, error => {
+
+        });
     }
 
     getCampaignDetail(): void
@@ -253,18 +285,32 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
             {
                 
                 this.campaignDetail = response.campaign;
+                this.campaignTypeId = this.campaignDetail['campaignTypeId'];
+                if (this.campaignTypeId === 1){
+                    this.collectingType = this.campaignDetail['collectingType'];
+                    this.setRows = this.campaignDetail['rows'];
+                    this.setColumns = this.campaignDetail['columns'];
+                    this.collectingData = this.campaignDetail['collectingData'];
+                    this.dealers = this.campaignDetail['dealers'];
+                }
                 this.form = this._formBuilder.group({
                     name : [this.campaignDetail['name']],
                     waste : [this.campaignDetail['waste']],
                     description : [this.campaignDetail['description']],
-                    product: [this.campaignDetail['productId']],
+                    product: [{value: this.campaignDetail['product'], disabled: true}],
                     startDate : [this.datePipe.transform(this.campaignDetail['startDate'], 'yyyy-MM-dd')],
                     endDate : [this.datePipe.transform(this.campaignDetail['endDate'], 'yyyy-MM-dd')],
                     alertMessage : [this.campaignDetail['alertMessage']],
                     duplicateMessage : [this.campaignDetail['duplicateMessage']],
                     qrCodeNotExistMessage : [this.campaignDetail['qrCodeNotExistMessage']],
                     winMessage : [this.campaignDetail['winMessage']],
-                }); 
+                    dealers: [undefined]
+                });
+                let dealers = [];
+                this.campaignDetail['dealers'].forEach(element => {
+                    dealers.push(element.id);
+                });
+                this.form.controls['dealers'].setValue(dealers); 
             }
         }, error => {
 
@@ -605,4 +651,42 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
             }
         });
     }
+
+    downloadConsumer(){
+
+        console.log(this.campaignTypeId);
+        this._dashboardsCampaignsService.downloadConsumer(this.selectedCampaign.id, this.campaignTypeId).subscribe(response => {
+            const newBlob = new Blob([response], {type: 'text/plain'});
+
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(newBlob);
+                //dialogRef.close();
+                return;
+            }
+
+            const data = window.URL.createObjectURL(newBlob);
+            const link = document.createElement('a');
+            link.href = data;
+            link.download = 'consummers.txt';
+
+            link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+            //dialogRef.close();
+
+            setTimeout(() => {
+                // For Firefox it is necessary to delay revoking the ObjectURL
+                window.URL.revokeObjectURL(data);
+                link.remove();
+                //dialogRef.close();
+            }, 100);
+            
+        }, error => {
+            this._snackBar.open('Error : ' + error, 'Close', {
+                duration: 5000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+            });
+           // dialogRef.close();
+        });
+    }
+
 }

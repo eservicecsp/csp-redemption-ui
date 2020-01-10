@@ -53,7 +53,9 @@ configurations-promotions {
             }
         }
     }
-
+    mat-row {
+        height: 30px !important;
+    }
     .promotions-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);
@@ -90,20 +92,23 @@ configurations-promotions {
             }
         }
 
-        .mat-column-category {
-            flex: 0 1 240px;
+        .mat-column-name {
+            flex: 0 1 400px;
         }
 
-        .mat-column-price {
-            flex: 0 1 160px;
+        .mat-column-description {
+            flex: 0 1 400px;
         }
 
-        .mat-column-quantity {
-            flex: 0 1 160px;
+        .mat-column-promotionType {
+            flex: 0 1 320px;
         }
 
-        .mat-column-active {
+        .mat-column-isActived {
             flex: 0 1 80px;
+        }
+        .mat-column-created {
+            flex: 0 1 240px;
         }
 
         .quantity-indicator {

@@ -53,7 +53,18 @@ consumers {
             }
         }
     }
+    // mat-checkbox {
+    //     .mat-checkbox-background {
+    //         background-color:#EAEAEA;
+    //     }
 
+    // }
+    .mat-checkbox-inner-container {
+        background-color: #E1E1E1;
+    } 
+    mat-row {
+        height: 30px !important;
+    }
     .consumers-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);

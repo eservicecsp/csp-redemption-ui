@@ -3,7 +3,7 @@
         <div id="collecting-form-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="!isRewardShow">
             <div id="logo-wrapper">
                 <div class="logo">
-                    <img src="assets/images/logos/karmart.svg">
+                    <!-- <img src="csp-redemption-ui/assets/images/logos/karmart.svg"> -->
                 </div>
             </div>
 
@@ -38,18 +38,97 @@
         <div id="collecting-reward-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="isRewardShow">
             <div id="collecting-reward" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
 
-                <div *ngIf="isWinner" style="color: green;">
-                    <h2>{{msgWinner}}</h2>
-                </div>
-                <div *ngIf="!isWinner" style="color: orange;">
+                <div *ngIf="!isWinner" style="color: green;">
                     <h2>{{message}}</h2>
                     
                 </div>
-                <mat-chip-list class="mat-chip-list-stacked" aria-label="Color selection" >
-                    <mat-chip *ngFor="let piece of pieces" selected color="warn" >
-                      <span>{{piece}}</span>
-                    </mat-chip>
-                </mat-chip-list>
+                
+                <div *ngIf="campaignTypeId == 1">
+                    <div fxLayout="column" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+                        <div fxFlex="40" class="pr-16">     
+                            <div class="example-image-card">
+                                <div fxLayout="column" fxLayoutAlign="space-between center"  class="p-16">
+                                    <table *ngIf="collectingType == 1">
+                                        <tr *ngFor="let item of collectingData">
+                                            <td [class]="item.isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img class="product-image" [src]="item.extension + ',' + item.file"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table *ngIf="collectingType == 2">
+                                        <tr>
+                                            <td [class]="collectingData[0].isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img class="product-image" [src]="collectingData[0].extension + ',' + collectingData[0].file"/>
+                                                </div>
+                                            </td>
+                                            <td [class]="collectingData[1].isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img class="product-image" [src]="collectingData[1].extension + ',' + collectingData[1].file"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td [class]="collectingData[2].isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img class="product-image" [src]="collectingData[2].extension + ',' + collectingData[2].file"/>
+                                                </div>
+                                                
+                                            </td>
+                                            <td [class]="collectingData[3].isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img class="product-image" [src]="collectingData[3].extension + ',' + collectingData[3].file"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table *ngIf="collectingType == 3">
+                                        <tr>
+                                            <td [class]="collectingData[0].isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img [src]="collectingData[0].extension + ',' + collectingData[0].file">
+                                                </div>
+                                            </td>
+                                            <td [class]="collectingData[1].isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img [src]="collectingData[1].extension + ',' + collectingData[1].file">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td [class]="collectingData[2].isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img [src]="collectingData[2].extension + ',' + collectingData[2].file">
+                                                </div>
+                                                
+                                            </td>
+                                            <td [class]="collectingData[3].isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img [src]="collectingData[3].extension + ',' + collectingData[3].file">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td [class]="collectingData[4].isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img [src]="collectingData[4].extension + ',' + collectingData[4].file">
+                                                </div>
+                                                
+                                            </td>
+                                            <td [class]="collectingData[5].isCollected">
+                                                <div class="collecting-image-cell">
+                                                    <img [src]="collectingData[5].extension + ',' + collectingData[5].file">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
               
                 
             </div>

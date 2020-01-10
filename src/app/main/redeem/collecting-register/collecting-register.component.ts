@@ -19,9 +19,16 @@ import * as moment from 'moment';
 export class CollectingRegisterComponent implements OnInit
 {
     collectingRegisterForm: FormGroup;
+    latitude: string;
+    longitude: string;
 
     token: string;
     campaignId: number;
+    campaignTypeId: number;
+    collectingType: number;
+    setRows: number;
+    setColumns: number;
+    collectingData: any[];
 
     provinces: any[];
     amphurs: any[];
@@ -103,6 +110,15 @@ export class CollectingRegisterComponent implements OnInit
      */
     ngOnInit(): void
     {
+        this._redeemService.getPosition().then(position =>
+            {
+                this.latitude = position.coords.latitude;
+                this.longitude = position.coords.longitude;
+            }, error => {
+                this.latitude = null;
+                this.longitude = null;
+        });
+
         this.collectingRegisterForm = this._formBuilder.group({
             id: [0],
             firstName: [undefined, Validators.required],
@@ -187,29 +203,23 @@ export class CollectingRegisterComponent implements OnInit
             campaignId: this.campaignId,
             token: this.token,
             birthDate:  moment(this.collectingRegisterForm.value.birthDate).format('YYYY-MM-DD'),
-            productType: this.collectingRegisterForm.get('productType').value
+            productType: this.collectingRegisterForm.get('productType').value,
+            latitude: this.latitude,
+            longitude: this.longitude
         };
 
         this._redeemService.register(requestData).then(response => {
             this.isRewardShow = true;
-            // response.pieces.forEach(x => {
-            //     switch(x){
-            //         case 1: this.isShowReward01 = true; break;
-            //         case 2: this.isShowReward02 = true; break;
-            //         case 3: this.isShowReward03 = true; break;
-            //         case 4: this.isShowReward04 = true; break;
-            //         case 5: this.isShowReward05 = true; break;
-            //     }
-            // })
+            this.campaignTypeId = response.campaignType;
+            this.collectingType = response.collectingType;
+            this.setRows = response.rows;
+            this.setColumns = response.columns;
+            this.collectingData = response.collectingData;
+
+            this.isRewardShow = true;
             this.pieces = response.pieces;
             this.totalPieces = response.totalPieces;
-            if (this.totalPieces === this.pieces.length){
-                this.isWinner = true;
-                this.msgWinner = 'ยินดีด้วย! คุณสะสมชิ้นส่วนครบแล้ว';
-            }else{
-                this.msgWinner = 'พยายามอีกนิด ชิ้นส่วนยังไม่ครบ';
-                this.message = response.message;
-            }
+            this.message = response.message;
         });
     }
 }

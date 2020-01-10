@@ -16,6 +16,8 @@ import { RedeemService } from '../redeem.service';
 export class EnrollmentComponent implements OnInit
 {
     enrollmentForm: FormGroup;
+    latitude: string;
+    longitude: string;
 
     token: string;
     campaignId: string;
@@ -71,6 +73,15 @@ export class EnrollmentComponent implements OnInit
      */
     ngOnInit(): void
     {
+        this._redeemService.getPosition().then(position =>
+            {
+                this.latitude = position.coords.latitude;
+                this.longitude = position.coords.longitude;
+            }, error => {
+                this.latitude = null;
+                this.longitude = null;
+        });
+
         this.enrollmentForm = this._formBuilder.group({
             phone   : ['', [Validators.required]],
             code   : ['', [Validators.required]],
@@ -91,10 +102,11 @@ export class EnrollmentComponent implements OnInit
             firstName : this.enrollmentForm.value.firstName,
             lastName : this.enrollmentForm.value.lastName,
             email : this.enrollmentForm.value.email,
+            latitude: this.latitude,
+            longitude: this.longitude
         };
 
         this._redeemService.registerEnrollment(requestData).then(response => {
-            console.log(response);
             this.isRewardShow = true;
             this.message = response.message;
 

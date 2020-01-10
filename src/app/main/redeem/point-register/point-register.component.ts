@@ -23,6 +23,8 @@ export class PointRegisterComponent implements OnInit
 
     token: string;
     campaignId: number;
+    latitude: string;
+    longitude: string;
 
     provinces: any[];
     amphurs: any[];
@@ -91,6 +93,15 @@ export class PointRegisterComponent implements OnInit
     ngOnInit(): void
     {
         
+
+        this._redeemService.getPosition().then(position =>
+            {
+                this.latitude = position.coords.latitude;
+                this.longitude = position.coords.longitude;
+            }, error => {
+                this.latitude = null;
+                this.longitude = null;
+        });
 
         this.pointRegisterForm = this._formBuilder.group({
             id: [0],
@@ -177,7 +188,9 @@ export class PointRegisterComponent implements OnInit
             campaignId: this.campaignId,
             token: this.token,
             birthDate:  moment(this.pointRegisterForm.value.birthDate).format('YYYY-MM-DD'),
-            productType: this.pointRegisterForm.get('productType').value
+            productType: this.pointRegisterForm.get('productType').value,
+            latitude: this.latitude,
+            longitude: this.longitude
         };
     
         this._redeemService.register(requestData).then(response => {

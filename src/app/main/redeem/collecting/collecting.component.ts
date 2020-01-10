@@ -16,9 +16,18 @@ import { RedeemService } from '../redeem.service';
 export class CollectingComponent implements OnInit
 {
     collectingForm: FormGroup;
+    latitude: string;
+    longitude: string;
 
     token: string;
     campaignId: string;
+    campaignTypeId: number;
+    collectingType: number;
+    setRows: number;
+    setColumns: number;
+    collectingData: any[];
+
+
 
     isRewardShow: boolean;
     isShowReward01: boolean;
@@ -85,6 +94,14 @@ export class CollectingComponent implements OnInit
      */
     ngOnInit(): void
     {
+        this._redeemService.getPosition().then(position =>
+            {
+                this.latitude = position.coords.latitude;
+                this.longitude = position.coords.longitude;
+            }, error => {
+                this.latitude = null;
+                this.longitude = null;
+        });
         this.collectingForm = this._formBuilder.group({
             phone   : ['', [Validators.required]]
         });
@@ -107,21 +124,23 @@ export class CollectingComponent implements OnInit
             phone  : this.collectingForm.value.phone,
             token   : this.token,
             campaignId: this.campaignId,
+            latitude: this.latitude,
+            longitude: this.longitude
         };
 
         this._redeemService.isExist(requestData).then(response => {
             if (response.isExist)
             {
+                this.campaignTypeId = response.campaignType;
+                this.collectingType = response.collectingType;
+                this.setRows = response.rows;
+                this.setColumns = response.columns;
+                this.collectingData = response.collectingData;
+
                 this.isRewardShow = true;
                 this.pieces = response.pieces;
                 this.totalPieces = response.totalPieces;
-                if (this.totalPieces === this.pieces.length){
-                    this.isWinner = true;
-                    this.msgWinner = 'ยินดีด้วย! คุณสะสมชิ้นส่วนครบแล้ว';
-                }else{
-                    this.msgWinner = 'พยายามอีกนิด ชิ้นส่วนยังไม่ครบ';
-                    this.message = response.message;
-                }
+                this.message = response.message;
 
                 // this.isShowReward01 = true;
             }

@@ -278,7 +278,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 WinMessage: this.form.value.winMessage,
                 CreatedBy: this.userId,
             };
-            this.form.controls['campaignTypeId'].setValue(this.campaignType.id);
+            //this.form.controls['campaignTypeId'].setValue(this.campaignType.id);
             campaign = {
                 Peices : [],
                 Point: 0,
@@ -302,7 +302,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 WinMessage: this.PointForm.value.winMessage,
                 CreatedBy: this.userId,
             };
-            this.PointForm.controls['campaignTypeId'].setValue(this.campaignType.id);
+            //this.PointForm.controls['campaignTypeId'].setValue(this.campaignType.id);
             campaign = {
                 Peices : [],
                 Point: this.PointForm.value.point,

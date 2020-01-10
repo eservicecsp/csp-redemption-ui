@@ -35,4 +35,11 @@
             }
         }
     }
+    .my-drop-zone { 
+        border: dotted 3px lightgray; 
+        padding: 48px;
+        height: 120px;
+    }
+    .nv-file-over { border: dotted 3px red; } 
+    .another-file-over-class { border: dotted 3px green; }  
 }

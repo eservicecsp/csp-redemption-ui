@@ -53,7 +53,9 @@ configurations-product-types {
             }
         }
     }
-
+    mat-row {
+        height: 30px !important;
+    }
     .product-types-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);
@@ -77,15 +79,15 @@ configurations-product-types {
         }
 
         .mat-column-name {
-            flex: 0 1 240px;
+            flex: 0 1 400px;
         }
 
         .mat-column-description {
-            flex: 0 1 360px;
+            flex: 0 1 400px;
         }
 
         .mat-column-created {
-            flex: 0 1 240px;
+            flex: 0 1 360px;
         }
 
 
