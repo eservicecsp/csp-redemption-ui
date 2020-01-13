@@ -10,12 +10,37 @@ import { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatSnackBar
 import { Router, ActivatedRoute } from '@angular/router';
 import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
 
+import * as moment from 'moment';
+
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+
+export const MY_FORMATS = {
+    parse: {
+      dateInput: 'LL',
+    },
+    display: {
+      dateInput: 'LL',
+      monthYearLabel: 'MMM YYYY',
+      dateA11yLabel: 'LL',
+      monthYearA11yLabel: 'MMMM YYYY',
+    },
+};
+
 @Component({
     selector     : 'promotion-detail',
     templateUrl  : './promotion-detail.component.html',
     styleUrls    : ['./promotion-detail.component.scss'],
     animations   : fuseAnimations,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    providers: [
+        {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+        },
+        { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    ]
 })
 export class PromotionDetailComponent implements OnInit
 {
@@ -26,7 +51,32 @@ export class PromotionDetailComponent implements OnInit
         createdBy: [0],
         promotionTypeId: [0, [Validators.required]],
         isActived: [false, [Validators.required]],
+        startDate: [new Date(), [Validators.required]],
+        endDate: [new Date(), [Validators.required]],
+        promotionSubTypeId: [1, Validators.required],
+        image1: this._formBuilder.group({
+            name: [''],
+            file: [''],
+            extension: ['']
+        }),
+        image2: this._formBuilder.group({
+            name: [''],
+            file: [''],
+            extension: ['']
+        }),
+        image3: this._formBuilder.group({
+            name: [''],
+            file: [''],
+            extension: ['']
+        }),
+        backgroundImage: this._formBuilder.group({
+            name: [''],
+            file: [''],
+            extension: ['']
+        })
     });
+
+    
 
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -39,7 +89,30 @@ export class PromotionDetailComponent implements OnInit
         name: undefined,
         description: undefined,
         isActived: false,
-        promotionTypeId: 0
+        promotionTypeId: 0,
+        startDate: new Date(),
+        endDate: new Date(),
+        promotionSubTypeId: 1,
+        image1: {
+            name: '',
+            file: '',
+            extension: '',
+        },
+        image2: {
+            name: '',
+            file: '',
+            extension: '',
+        },
+        image3: {
+            name: '',
+            file: '',
+            extension: '',
+        },
+        backgroundImage: {
+            name: '',
+            file: '',
+            extension: '',
+        },
     };
     promotionTypes: [];
 
@@ -77,7 +150,30 @@ export class PromotionDetailComponent implements OnInit
                             name   : [this.promotion.name, [Validators.required]],
                             description: [this.promotion.description, Validators.required],
                             promotionTypeId: [this.promotion.promotionTypeId, [Validators.required]],
-                            isActived: [this.promotion.isActived, [Validators.required]]
+                            isActived: [this.promotion.isActived, [Validators.required]],
+                            startDate: [this.promotion.startDate, [Validators.required]],
+                            endDate: [this.promotion.endDate, [Validators.required]],
+                            promotionSubTypeId: [this.promotion.promotionSubTypeId, [Validators.required]],
+                            image1: this._formBuilder.group({
+                                name: [this.promotion.image1.name],
+                                file: [this.promotion.image1.file],
+                                extension: [this.promotion.image1.extension]
+                            }),
+                            image2: this._formBuilder.group({
+                                name: [this.promotion.image2.name],
+                                file: [this.promotion.image2.file],
+                                extension: [this.promotion.image2.extension]
+                            }),
+                            image3: this._formBuilder.group({
+                                name: [this.promotion.image3.name],
+                                file: [this.promotion.image3.file],
+                                extension: [this.promotion.image3.extension]
+                            }),
+                            backgroundImage: this._formBuilder.group({
+                                name: [this.promotion.backgroundImage.name],
+                                file: [this.promotion.backgroundImage.file],
+                                extension: [this.promotion.backgroundImage.extension]
+                            }),
                         });
                     }
                 });
@@ -86,7 +182,6 @@ export class PromotionDetailComponent implements OnInit
             {
                 this.pageType = 'new';
             }
-            
         });
     }
 
@@ -110,30 +205,92 @@ export class PromotionDetailComponent implements OnInit
         return (formGroup.controls[fromControl] as FormArray).controls;
     }
 
+    onPromotionSubTypeIdChanged(event): void
+    {
+        console.log(event);
+        const controls = this.getControl(this.promotionForm, 'promotionSubTypeId');
+        controls.setValue(event.value);
+    }
+
+    onSelectFile(event, form: FormGroup): void {
+        console.log(form)
+        if (event.target.files && event.target.files[0]) {
+            const filesAmount = event.target.files.length;
+            // const controlid = form.get('attachmentId') as FormControl;
+            const control = form.get('file') as FormControl;
+            const controlname = form.get('name') as FormControl;
+            // console.log(controlname);
+            if (event.target.files[0].type.includes('jpeg') || event.target.files[0].type.includes('png')){
+                if (event.target.files[0].size > 1000000){
+                    this._snackBar.open('File size must smaller than 1 MB', 'Close', {
+                        duration: 5000,
+                        horizontalPosition: this.horizontalPosition,
+                        verticalPosition: this.verticalPosition,
+                        panelClass: ['blue-snackbar']
+                    });
+                    control.setValue(null);
+                    controlname.setValue(null);
+                }
+                else{
+                    for (let i = 0; i < filesAmount; i++) {
+                        const reader = new FileReader();
+        
+                        reader.onload = (_event: any) => {
+                        control.setValue(_event.target.result);
+                        
+                        };
+        
+                        reader.readAsDataURL(event.target.files[i]);
+                    }
+                    controlname.setValue(event.target.files[0].name);
+                    // controlid.setValue(0);
+                }
+            }
+            else{
+                this._snackBar.open('Accept only jpeg and png file extension.', 'Close', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    panelClass: ['blue-snackbar']
+                });
+                control.setValue(null);
+                controlname.setValue(null);
+            }
+        }
+    }
+
+    clearAttachFile(form: FormGroup): void {
+        const fileFC = form.get('file') as FormArray;
+        const nameFC = form.get('name') as FormArray;
+        fileFC.setValue(null);
+        nameFC.setValue(null);
+    }
+
     createPromotion(): void
     {
-        this._configurationsPromotionService.createPromotion(this.promotionForm.value).then(response => {
-            if (response.isSuccess){
-                this._router.navigate(['configurations/promotions']);
-            } else {
-                console.error('fail');
-            }
-        }, error => {
-           console.error(error); 
-        });
+        console.log(this.promotionForm.value);
+        // this._configurationsPromotionService.createPromotion(this.promotionForm.value).then(response => {
+        //     if (response.isSuccess){
+        //         this._router.navigate(['configurations/promotions']);
+        //     } else {
+        //         console.error('fail');
+        //     }
+        // }, error => {
+        //    console.error(error); 
+        // });
     }
 
     updatePromotion(): void
     {
-        this._configurationsPromotionService.updatePromotion(this.promotionForm.value).then(response => {
-            if (response.isSuccess){
-                this._router.navigate(['configurations/promotions']);
-            } else {
-                console.error('fail');
-            }
-        }, error => {
-           console.error(error); 
-        });
+        // this._configurationsPromotionService.updatePromotion(this.promotionForm.value).then(response => {
+        //     if (response.isSuccess){
+        //         this._router.navigate(['configurations/promotions']);
+        //     } else {
+        //         console.error('fail');
+        //     }
+        // }, error => {
+        //    console.error(error); 
+        // });
     }
 
 }

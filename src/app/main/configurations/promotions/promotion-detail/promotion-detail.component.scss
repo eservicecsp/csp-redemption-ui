@@ -113,4 +113,32 @@
         }
     }
 
+    #promotion-detail-table {
+        td {
+            // width: 150px;
+            height: 120px;
+            
+            .image-cell{
+                position: relative;
+
+                img {
+                    max-width: 120px; 
+                }
+            }
+            // .black-white {
+            //     -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+            //     filter: grayscale(100%);
+            // }
+            .position {
+                padding-top: 7px;	
+                padding-right: 7px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                // display: none;
+            }
+        }
+
+        
+    }
 }

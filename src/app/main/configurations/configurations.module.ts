@@ -19,7 +19,7 @@ import { AgmCoreModule } from '@agm/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 
-import { MatProgressBarModule, MatToolbarModule, MatDialogModule, MatTooltipModule, MatProgressSpinnerModule, MatSlideToggleModule } from '@angular/material';
+import { MatProgressBarModule, MatToolbarModule, MatDialogModule, MatTooltipModule, MatProgressSpinnerModule, MatSlideToggleModule, MatDatepickerModule } from '@angular/material';
 import { AuthenticationGuard } from '../pages/authentication/authentication.guard';
 import { ConfigurationsStaffsComponent } from './staffs/staffs.component';
 import { ConfigurationsStaffsService } from './staffs/staffs.service';
@@ -280,6 +280,7 @@ const routes: Routes = [
         MatTooltipModule,
         MatProgressSpinnerModule,
         MatSlideToggleModule,
+        MatDatepickerModule,
 
         FuseSharedModule,
         FuseWidgetModule
