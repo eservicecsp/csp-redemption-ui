@@ -269,6 +269,7 @@ export class PromotionDetailComponent implements OnInit
     createPromotion(): void
     {
         console.log(this.promotionForm.value);
+        // const mydate: Date = this.profileForm.value.birthDate.format('YYYY-MM-DD');
         // this._configurationsPromotionService.createPromotion(this.promotionForm.value).then(response => {
         //     if (response.isSuccess){
         //         this._router.navigate(['configurations/promotions']);
