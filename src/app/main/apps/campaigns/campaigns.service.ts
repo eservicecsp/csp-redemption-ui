@@ -1,29 +1,26 @@
-import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import * as moment from 'moment';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
 import { environment } from 'environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 @Injectable()
-export class CampaignsService
+export class CampaignsService implements Resolve<any>
 {
-    public readonly baseURL: string;
+    campaigns: any[];
+    widgets: any[];
 
-    campaignTypes: any;
-    onCampaignTypesChanged: BehaviorSubject<any>;
-
-    onCampaignTypeChanged: BehaviorSubject<any>;
-
-    constructor(private _httpClient: HttpClient)
+    /**
+     * Constructor
+     *
+     * @param {HttpClient} _httpClient
+     */
+    constructor(
+        private _httpClient: HttpClient
+    )
     {
-        // Set the defaults
-        this.onCampaignTypesChanged  = new BehaviorSubject({});
-        
-        this.onCampaignTypeChanged = new BehaviorSubject({});
     }
-    
+
     /**
      * Resolver
      *
@@ -33,10 +30,11 @@ export class CampaignsService
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any
     {
+
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this.getCampaignTypes()
+                //this.getCampaigns()
             ]).then(
                 () => {
                     resolve();
@@ -46,42 +44,40 @@ export class CampaignsService
         });
     }
 
-
-    getCampaignTypes(): Promise<any>
+    /**
+     * Get campaigns
+     *
+     * @returns {Promise<any>}
+     */
+    getCampaigns(data: any): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.get(`${environment.apiBaseUrl}/campaignTypes`)
-                .subscribe((response: any) => {
-                    if (response.isSuccess){
-                        this.campaignTypes = response.campaignTypes;
-                        this.onCampaignTypesChanged.next(this.campaignTypes);
-                        resolve(response);
-                    }
-                    else{
-                        reject(response);
-                    }
-                }, reject);
-        });
-    }
-
-    createOrder(data: any): Promise<any>
-    {
-        return new Promise((resolve, reject) => {
-            this._httpClient.post(`${environment.apiBaseUrl}/Campaigns/Create`, data)
-                .subscribe((response: any) => {
+            this._httpClient.post(environment.apiBaseUrl + '/campaigns/campaignList', data)
+            .subscribe((response: any) => {
+                if (response.isSuccess)
+                {
+                   // this.campaigns = response.campaigns;
                     resolve(response);
-                }, reject);
+                }
+                else{
+                    reject(response);
+                }
+            }, reject);
         });
     }
-    updateCampaign(data: any): Promise<any>
+    updateStatusCampaigns(data: any): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.post(`${environment.apiBaseUrl}/campaigns/update`, data)
-                .subscribe((response: any) => {
+            this._httpClient.post(environment.apiBaseUrl + '/campaigns/updatestatus', data)
+            .subscribe((response: any) => {
+                if (response.isSuccess)
+                {
                     resolve(response);
-                }, reject);
+                }
+                else{
+                    reject(response);
+                }
+            }, reject);
         });
     }
-   
-
 }

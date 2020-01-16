@@ -128,9 +128,10 @@ $typography: mat-typography-config(
 @import "src/app/main/pages/authentication/reset-password/reset-password.theme";
 
 // Apps
-@import "src/app/main/apps/campaigns/campaigns.theme";
+@import "src/app/main/apps/create-campaigns/create-campaigns.theme";
 @import "src/app/main/apps/dashboards/campaigns/dashboards-campaigns.theme";
 @import "src/app/main/apps/consumers/consumers.theme";
+@import "src/app/main/apps/campaigns/campaigns.theme";
 
 // Configurations
 @import "src/app/main/configurations/staffs/staffs.theme";
@@ -141,6 +142,7 @@ $typography: mat-typography-config(
 @import "src/app/main/configurations/promotion-types/promotion-types.theme";
 @import "src/app/main/configurations/brands/brands.theme";
 @import "src/app/main/configurations/roles/roles.theme";
+@import "src/app/main/configurations/contact-us/contact-us.theme";
 
 // Redeem
 @import "src/app/main/redeem/collecting/collecting.theme";
@@ -163,9 +165,10 @@ $typography: mat-typography-config(
     @include reset-password-theme($theme);
 
     // Apps
-    @include campaigns-theme($theme);
+    @include create-campaigns-theme($theme);
     @include dashboards-campaigns-theme($theme);
     @include consumers-theme($theme);
+    @include campaigns-theme($theme);
 
     // Configurations
     @include configurations-staffs-theme($theme);
@@ -176,6 +179,7 @@ $typography: mat-typography-config(
     @include configurations-promotion-types-theme($theme);
     @include configurations-brands-theme($theme);
     @include configurations-roles-theme($theme);
+    @include configurations-contact-us-theme($theme);
 
     // Redeem
     @include redeem-collecting-theme($theme);

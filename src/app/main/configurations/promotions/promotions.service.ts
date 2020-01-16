@@ -113,4 +113,13 @@ export class ConfigurationsPromotionsService implements Resolve<any>
                 }, reject);
         });
     }
+    getPromotionSubTypes(): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(`${environment.apiBaseUrl}/promotions/promotionsubtypes`)
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
 }

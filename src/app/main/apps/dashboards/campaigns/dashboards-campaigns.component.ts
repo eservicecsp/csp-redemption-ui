@@ -18,7 +18,6 @@ import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-
 import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
 import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
 import { DatePipe } from '@angular/common';
-import { CampaignsService } from '../../campaigns/campaigns.service';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'app/date.adapter';
 import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
 
@@ -123,7 +122,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         private _formBuilder: FormBuilder,
         private _configurationsProductsService: ConfigurationsProductsService,
         private datePipe: DatePipe,
-        private _campaignsService: CampaignsService,
+        // private _campaignsService: CampaignsService,
         private _configurationsDealersService: ConfigurationsDealersService,
     )
     {
@@ -632,24 +631,24 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
             QrCodeNotExistMessage: this.form.value.qrCodeNotExistMessage,
             WinMessage: this.form.value.winMessage,
        };
-        this._campaignsService.updateCampaign(data).then(response => {
-            if (response.isSuccess === false){
-                this._snackBar.open(response.message, 'Close', {
-                    duration: 5000,
-                    horizontalPosition: this.horizontalPosition,
-                    verticalPosition: this.verticalPosition,
-                    panelClass: ['error-snackbar']
-                });
-            }else{
-                this._snackBar.open('Update capmaign successed', 'Close', {
-                    duration: 5000,
-                    horizontalPosition: this.horizontalPosition,
-                    verticalPosition: this.verticalPosition,
-                    panelClass: ['success-snackbar']
-                });
-                //this.selectedCampaignChanged(this.selectedCampaign);
-            }
-        });
+        // this._campaignsService.updateCampaign(data).then(response => {
+        //     if (response.isSuccess === false){
+        //         this._snackBar.open(response.message, 'Close', {
+        //             duration: 5000,
+        //             horizontalPosition: this.horizontalPosition,
+        //             verticalPosition: this.verticalPosition,
+        //             panelClass: ['error-snackbar']
+        //         });
+        //     }else{
+        //         this._snackBar.open('Update capmaign successed', 'Close', {
+        //             duration: 5000,
+        //             horizontalPosition: this.horizontalPosition,
+        //             verticalPosition: this.verticalPosition,
+        //             panelClass: ['success-snackbar']
+        //         });
+        //         //this.selectedCampaignChanged(this.selectedCampaign);
+        //     }
+        // });
     }
 
     downloadConsumer(){

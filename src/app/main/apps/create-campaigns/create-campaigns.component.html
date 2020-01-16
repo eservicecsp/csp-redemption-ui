@@ -1,0 +1,55 @@
+<div id="cards" class="page-layout simple fullwidth">
+
+    <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/dashboards/campaigns'">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <div class="h2">
+                    Campaigns
+                </div>
+                <div class="h3 light secondary-text">
+                    Create New Campaign
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="content">
+
+        <div class="cards">
+           
+                <div *ngFor="let campaignType of campaignTypes" class="card">
+                    <div class="card-preview">
+        
+                        <div class="fuse-card" >
+                            
+                            <div *ngIf="campaignType.imagePath">
+                                <img src="{{campaignType.imagePath}}">
+                            </div>
+        
+                            <div class="p-16">
+                                <div class="h1">{{campaignType.title}}</div>
+                            </div>
+        
+                            <div class="p-8 pt-0" fxLayout="row" fxLayoutAlign="start center">
+                                <button mat-button color="accent" (click)="createCampaign(campaignType)">CREATE</button>
+                            </div>
+        
+                        </div>
+        
+                    </div>
+                    
+                </div>
+
+        </div>
+
+    </div>
+    
+</div>

@@ -1,55 +1,373 @@
-<div id="cards" class="page-layout simple fullwidth">
+<div id="campaigns" class="page-layout carded fullwidth inner-scroll">
 
-    <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
 
-        <div fxLayout="row" fxLayoutAlign="start center">
+    <!-- CENTER -->
+    <div class="center">
 
-            <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/dashboards/campaigns'">
-                <mat-icon>arrow_back</mat-icon>
-            </button>
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
 
-            <div fxLayout="column" fxLayoutAlign="start start"
-                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                <div class="h2">
-                    Campaigns
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    list
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Campaign list
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <form  name="searchForm" [formGroup]="searchForm">
+                <div fxLayout="row" fxLayoutAlign="end center" >
+                    <div class="search-wrapper sm-16 mx-md-0" >
+                        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center" >
+                            <input (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)" matInput [matDatepicker]="startdayDatePicker" name="startDate" formControlName="startDate" placeholder="Start date" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="startdayDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #startdayDatePicker></mat-datepicker>
+                        </div>
+                    </div>
+                    <div class="search-wrapper sm-16 mx-md-0">
+                        <div class="search search-date" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                            <input  (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)" matInput [matDatepicker]="endDatePicker" name="endDate" formControlName="endDate" placeholder="End date" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endDatePicker></mat-datepicker>
+                        </div>
+                    </div>
                 </div>
-                <div class="h3 light secondary-text">
-                    Create New Campaign
+            </form>
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input  (input)="onSearchChange($event.target.value)" placeholder="Search for a campaign">
                 </div>
             </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <!-- <button mat-raised-button
+                    [routerLink]="'/configurations/products/create'"
+                    class="add-product-button fuse-white mt-24 mt-md-0">
+                <span>ADD NEW PRODUCT</span>
+            </button> -->
+            <!-- / ADD BUTTON -->
+
         </div>
+        <!-- / HEADER -->
 
-    </div>
+        <!-- CONTENT CARD -->
+        <div class="content-card" >
+            <mat-tab-group #tabGroup (selectedTabChange)="tabChanged($event)">
+
+                <mat-tab label="New Campaigns">
+
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <mat-table class="camapign-table"
+                           #table [dataSource]="dataSource"
+                           [@animateStagger]="{value:'50'}"
+                           fusePerfectScrollbar>
     
-    <div class="content">
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef >Campaign name</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.name}}</p>
+                                </mat-cell>
+                            </ng-container>
 
-        <div class="cards">
-           
-                <div *ngFor="let campaignType of campaignTypes" class="card">
-                    <div class="card-preview">
-        
-                        <div class="fuse-card" >
-                            
-                            <div *ngIf="campaignType.imagePath">
-                                <img src="{{campaignType.imagePath}}">
-                            </div>
-        
-                            <div class="p-16">
-                                <div class="h1">{{campaignType.title}}</div>
-                            </div>
-        
-                            <div class="p-8 pt-0" fxLayout="row" fxLayoutAlign="start center">
-                                <button mat-button color="accent" (click)="createCampaign(campaignType)">CREATE</button>
-                            </div>
-        
-                        </div>
-        
+                            <ng-container matColumnDef="description">
+                                <mat-header-cell *matHeaderCellDef >Description</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.description}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="camapignType">
+                                <mat-header-cell *matHeaderCellDef >Camapign Type</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.campaignType}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="startDate">
+                                <mat-header-cell *matHeaderCellDef >Start - End</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">
+                                        {{camapign.startDate | date:'dd/MM/yyyy'}}
+                                    <br/>
+                                        {{camapign.endDate | date:'dd/MM/yyyy'}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="total">
+                                <mat-header-cell *matHeaderCellDef >Total</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalQrCode}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="action">
+                                <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <div class="example-button-row">
+                                        <button mat-flat-button color="primary" (click)="updateStatus(camapign, 3)">Delete</button>
+                                        <button mat-flat-button color="success" (click)="updateStatus(camapign, 2)">Approve</button>
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+            
+                            <mat-header-row *matHeaderRowDef="newCampaignColumns; sticky:true"></mat-header-row>
+            
+                            <mat-row *matRowDef="let promotion; columns: newCampaignColumns;"
+                                    class="promotion"
+                                    matRipple
+                                    >
+                                    <!-- [routerLink]="['/configurations/promotions/', promotion.id]" -->
+                            </mat-row>
+            
+                        </mat-table>
+            
+                        <mat-paginator #paginator
+                                    [length]=length
+                                    [pageIndex]="pageIndex" [pageSize]="pageSize"
+                                    [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event"
+                                    (page)="getCampaigns()">
+                        </mat-paginator>
+                        
                     </div>
-                    
-                </div>
+
+                </mat-tab>
+                <mat-tab label="Actived Campaigns">
+
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <mat-table class="camapign-table-actived"
+                           #table [dataSource]="dataSource"
+                           [@animateStagger]="{value:'50'}"
+                           fusePerfectScrollbar>
+    
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef >Campaign name</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.name}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="description">
+                                <mat-header-cell *matHeaderCellDef >Description</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.description}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="camapignType">
+                                <mat-header-cell *matHeaderCellDef >Camapign Type</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.campaignType}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="startDate">
+                                <mat-header-cell *matHeaderCellDef >Start - End</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">
+                                        {{camapign.startDate | date:'dd/MM/yyyy'}}
+                                    <br/>
+                                        {{camapign.endDate | date:'dd/MM/yyyy'}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fail">
+                                <mat-header-cell *matHeaderCellDef >Fail</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalFail}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="empty">
+                                <mat-header-cell *matHeaderCellDef >Empty</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalEmpty}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="dupplicate">
+                                <mat-header-cell *matHeaderCellDef >Dupplicate</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalDuplicate}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="success">
+                                <mat-header-cell *matHeaderCellDef >Success</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalSuccess}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="total">
+                                <mat-header-cell *matHeaderCellDef >Total</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalTran}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="action">
+                                <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <div class="example-button-row">
+                                        <button mat-flat-button color="primary">Detail</button>
+                                        <button mat-flat-button color="success">Rollback</button>
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+            
+                            <mat-header-row *matHeaderRowDef="activeCampaignColumns; sticky:true"></mat-header-row>
+            
+                            <mat-row *matRowDef="let promotion; columns: activeCampaignColumns;"
+                                    class="promotion"
+                                    matRipple
+                                    >
+                                    <!-- [routerLink]="['/configurations/promotions/', promotion.id]" -->
+                            </mat-row>
+            
+                        </mat-table>
+            
+                        <mat-paginator #paginator
+                                    [length]=length
+                                    [pageIndex]="pageIndex" [pageSize]="pageSize"
+                                    [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event"
+                                    (page)="getCampaigns()">
+                        </mat-paginator>
+                    </div>
+
+                </mat-tab>
+                <mat-tab label="Expire Campaigns">
+
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <mat-table class="camapign-table-actived"
+                           #table [dataSource]="dataSource"
+                           [@animateStagger]="{value:'50'}"
+                           fusePerfectScrollbar>
+    
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef >Campaign name</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.name}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="description">
+                                <mat-header-cell *matHeaderCellDef >Description</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.description}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="camapignType">
+                                <mat-header-cell *matHeaderCellDef >Camapign Type</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.campaignType}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="startDate">
+                                <mat-header-cell *matHeaderCellDef >Start - End</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">
+                                        {{camapign.startDate | date:'dd/MM/yyyy'}}
+                                    <br/>
+                                        {{camapign.endDate | date:'dd/MM/yyyy'}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="campaignStatusType">
+                                <mat-header-cell *matHeaderCellDef >Status</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.campaignStatusType}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fail">
+                                <mat-header-cell *matHeaderCellDef >Fail</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalFail}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="empty">
+                                <mat-header-cell *matHeaderCellDef >Empty</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalEmpty}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="dupplicate">
+                                <mat-header-cell *matHeaderCellDef >Dupplicate</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalDuplicate}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="success">
+                                <mat-header-cell *matHeaderCellDef >Success</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalSuccess}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="total">
+                                <mat-header-cell *matHeaderCellDef >Total</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <p class="text-truncate">{{camapign.totalTran}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="action">
+                                <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign">
+                                    <div class="example-button-row">
+                                        <button mat-flat-button color="primary" *ngIf="camapign.campaignStatusType === 'Expire'">Detail</button>
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+            
+                            <mat-header-row *matHeaderRowDef="expireCampaignColumns; sticky:true"></mat-header-row>
+            
+                            <mat-row *matRowDef="let promotion; columns: expireCampaignColumns;"
+                                    class="promotion"
+                                    matRipple
+                                    >
+                                    <!-- [routerLink]="['/configurations/promotions/', promotion.id]" -->
+                            </mat-row>
+            
+                        </mat-table>
+            
+                        <mat-paginator #paginator
+                                    [length]=length
+                                    [pageIndex]="pageIndex" [pageSize]="pageSize"
+                                    [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event"
+                                    (page)="getCampaigns()">
+                        </mat-paginator>
+                    </div>
+
+                </mat-tab>
+            </mat-tab-group>
+           
 
         </div>
-
+        <!-- / CONTENT CARD -->
     </div>
-    
+    <!-- / CENTER -->
 </div>

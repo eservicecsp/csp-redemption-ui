@@ -20,7 +20,7 @@
                 <div fxLayout="column" fxLayoutAlign="start start"
                      [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     <div class="h2" *ngIf="pageType ==='edit'">
-                        {{promotion.name}}
+                        <!-- {{promotion.name}} -->
                     </div>
                     <div class="h2" *ngIf="pageType ==='create'">
                         New Promotion
@@ -94,9 +94,36 @@
                                     </mat-form-field>
                                 </div>
 
+                                <div fxLayout="row">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-50-p" style="margin-right: 5px;">
+                                        <mat-label>Tel</mat-label>
+                                        <input matInput formControlName="tel">
+                
+                                    </mat-form-field>
+                
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-50-p">
+                                        <mat-label>Facebook</mat-label>
+                                        <input matInput formControlName="facebook">
+                                    </mat-form-field>
+                 
+                                </div>
+
+                                <div fxLayout="row">                
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-50-p" style="margin-right: 5px;">
+                                        <mat-label>Line</mat-label>
+                                        <input matInput formControlName="line">
+                                    </mat-form-field>
+                
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-50-p">
+                                        <mat-label>Web</mat-label>
+                                        <input matInput formControlName="web">
+                                    </mat-form-field>
+
+                                </div>
+
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>Promotion type</mat-label>
-                                    <mat-select formControlName="promotionTypeId" required>
+                                    <mat-select formControlName="promotionTypeId" required [disabled]="IsReadonly === true">
                                         <mat-option *ngFor="let promotionType of promotionTypes" [value]="promotionType.id">
                                         {{promotionType.name}}
                                         </mat-option>
@@ -105,6 +132,37 @@
                                         Promotion type is required
                                     </mat-error>
                                 </mat-form-field>
+
+                                <div *ngIf="promotionForm.get('promotionTypeId').value === 1">
+                                    <mat-form-field appearance="outline" fxFlex="33">
+                                        <mat-label>Member discount (%)</mat-label>
+                                        <input matInput  formControlName="memberDiscount" >
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="33">
+                                        <mat-label>Birth date discount (%)</mat-label>
+                                        <input matInput  formControlName="birthDateDiscount" >
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="33">
+                                        <mat-label>Product group discount (THB)</mat-label>
+                                        <input matInput  formControlName="productGroupDiscount" >
+                                    </mat-form-field>
+                                </div>
+
+                                <div *ngIf="promotionForm.get('promotionTypeId').value === 1" >
+                                    <mat-form-field appearance="outline" fxFlex="100">
+                                        <mat-label>Product</mat-label>
+                                        <mat-select formControlName="productId">
+                                            <mat-option *ngFor="let product of products" [value]="product.id">
+                                                {{product.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>
+                                            Product <strong>required</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
 
                                 <div class="mb-12">
                                     <mat-label>Active</mat-label>
@@ -119,6 +177,7 @@
                                             <input matInput  placeholder="Background Image" formControlName="name" readonly>
                                             <input #fileInput hidden type="file" accept="image/x-png,image/jpeg"
                                                 (change)="onSelectFile($event, promotionForm.get('backgroundImage'))"/>
+                                            
                                             <button mat-button type="button" *ngIf="promotionForm.get('backgroundImage').controls.name.value" matSuffix mat-icon-button aria-label="Clear" 
                                             (click)="clearAttachFile(promotionForm.get('backgroundImage'))" >
                                                 <mat-icon>delete_forever</mat-icon>
@@ -127,53 +186,82 @@
                                             (click)="fileInput.click()">
                                                 <mat-icon>folder_open</mat-icon>
                                             </button>
-                                        </mat-form-field>
-                                    </div>
-                                    
 
-                                    
+                                        </mat-form-field>
+                                       
+                                    </div>
                                 </div>
-                                <div *ngIf="promotionForm.get('promotionTypeId').value === 2">
+                                <div *ngIf="promotionForm.get('promotionTypeId').value === 1">
+                                    <table id="promotion-detail-table" border="1" style="align-content: center;">
+                                        <!-- *ngIf="promotionForm.get('promotionSubTypeId').value!='3' " -->
+                                        <tr>
+                                            <!-- || getControl(promotionForm, 'image1').value.name -->
+                                            <td  colspan="2">
+                                                <!-- {{getControl(promotionForm, 'image1').value.file}} -->
+                                                <div class="image-cell" >
+                                                    <!-- *ngIf="promotion.image1.name" -->
+                                                    <img src="{{getControl(promotionForm, 'backgroundImage').value.file}}">
+                                                    <!-- <img [src]="getControl(promotionForm, 'image1').value.file"> -->
+                                                    <div class="position">1</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div *ngIf="promotionForm.get('promotionTypeId').value === 2 || promotionForm.get('promotionTypeId').value === 6">
                                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                                         <div fxLayout="column" fxFlex="50" class="pr-12">
                                             <table id="promotion-detail-table" border="1" style="align-content: center;">
-                                                <tr *ngIf="promotionForm.get('promotionSubTypeId').value!=='3'">
+                                                <!-- *ngIf="promotionForm.get('promotionSubTypeId').value!='3' " -->
+                                                <tr *ngIf="promotionForm.get('promotionSubTypeId').value!='3' ">
+                                                    <!-- || getControl(promotionForm, 'image1').value.name -->
                                                     <td  colspan="2">
-                                                        <div class="image-cell">
-                                                            <img src="{{getControl(promotionForm, 'image1').value.file}}" alt="">
+                                                        <!-- {{getControl(promotionForm, 'image1').value.file}} -->
+                                                        <div class="image-cell" >
+                                                            <!-- *ngIf="promotion.image1.name" -->
+                                                            <img src="{{getControl(promotionForm, 'image1').value.file}}">
+                                                            <!-- <img [src]="getControl(promotionForm, 'image1').value.file"> -->
                                                             <div class="position">1</div>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr *ngIf="promotionForm.get('promotionSubTypeId').value!=='2'">
+                                                <!-- *ngIf="promotionForm.get('promotionSubTypeId').value!='2' " -->
+                                                <tr *ngIf="promotionForm.get('promotionSubTypeId').value!='2' ">
+                                                    <!-- || getControl(promotionForm, 'image2').value.name" -->
                                                     <td> 
-                                                        <div class="image-cell">
-                                                            <img src="{{getControl(promotionForm, 'image2').value.file}}" alt="">
+                                                        <div class="image-cell" >
+                                                            <!-- *ngIf="promotion.image2.name" -->
+                                                            <img src="{{getControl(promotionForm, 'image2').value.file}}">
+                                                            <!-- <img [src]="getControl(promotionForm, 'image2').value.file"> -->
                                                             <div class="position">2</div>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="image-cell">
-                                                            <img src="{{getControl(promotionForm, 'image3').value.file}}" alt="">
+                                                        <div class="image-cell" >
+                                                            <!-- *ngIf="promotion.image3.name" -->
+                                                            <img src="{{getControl(promotionForm, 'image3').value.file}}">
+                                                            <!-- <img [src]="getControl(promotionForm, 'image3').value.file"> -->
                                                             <div class="position">3</div>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </div>
+                                        <!-- {{getControl(promotionForm, 'image2').value.file}} -->
                                         <div  fxLayout="column" fxFlex="50">
                                             <mat-form-field appearance="outline">
                                                 <mat-label>EDM Type</mat-label>
                                                 <!-- <select formControlName="promotionSubTypeId"> -->
-                                                <mat-select formControlName="promotionSubTypeId" (selectionChange)="onPromotionSubTypeIdChanged($event)">
-                                                  <mat-option value="1">3 Images</mat-option>
-                                                  <mat-option value="2">1 Image</mat-option>
-                                                  <mat-option value="3">2 Images</mat-option>
-                                                </mat-select>
+                                                    <mat-select formControlName="promotionSubTypeId" (selectionChange)="onPromotionSubTypeIdChanged($event)" required>
+                                                        <mat-option *ngFor="let promotionSubType of promotionSubTypes" [value]="promotionSubType.id">
+                                                        {{promotionSubType.name}}
+                                                        </mat-option>
+                                                    </mat-select>
                                             </mat-form-field>
         
-                                            <div fxLayout="column" *ngIf="promotionForm.get('promotionSubTypeId').value !== 0">
-                                                <div formGroupName="image1" *ngIf="promotionForm.get('promotionSubTypeId').value!=='3'">
+                                            <div fxLayout="column" *ngIf="promotionForm.get('promotionSubTypeId').value != '0'">
+                                                <div formGroupName="image1" *ngIf="promotionForm.get('promotionSubTypeId').value!='3'">
+                                                    <!-- || getControl(promotionForm, 'image1').value.name -->
                                                     <mat-form-field appearance="outline" fxFlex="100">
                                                         <mat-label>Image1</mat-label>
                                                         <input matInput  placeholder="Background Image" formControlName="name" readonly>
@@ -188,8 +276,13 @@
                                                             <mat-icon>folder_open</mat-icon>
                                                         </button>
                                                     </mat-form-field>
+                                                    <mat-form-field appearance="outline" fxFlex="100">
+                                                        <mat-label>Link</mat-label>
+                                                        <input matInput  name="imageUrl" formControlName="imageUrl">
+                                                    </mat-form-field>
                                                 </div>
-                                                <div formGroupName="image2" *ngIf="promotionForm.get('promotionSubTypeId').value!=='2'">
+                                                <div formGroupName="image2" *ngIf="promotionForm.get('promotionSubTypeId').value!='2' ">
+                                                    <!-- || getControl(promotionForm, 'image2').value.name -->
                                                     <mat-form-field appearance="outline" fxFlex="100">
                                                         <mat-label>Image2</mat-label>
                                                         <input matInput  placeholder="Background Image" formControlName="name" readonly>
@@ -204,8 +297,12 @@
                                                             <mat-icon>folder_open</mat-icon>
                                                         </button>
                                                     </mat-form-field>
+                                                    <mat-form-field appearance="outline" fxFlex="100">
+                                                        <mat-label>Link</mat-label>
+                                                        <input matInput  name="imageUrl" formControlName="imageUrl">
+                                                    </mat-form-field>
                                                 </div>
-                                                <div formGroupName="image3" *ngIf="promotionForm.get('promotionSubTypeId').value!=='2'">
+                                                <div formGroupName="image3" *ngIf="promotionForm.get('promotionSubTypeId').value!='2'">
                                                     <mat-form-field appearance="outline" fxFlex="100">
                                                         <mat-label>Image3</mat-label>
                                                         <input matInput  placeholder="Background Image" formControlName="name" readonly>
@@ -219,6 +316,10 @@
                                                         (click)="fileInput3.click()">
                                                             <mat-icon>folder_open</mat-icon>
                                                         </button>
+                                                    </mat-form-field>
+                                                    <mat-form-field appearance="outline" fxFlex="100">
+                                                        <mat-label>Link</mat-label>
+                                                        <input matInput  name="imageUrl" formControlName="imageUrl">
                                                     </mat-form-field>
                                                 </div>
                                             </div>

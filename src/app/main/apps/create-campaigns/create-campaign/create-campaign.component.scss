@@ -25,9 +25,15 @@
 
     
 }
-
+#collectingForm{
+    .mat-checkbox-inner-container {
+        background-color: #E1E1E1;
+    }  
+}
 #forms {
-
+    .mat-checkbox-inner-container {
+        background-color: #E1E1E1;
+    } 
     .mat-radio-button ~ .mat-radio-button {
         margin-left: 16px;
         margin-bottom: 20px;

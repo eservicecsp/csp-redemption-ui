@@ -151,4 +151,19 @@ export class ConsumersService implements Resolve<any>
                 }, reject);
         });
     }
+    getPromotionvalid(): Promise<any>
+    {
+        return new Promise((resolve, reject) => {
+            this._httpClient.get(environment.apiBaseUrl + '/promotions/promotionvalid')
+                .subscribe((response: any) => {
+                    if (response.isSuccess)
+                    {
+                        resolve(response);
+                    }
+                    else{
+                        reject(response);
+                    }
+                }, reject);
+        });
+    }
 }

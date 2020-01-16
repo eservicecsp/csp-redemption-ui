@@ -45,6 +45,8 @@ import { BrandDetailComponent } from './brands/brand-detail/brand-detail.compone
 import { ConfigurationsRolesComponent } from './roles/roles.component';
 import { ConfigurationsRolesService } from './roles/roles.service';
 import { RoleDetailComponent } from './roles/role-detail/role-detail.component';
+import { ConfigurationsContactUsComponent } from './contact-us/contact-us.component';
+import { ConfigurationsContactUsService } from './contact-us/contact-us.service';
 
 
 const routes: Routes = [
@@ -235,6 +237,16 @@ const routes: Routes = [
             AuthenticationGuard
         ]
     },
+    {
+        path     : 'contact-us',
+        component: ConfigurationsContactUsComponent,
+        // resolve  : {
+        //     data: ConfigurationsRolesService
+        // },
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
 ];
 
 @NgModule({
@@ -254,7 +266,8 @@ const routes: Routes = [
         PromotionDetailComponent,
         PromotionTypeDetailComponent,
         BrandDetailComponent,
-        RoleDetailComponent
+        RoleDetailComponent,
+        ConfigurationsContactUsComponent
 
         
     ],
@@ -294,6 +307,7 @@ const routes: Routes = [
         ConfigurationsPromotionTypesService,
         ConfigurationsBrandsService,
         ConfigurationsRolesService,
+        ConfigurationsContactUsService,
 
         AuthenticationGuard
     ],

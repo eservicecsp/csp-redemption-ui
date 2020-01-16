@@ -9,13 +9,17 @@ const routes = [
         loadChildren: './dashboards/campaigns/dashboards-campaigns.module#DashboardsCampaignsModule'
     },
     {
-        path        : 'campaigns',
-        loadChildren: './campaigns/campaigns.module#CampaignsModule'
+        path        : 'create-campaign',
+        loadChildren: './create-campaigns/create-campaigns.module#CreateCampaignsModule'
     },
     {
         path        : 'consumers',
         loadChildren: './consumers/consumers.module#ConsumersModule'
     },
+    {
+        path        : 'campaigns',
+        loadChildren: './campaigns/campaigns.module#CampaignsModule'
+    }
 ];
 
 @NgModule({

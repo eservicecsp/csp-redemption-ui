@@ -15,8 +15,6 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 import { DashboardsCampaignsComponent } from './dashboards-campaigns.component';
-
-import { AuthenticationGuard } from 'app/main/pages/authentication/authentication.guard';
 import { DashboardsCampaignsService } from './dashboards-campaigns.service';
 
 import { AgmCoreModule } from '@agm/core';
@@ -27,8 +25,8 @@ import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
 import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
 import { ConsumersService } from '../../consumers/consumers.service';
 import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
-import { CampaignsService } from '../../campaigns/campaigns.service';
 import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
+import { AuthenticationGuard } from 'app/main/pages/authentication/authentication.guard';
 
 const routes: Routes = [
     {
@@ -40,7 +38,8 @@ const routes: Routes = [
         canActivate: [
             AuthenticationGuard
         ]
-    }
+    },
+    
 ];
 
 @NgModule({
@@ -87,7 +86,6 @@ const routes: Routes = [
         AuthenticationGuard,
         ConsumersService,
         ConfigurationsProductsService,
-        CampaignsService,
         DatePipe,
         ConfigurationsDealersService
     ],

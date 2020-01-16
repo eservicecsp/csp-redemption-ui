@@ -1,7 +1,7 @@
 <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
     <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/campaigns'">
+            <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/create-campaign'">
                 <mat-icon>arrow_back</mat-icon>
             </button>
             <div fxLayout="column" fxLayoutAlign="start start"
@@ -14,9 +14,9 @@
                 </div>
             </div>
         </div>
-        <button mat-raised-button type="button" (click)="generateQrCode()">
+        <!-- <button mat-raised-button type="button" (click)="generateQrCode()">
             Create
-        </button>
+        </button> -->
     </div>
     <div class="content p-24">
         <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row" *ngIf="campaignType.id === 3">
@@ -60,6 +60,16 @@
                         <mat-error>
                             Product <strong>required</strong>
                         </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100">
+                        <mat-select placeholder="Dealers" formControlName="dealers" multiple>
+                            <mat-option [value]="1" (click)="selectAll(ev)"   
+                            #ev
+                             >SelectAll</mat-option>
+                            <mat-option *ngFor="let dealer of dealerList" [value]="dealer"> {{dealer.name}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
@@ -109,6 +119,32 @@
                         <mat-error>Alert message for success case. is required!</mat-error>
                     </mat-form-field>
                 </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                        <mat-label>Tel</mat-label>
+                        <input matInput formControlName="tel">
+
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50">
+                        <mat-label>Facebook</mat-label>
+                        <input matInput formControlName="facebook">
+                    </mat-form-field>
+ 
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">                
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                        <mat-label>Line</mat-label>
+                        <input matInput formControlName="line" >
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50">
+                        <mat-label>Web</mat-label>
+                        <input matInput formControlName="web">
+                    </mat-form-field>
+
+                </div>
                 <button mat-raised-button color="accent" type="button" (click)="createCampaign()"
                     [disabled]="form.invalid" class="mt-12">
                     Create
@@ -150,19 +186,15 @@
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="100">
-                    <mat-label>Dealers</mat-label>
                     <mat-select placeholder="Dealers" formControlName="dealers" multiple>
-                        <mat-select-trigger>
-                            {{dealers.value ? dealers.value[0].name : ''}}
-                            <span *ngIf="dealers.value?.length > 1" class="example-additional-selection">
-                                (+{{dealers.value.length - 1}} {{dealers.value?.length === 2 ? 'other' : 'others'}})
-                            </span>
-                            </mat-select-trigger>
-                        <mat-option *ngFor="let dealer of dealerList" [value]="dealer">
-                            {{dealer.name}}
-                        </mat-option>
-                    </mat-select>
+                        <mat-option [value]="1" (click)="selectAll(ev)"   
+                        #ev
+                         >SelectAll</mat-option>
+                        <mat-option *ngFor="let dealer of dealerList" [value]="dealer"> {{dealer.name}}</mat-option>
+                      </mat-select>
                 </mat-form-field>
+               
+                
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Start Date</mat-label>
@@ -214,6 +246,34 @@
                         <mat-error>This feild is required!</mat-error>
                     </mat-form-field>
                 </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                        <mat-label>Tel</mat-label>
+                        <input matInput formControlName="tel">
+
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50">
+                        <mat-label>Facebook</mat-label>
+                        <input matInput formControlName="facebook">
+                    </mat-form-field>
+ 
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">                
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                        <mat-label>Line</mat-label>
+                        <input matInput formControlName="line" >
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50">
+                        <mat-label>Web</mat-label>
+                        <input matInput formControlName="web">
+                    </mat-form-field>
+
+                </div>
+
                 <mat-radio-group aria-label="Select an option" formControlName="collectingType">
                     <mat-radio-button value="1" class="pr-6" (change)="collectingTypeRadioChange($event)">Linear
                         Collecting</mat-radio-button>
@@ -440,6 +500,14 @@
                         Product <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-select placeholder="Dealers" formControlName="dealers" multiple>
+                        <mat-option [value]="1" (click)="selectAll(ev)"   
+                        #ev
+                         >SelectAll</mat-option>
+                        <mat-option *ngFor="let dealer of dealerList" [value]="dealer"> {{dealer.name}}</mat-option>
+                      </mat-select>
+                </mat-form-field>
                 <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                     <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
                         <mat-label>Start Date</mat-label>
@@ -491,6 +559,34 @@
                         <mat-error>Alert message for success case. is required!</mat-error>
                     </mat-form-field>
                 </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                        <mat-label>Tel</mat-label>
+                        <input matInput formControlName="tel">
+
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50">
+                        <mat-label>Facebook</mat-label>
+                        <input matInput formControlName="facebook">
+                    </mat-form-field>
+ 
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">                
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                        <mat-label>Line</mat-label>
+                        <input matInput formControlName="line" >
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50">
+                        <mat-label>Web</mat-label>
+                        <input matInput formControlName="web">
+                    </mat-form-field>
+
+                </div>
+
                 <button mat-raised-button color="accent" type="button" (click)="createCampaign()" [disabled]="PointForm.invalid" class="mt-12">
                     Create campaign
                 </button>

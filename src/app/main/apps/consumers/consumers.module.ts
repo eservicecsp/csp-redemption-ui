@@ -15,7 +15,6 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule, FuseHighlightModule } from '@fuse/components';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 
-import { AuthenticationGuard } from 'app/main/pages/authentication/authentication.guard';
 import { ConsumersComponent } from './consumers.component';
 import { ConsumersService } from './consumers.service';
 import { MatPaginatorModule, MatSortModule, MatDialogModule, MatTooltipModule, MatProgressBarModule, MatToolbarModule, MatSnackBarModule, MatProgressSpinnerModule, MatInputModule, MatSlideToggleModule, MatSliderModule, MatOptionModule, MatRadioModule, MatCheckboxModule } from '@angular/material';
@@ -24,6 +23,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { SubscriptionsSidebarComponent } from './sidebar/subscriptions-sidebar.component';
 import { ConfigurationsProductTypesService } from 'app/main/configurations/product-types/product-types.service';
 import { ConsumerPromotionDialogComponent } from './consumer-promotion/consumer-promotion.component';
+import { AuthenticationGuard } from 'app/main/pages/authentication/authentication.guard';
 
 
 const routes: Routes = [

@@ -1,9 +1,9 @@
-@mixin campaigns-theme($theme) {
+@mixin configurations-contact-us-theme($theme) {
 
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
-    campaigns {
+    configurations-contact-us {
 
         .header {
 

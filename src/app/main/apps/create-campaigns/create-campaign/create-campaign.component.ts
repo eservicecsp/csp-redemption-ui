@@ -6,8 +6,7 @@ import * as moment from 'moment';
 import { Subject } from 'rxjs';
 
 import { fuseAnimations } from '@fuse/animations';
-import { CampaignsService } from '../campaigns.service';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl, NgModel } from '@angular/forms';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
@@ -15,6 +14,8 @@ import { Router } from '@angular/router';
 import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'app/date.adapter';
 import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
+import { CreateCampaignsService } from '../create-campaigns.service';
+import { ConfigurationsContactUsService } from 'app/main/configurations/contact-us/contact-us.service';
 
 @Component({
     selector   : 'create-campaign',
@@ -57,18 +58,20 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
     columnQuantity = [];
     rowQuantity = [];
 
+    toppings = new FormControl();
+
     constructor(
         private _formBuilder: FormBuilder,
-        private _campaignsService: CampaignsService,
         private _authenticationService: AuthenticationService,
+        private _createCampaignsService: CreateCampaignsService,
         private _configurationsProductsService: ConfigurationsProductsService,
         private _configurationsDealersService: ConfigurationsDealersService,
         private _datepipe: DatePipe,
         private _snackBar: MatSnackBar,
         private _router: Router,
+        private _configurationsContactUsService: ConfigurationsContactUsService,
         )
     {
-        
         // Set the private defaults
         this._unsubscribeAll = new Subject();
 
@@ -80,6 +83,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             }
         });
         
+       
          // Reactive Form
         this.form = this._formBuilder.group({
             waste:  ['', Validators.required],
@@ -87,7 +91,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             name : ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
-            //dealers: [undefined],
+            dealers: [undefined],
             quantity : ['', Validators.required],
             startDate : ['', Validators.required],
             endDate : ['', Validators.required],
@@ -97,6 +101,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             winMessage : ['', Validators.required],
             createdBy: [this.userId],
             CampaignTypeId : 0,
+            tel: [''],
+            facebook : [''],
+            line: [''],
+            web : [''],
         });       
         
         this.collectingForm = this._formBuilder.group({
@@ -119,7 +127,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             qrCodeNotExistMessage : [undefined, Validators.required],
             winMessage : [undefined, Validators.required],
             campaignTypeId : 0,
-            url: [undefined]
+            url: [undefined],
+            tel: [''],
+            facebook : [''],
+            line: [''],
+            web : [''],
         });
 
         this.PointForm = this._formBuilder.group({
@@ -128,7 +140,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             waste:  ['', Validators.required],
             description : [undefined],
             product: ['', Validators.required],
-            //dealers: [undefined],
+            dealers: [undefined],
             quantity : ['', Validators.required],
             startDate : ['', Validators.required],
             endDate : ['', Validators.required],
@@ -139,6 +151,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
             createdBy: [this.userId],
             point: ['', Validators.required],
             CampaignTypeId : 0,
+            tel: [''],
+            facebook : [''],
+            line: [''],
+            web : [''],
         });
 
         this.collectingForm.controls['rows'].valueChanges.subscribe(rows => {
@@ -166,6 +182,27 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
 
     ngOnInit(): void 
     {
+        
+        this._configurationsContactUsService.getContactUs().then(response => {
+            if (response.isSuccess){
+                if (response.contactUs != null){
+                    this.form.controls['tel'].setValue(response.contactUs.tel);
+                    this.form.controls['facebook'].setValue(response.contactUs.facebook);
+                    this.form.controls['line'].setValue(response.contactUs.line);
+                    this.form.controls['web'].setValue(response.contactUs.web);
+
+                    this.collectingForm.controls['tel'].setValue(response.contactUs.tel);
+                    this.collectingForm.controls['facebook'].setValue(response.contactUs.facebook);
+                    this.collectingForm.controls['line'].setValue(response.contactUs.line);
+                    this.collectingForm.controls['web'].setValue(response.contactUs.web);
+
+                    this.PointForm.controls['tel'].setValue(response.contactUs.tel);
+                    this.PointForm.controls['facebook'].setValue(response.contactUs.facebook);
+                    this.PointForm.controls['line'].setValue(response.contactUs.line);
+                    this.PointForm.controls['web'].setValue(response.contactUs.web);
+                }
+            }
+        });
         this._configurationsProductsService.getProducts().then(res => {
             if (res.isSuccess){
                 this.products = res.products;
@@ -178,7 +215,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
 
         const port = window.location.port;
 
-        this._campaignsService.onCampaignTypeChanged.subscribe(campaignType => {
+        this._createCampaignsService.onCampaignTypeChanged.subscribe(campaignType => {
             this.campaignType = campaignType;
             this.campaignName = campaignType.title;
             let campaignTypeName = 'collecting';
@@ -277,7 +314,13 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 QrCodeNotExistMessage: this.form.value.qrCodeNotExistMessage,
                 WinMessage: this.form.value.winMessage,
                 CreatedBy: this.userId,
+                dealers: this.form.value.dealers.length === 0 ? this.dealerList : this.form.value.dealers,
+                tel: this.form.value.tel,
+                facebook: this.form.value.facebook,
+                line: this.form.value.line,
+                web: this.form.value.web,
             };
+            console.log(this.form.value.dealers);
             //this.form.controls['campaignTypeId'].setValue(this.campaignType.id);
             campaign = {
                 Peices : [],
@@ -301,7 +344,13 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 QrCodeNotExistMessage: this.PointForm.value.qrCodeNotExistMessage,
                 WinMessage: this.PointForm.value.winMessage,
                 CreatedBy: this.userId,
+                dealers: this.PointForm.value.dealers.length === 0 ? this.dealerList : this.PointForm.value.dealers,
+                tel: this.PointForm.value.tel,
+                facebook: this.PointForm.value.facebook,
+                line: this.PointForm.value.line,
+                web: this.PointForm.value.web,
             };
+            console.log(this.PointForm.value.dealers);
             //this.PointForm.controls['campaignTypeId'].setValue(this.campaignType.id);
             campaign = {
                 Peices : [],
@@ -343,8 +392,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                 
             };
         }
-        console.log(campaign)
-        this._campaignsService.createOrder(campaign).then(response => {
+        //console.log(campaign)
+        this._createCampaignsService.createOrder(campaign).then(response => {
             if (response.isSuccess === false){
                 this._snackBar.open(response.message, 'Close', {
                     duration: 5000,
@@ -562,11 +611,28 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
     //     });
     // }
 
-    get dealers(): FormArray {
-        return this.collectingForm.get('dealers') as FormArray;
-    }
+    // get dealers(): FormArray {
+    //     return this.collectingForm.get('dealers') as FormArray;
+    // }
 
     test(): void {
         console.log(this.collectingForm.value);
+    }
+    selectAll(ev){
+        
+        if(ev._selected){
+            //this.toppings.setValue(this.dealerList);
+            this.collectingForm.controls['dealers'].setValue(this.dealerList);
+            this.form.controls['dealers'].setValue(this.dealerList);
+            this.PointForm.controls['dealers'].setValue(this.dealerList);
+            ev._selected = true;
+        }
+        if(ev._selected == false){
+            this.collectingForm.controls['dealers'].setValue([]);
+            this.form.controls['dealers'].setValue([]);
+            this.PointForm.controls['dealers'].setValue([]);
+          //this.toppings.setValue([]);
+        }
+        
     }
 }

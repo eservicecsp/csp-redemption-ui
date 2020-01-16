@@ -60,7 +60,7 @@ export class ConsumerPromotionDialogComponent implements OnInit, OnDestroy
 
         this.allowedMimeType = ['text/plain'];
 
-        this._consumersService.getPromotions().then(response => {
+        this._consumersService.getPromotionvalid().then(response => {
             if (response.isSuccess){
                 this.promotions = response.promotions;
             }
