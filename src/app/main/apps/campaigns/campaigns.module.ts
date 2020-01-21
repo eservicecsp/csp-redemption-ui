@@ -23,8 +23,24 @@ import { CampaignsComponent, DialogDelete } from './campaigns.component';
 import { CampaignsService } from './campaigns.service';
 import { AuthenticationGuard } from 'app/main/pages/authentication/authentication.guard';
 import { DashboardsCampaignsService } from '../dashboards/campaigns/dashboards-campaigns.service';
+import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
+import { CreateCampaignsService } from '../create-campaigns/create-campaigns.service';
 
 const routes: Routes = [
+    {
+        path    : ':id/:name',
+        component: CampaignDetailComponent,
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
+    {
+        path    : ':id',
+        component: CampaignDetailComponent,
+        canActivate: [
+            AuthenticationGuard
+        ]
+    },
     {
         path     : '**',
         component: CampaignsComponent,
@@ -41,7 +57,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         CampaignsComponent,
-        DialogDelete
+        DialogDelete,
+        CampaignDetailComponent,
     ],
     imports     : [
         CommonModule,
@@ -68,6 +85,7 @@ const routes: Routes = [
         MatToolbarModule,
         MatCheckboxModule,
         MatInputModule,
+        MatFormFieldModule,
 
         AgmCoreModule.forRoot({
             apiKey: ''
@@ -80,7 +98,9 @@ const routes: Routes = [
     providers   : [
         AuthenticationGuard,
         CampaignsService,
-        DashboardsCampaignsService
+        DashboardsCampaignsService,
+        DatePipe,
+        CreateCampaignsService
     ],
     entryComponents: [
         DialogDelete 
