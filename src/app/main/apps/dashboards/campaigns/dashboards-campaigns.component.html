@@ -29,21 +29,7 @@
                 <mat-tab label="Summary">
                     <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
                         [@animateStagger]="{value:'50'}">
-                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100">
-                            <div class="fuse-widget-front">
-                                <div class="px-16 border-bottom" fxLayout="row wrap"
-                                    fxLayoutAlign="space-between center">
-                                    <div fxFlex class="py-16 h3">Province</div>
-                                </div>
-                                <div class="row wrap">
-                                    <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
-                                        <ngx-charts-pie-chart  [scheme]="colorScheme"
-                                            [results]="provinceChart" [gradient]="gradient" [legend]="showLegend" >
-                                        </ngx-charts-pie-chart>
-                                    </div>
-                                </div>
-                            </div>
-                        </fuse-widget>
+                        
                         <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="50">
                             <div class="fuse-widget-front">
                                 <div class="px-16 border-bottom" fxLayout="row wrap"
@@ -80,7 +66,7 @@
                                 </div>
                             </div>
                         </fuse-widget>
-                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100">
+                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="70">
                             <div class="fuse-widget-front">
                                 <div class="px-16 border-bottom" fxLayout="row wrap"
                                     fxLayoutAlign="space-between center">
@@ -101,7 +87,6 @@
                                             [scrollwheel]="false"
                                             [latitude]="13.7278956"
                                             [longitude]="100.52412349999997">
-                                            <!-- [styles]="widgets.widget6.styles"> -->
                                             <agm-marker
                                                 *ngFor="let marker of maps; let i = index"
                                                 [latitude]="marker.latitude"
@@ -112,6 +97,38 @@
                                                 </agm-info-window>
                                             </agm-marker>
                                         </agm-map>  
+                                    </div>
+                                </div>
+                            </div>
+                        </fuse-widget>
+
+                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="30">
+                            <div class="fuse-widget-front">
+                                <div class="px-16 border-bottom" fxLayout="row wrap"
+                                    fxLayoutAlign="space-between center">
+                                    <div fxFlex class="py-16 h3">Data</div>
+                                </div>
+                                <div class="row wrap">
+                                    <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100" fusePerfectScrollbar>
+                                        <ul>
+                                            <li *ngFor="let item of maps">{{item.location}}</li>
+                                          </ul>  
+                                    </div>
+                                </div>
+                            </div>
+                        </fuse-widget>
+
+                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100">
+                            <div class="fuse-widget-front">
+                                <div class="px-16 border-bottom" fxLayout="row wrap"
+                                    fxLayoutAlign="space-between center">
+                                    <div fxFlex class="py-16 h3">Province</div>
+                                </div>
+                                <div class="row wrap">
+                                    <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+                                        <ngx-charts-pie-chart  [scheme]="provinceColorScheme"
+                                            [results]="provinceChart" [gradient]="gradient" [legend]="showLegend" >
+                                        </ngx-charts-pie-chart>
                                     </div>
                                 </div>
                             </div>
