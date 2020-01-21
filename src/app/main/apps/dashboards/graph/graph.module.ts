@@ -14,49 +14,33 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
-import { DashboardsCampaignsComponent } from './dashboards-campaigns.component';
-import { DashboardsCampaignsService } from './dashboards-campaigns.service';
+
 
 import { AgmCoreModule } from '@agm/core';
 import { MatPaginatorModule, MatSortModule, MatToolbarModule, MatProgressBarModule, MatDialogModule, MatTooltipModule, MatSnackBarModule, MatCheckboxModule, MatInputModule, MatDatepickerModule } from '@angular/material';
-import { QRCodeModule } from 'angular2-qrcode';
 import { CommonModule, DatePipe } from '@angular/common';
-import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
-import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
-import { ConsumersService } from '../../consumers/consumers.service';
-import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
-import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
 import { AuthenticationGuard } from 'app/main/pages/authentication/authentication.guard';
-import { CreateCampaignsService } from '../../create-campaigns/create-campaigns.service';
+import { DashboardsGraphComponent } from './graph.component';
+import { DasboardGraphService } from './graph.service';
 
 const routes: Routes = [
     {
         path     : '**',
-        component: DashboardsCampaignsComponent,
+        component: DashboardsGraphComponent,
         resolve  : {
-            data: DashboardsCampaignsService
+            data: DasboardGraphService
         },
         canActivate: [
             AuthenticationGuard
         ]
     },
-    // {
-    //     path     : 'detail',
-    //     component: DashboardsCampaignsComponent,
-    //     resolve  : {
-    //         data: DashboardsCampaignsService
-    //     },
-    //     canActivate: [
-    //         AuthenticationGuard
-    //     ]
-    // },
     
 ];
 
 @NgModule({
     declarations: [
-        DashboardsCampaignsComponent,
-        EnrollmentUploadDialogComponent
+        DashboardsGraphComponent,
+        //EnrollmentUploadDialogComponent
     ],
     imports     : [
         CommonModule,
@@ -85,8 +69,7 @@ const routes: Routes = [
         MatInputModule,
 
         AgmCoreModule.forRoot({
-            //apiKey: 'AIzaSyD81ecsCj4yYpcXSLFcYU97PvRsE_X8Bx8'
-            apiKey: 'AIzaSyB9cU9b16CEijybjkgbij1fkwYdLYi1gzw'
+            apiKey: ''
         }),
 
         FuseSharedModule,
@@ -94,19 +77,15 @@ const routes: Routes = [
         FuseWidgetModule
     ],
     providers   : [
-        DashboardsCampaignsService,
         AuthenticationGuard,
-        ConsumersService,
-        ConfigurationsProductsService,
+        DasboardGraphService,
         DatePipe,
-        ConfigurationsDealersService,
-        CreateCampaignsService
     ],
     entryComponents: [
-        EnrollmentUploadDialogComponent
+        
     ]
 })
-export class DashboardsCampaignsModule
+export class GraphModule
 {
 }
 

@@ -143,6 +143,7 @@ export class PromotionDetailComponent implements OnInit
     };
     promotionTypes: [];
     promotionSubTypes: [];
+    promotionTypeId: number;
 
     constructor(
         private _configurationsPromotionService: ConfigurationsPromotionsService,
@@ -189,6 +190,7 @@ export class PromotionDetailComponent implements OnInit
                     
                     if (response.isSuccess)
                     {
+                        this.promotionTypeId = this.promotion.promotionTypeId;
                         this.IsReadonly = true;
                         this.promotion = response.promotion;
                         this.promotionForm = this._formBuilder.group({
@@ -375,7 +377,7 @@ export class PromotionDetailComponent implements OnInit
         // this.promotionForm.controls['endDate'].setValue(endDate);
         this.promotionForm.controls['startDate'].setValue(moment(this.promotionForm.value.startDate).format('YYYY-MM-DD'));
         this.promotionForm.controls['endDate'].setValue(moment(this.promotionForm.value.endDate).format('YYYY-MM-DD'));
-
+       
         //console.log(this.promotionForm.value)
         this._configurationsPromotionService.createPromotion(this.promotionForm.value).then(response => {
             if (response.isSuccess){
@@ -395,7 +397,7 @@ export class PromotionDetailComponent implements OnInit
         // const endDate: Date = this.promotionForm.value.endDate.format('YYYY-MM-DD');
         this.promotionForm.controls['startDate'].setValue(moment(this.promotionForm.value.startDate).format('YYYY-MM-DD'));
         this.promotionForm.controls['endDate'].setValue(moment(this.promotionForm.value.endDate).format('YYYY-MM-DD'));
-
+        //this.promotionForm.controls['promotionTypeId'].setValue(this.promotionTypeId);
         //console.log(this.promotionForm.value);
         this._configurationsPromotionService.updatePromotion(this.promotionForm.value).then(response => {
             if (response.isSuccess){

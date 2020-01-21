@@ -408,7 +408,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy
                     verticalPosition: this.verticalPosition,
                     panelClass: ['success-snackbar']
                 });
-                this._router.navigate(['/apps/monitoring/campaign']);
+                this._router.navigate(['/apps/campaigns']);
             }
         });
     }

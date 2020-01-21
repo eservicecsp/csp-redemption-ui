@@ -80,7 +80,42 @@
                                 </div>
                             </div>
                         </fuse-widget>
+                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100">
+                            <div class="fuse-widget-front">
+                                <div class="px-16 border-bottom" fxLayout="row wrap"
+                                    fxLayoutAlign="space-between center">
+                                    <div fxFlex class="py-16 h3">Marker</div>
+                                </div>
+                                <div class="row wrap">
+                                    <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+                                        <agm-map 
+                                            *fuseIfOnDom
+                                            class="h-640 w-100-p"
+                                            [minZoom]="0"
+                                            [maxZoom]="20"
+                                            [fullscreenControl]="true"
+                                            [rotateControl]="false"
+                                            [zoomControl]="true"
+                                            [scaleControl]="false"
+                                            [streetViewControl]="false"
+                                            [scrollwheel]="false"
+                                            [latitude]="13.7278956"
+                                            [longitude]="100.52412349999997">
+                                            <!-- [styles]="widgets.widget6.styles"> -->
+                                            <agm-marker
+                                                *ngFor="let marker of maps; let i = index"
+                                                [latitude]="marker.latitude"
+                                                [longitude]="marker.longitude">
                         
+                                                <agm-info-window>
+                                                    <strong>{{marker.location}}</strong>
+                                                </agm-info-window>
+                                            </agm-marker>
+                                        </agm-map>  
+                                    </div>
+                                </div>
+                            </div>
+                        </fuse-widget>
                     </div>
                 </mat-tab>
 
@@ -202,6 +237,33 @@
                                     <input matInput #winMessage formControlName="winMessage" maxlength="255" >
                                 </mat-form-field>
 
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                                    <mat-label>Tel</mat-label>
+                                    <input matInput formControlName="tel">
+            
+                                </mat-form-field>
+            
+                                <mat-form-field appearance="outline" fxFlex="50">
+                                    <mat-label>Facebook</mat-label>
+                                    <input matInput formControlName="facebook">
+                                </mat-form-field>
+             
+                            </div>
+            
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">                
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-12">
+                                    <mat-label>Line</mat-label>
+                                    <input matInput formControlName="line" >
+                                </mat-form-field>
+            
+                                <mat-form-field appearance="outline" fxFlex="50">
+                                    <mat-label>Web</mat-label>
+                                    <input matInput formControlName="web">
+                                </mat-form-field>
+            
                             </div>
 
                             <div *ngIf="campaignTypeId == 1">

@@ -6,6 +6,8 @@ import { MatTabChangeEvent, MatDatepickerInputEvent, PageEvent, MatDialog, MatDi
 import { CampaignsService } from './campaigns.service';
 import * as moment from 'moment';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { DashboardsCampaignsService } from '../dashboards/campaigns/dashboards-campaigns.service';
 
 
 @Component({
@@ -36,7 +38,9 @@ export class CampaignsComponent implements OnInit
     constructor(
         private _campaignsService: CampaignsService,
         private _formBuilder: FormBuilder,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private _router: Router,
+        private _dashboardsCampaignsService: DashboardsCampaignsService
     )
     {
         this.tabIndex = 0;
@@ -72,17 +76,18 @@ export class CampaignsComponent implements OnInit
         this.searchValue = searchValue;
         this.getCampaigns();
     }
-    addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    addEvent(type: string, event: MatDatepickerInputEvent<Date>): void 
+    {
         console.log(`${type}: ${event.value}`);
         this.getCampaigns();
     }
 
-    getCampaigns(){
+    getCampaigns(): void
+    {
         
         let startDate = null;
         let endDate = null;
 
-        console.log(this.searchForm.value.startDate);
         if (this.searchForm.value.startDate != null){
             startDate =  moment(this.searchForm.value.startDate).format('YYYY-MM-DD');
         }
@@ -115,7 +120,8 @@ export class CampaignsComponent implements OnInit
         });
     }
 
-    delete(camapign: any){
+    delete(camapign: any): void
+    {
         // console.log(camapign);
         const dialogRef = this.dialog.open(DialogDelete, {
             width: '250px',
@@ -138,7 +144,8 @@ export class CampaignsComponent implements OnInit
 
           });
     }
-    updateStatus(camapign: any, status: number){
+    updateStatus(camapign: any, status: number): void
+    {
         // console.log(camapign);
         const dialogRef = this.dialog.open(DialogDelete, {
             width: '250px',
@@ -162,6 +169,14 @@ export class CampaignsComponent implements OnInit
           });
     }
 
+    getCampaignDetail(campaign): void
+    {
+        console.log(campaign);
+        // this._router.navigate(['/apps/dashboards/campaigns/' + campaignId]);
+        this._dashboardsCampaignsService.onSelectedCampaignChanged.next(campaign);
+        this._router.navigate(['/apps/dashboards/campaigns', { id: campaign.id }]);
+        // apps/dashboards/campaigns
+    }
    
 }
 
@@ -173,7 +188,7 @@ export class CampaignsComponent implements OnInit
   
     constructor(
       public dialogRef: MatDialogRef<DialogDelete>,
-      @Inject(MAT_DIALOG_DATA) public data: null) {}
+      @Inject(MAT_DIALOG_DATA) public data: { name,type}) {}
   
     // onNoClick(): void {
     //   this.dialogRef.close();

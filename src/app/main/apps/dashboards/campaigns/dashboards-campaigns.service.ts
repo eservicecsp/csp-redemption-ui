@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Router } from '@angular/router';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from 'environments/environment';
 
 @Injectable()
@@ -10,15 +10,20 @@ export class DashboardsCampaignsService implements Resolve<any>
     campaigns: any[];
     widgets: any[];
 
+    onSelectedCampaignChanged: BehaviorSubject<any>;
+
     /**
      * Constructor
      *
      * @param {HttpClient} _httpClient
      */
     constructor(
-        private _httpClient: HttpClient
+        private _httpClient: HttpClient,
+        private _router: Router
     )
     {
+        // Set default
+        this.onSelectedCampaignChanged = new BehaviorSubject([]);
     }
 
     /**
@@ -30,12 +35,14 @@ export class DashboardsCampaignsService implements Resolve<any>
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any
     {
-
         return new Promise((resolve, reject) => {
 
             Promise.all([
                 this.getCampaigns(),
-                this.getWidgets()
+                // this.getWidgets()
+                // this.getCampaignDetail(route.params['id'])
+                route.params['id'] !== undefined ? this.getCampaignDetail(route.params['id']) : this._router.navigate(['apps/campaigns'])
+                
             ]).then(
                 () => {
                     resolve();
@@ -184,6 +191,7 @@ export class DashboardsCampaignsService implements Resolve<any>
         return new Promise((resolve, reject) => {
             this._httpClient.get(`${environment.apiBaseUrl}/campaigns/detail/${campaignId}`)
             .subscribe((response: any) => {
+                this.onSelectedCampaignChanged.next(response);
                 resolve(response);
             }, reject);
         });

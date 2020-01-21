@@ -19,6 +19,10 @@ const routes = [
     {
         path        : 'campaigns',
         loadChildren: './campaigns/campaigns.module#CampaignsModule'
+    },
+    {
+        path        : 'dashboards/graph',
+        loadChildren: './dashboards/graph/graph.module#GraphModule'
     }
 ];
 

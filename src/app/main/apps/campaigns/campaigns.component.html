@@ -125,12 +125,11 @@
                             </ng-container>
             
                             <mat-header-row *matHeaderRowDef="newCampaignColumns; sticky:true"></mat-header-row>
-            
-                            <mat-row *matRowDef="let promotion; columns: newCampaignColumns;"
-                                    class="promotion"
-                                    matRipple
-                                    >
-                                    <!-- [routerLink]="['/configurations/promotions/', promotion.id]" -->
+
+                            <mat-row *matRowDef="let camapign; columns: newCampaignColumns;"
+                                class="camapign"
+                                matRipple>
+                             <!-- [routerLink]="'/configurations/products/'+product.id+'/'+product.handle"> -->
                             </mat-row>
             
                         </mat-table>
@@ -223,9 +222,9 @@
 
                             <ng-container matColumnDef="action">
                                 <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                                <mat-cell *matCellDef="let campaign">
                                     <div class="example-button-row">
-                                        <button mat-flat-button color="primary">Detail</button>
+                                        <button mat-flat-button color="primary" (click)="getCampaignDetail(campaign)">Detail</button>
                                         <button mat-flat-button color="success">Rollback</button>
                                     </div>
                                 </mat-cell>
@@ -233,8 +232,8 @@
             
                             <mat-header-row *matHeaderRowDef="activeCampaignColumns; sticky:true"></mat-header-row>
             
-                            <mat-row *matRowDef="let promotion; columns: activeCampaignColumns;"
-                                    class="promotion"
+                            <mat-row *matRowDef="let camapign; columns: activeCampaignColumns;"
+                                    class="camapign"
                                     matRipple
                                     >
                                     <!-- [routerLink]="['/configurations/promotions/', promotion.id]" -->
@@ -338,15 +337,15 @@
                                 <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
                                 <mat-cell *matCellDef="let camapign">
                                     <div class="example-button-row">
-                                        <button mat-flat-button color="primary" *ngIf="camapign.campaignStatusType === 'Expire'">Detail</button>
+                                        <button mat-flat-button color="primary" *ngIf="camapign.campaignStatusType === 'Expire'" (click)="getCampaignDetail(camapign)">Detail</button>
                                     </div>
                                 </mat-cell>
                             </ng-container>
             
                             <mat-header-row *matHeaderRowDef="expireCampaignColumns; sticky:true"></mat-header-row>
             
-                            <mat-row *matRowDef="let promotion; columns: expireCampaignColumns;"
-                                    class="promotion"
+                            <mat-row *matRowDef="let camapign; columns: expireCampaignColumns;"
+                                    class="camapign"
                                     matRipple
                                     >
                                     <!-- [routerLink]="['/configurations/promotions/', promotion.id]" -->

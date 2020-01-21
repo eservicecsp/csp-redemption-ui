@@ -34,7 +34,7 @@ export class CampaignsService implements Resolve<any>
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                //this.getCampaigns()
+                // this.getCampaigns()
             ]).then(
                 () => {
                     resolve();

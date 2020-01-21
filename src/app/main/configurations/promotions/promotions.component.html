@@ -102,7 +102,7 @@
                             <p class="text-truncate">
                                 {{promotion.createdByName}}
                             <br/>
-                                {{promotion.createdDate}}
+                                {{promotion.createdDate| date:'yyyy-MM-dd'}} {{promotion.createdDate| date:'hh:mm:ss'}}
                             </p>
                         </mat-cell>
                     </ng-container>

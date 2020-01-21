@@ -130,6 +130,7 @@ $typography: mat-typography-config(
 // Apps
 @import "src/app/main/apps/create-campaigns/create-campaigns.theme";
 @import "src/app/main/apps/dashboards/campaigns/dashboards-campaigns.theme";
+@import "src/app/main/apps/dashboards/graph/graph.theme";
 @import "src/app/main/apps/consumers/consumers.theme";
 @import "src/app/main/apps/campaigns/campaigns.theme";
 
@@ -167,6 +168,7 @@ $typography: mat-typography-config(
     // Apps
     @include create-campaigns-theme($theme);
     @include dashboards-campaigns-theme($theme);
+    @include dashboards-graph-theme($theme);
     @include consumers-theme($theme);
     @include campaigns-theme($theme);
 

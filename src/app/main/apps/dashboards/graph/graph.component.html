@@ -1,0 +1,87 @@
+<div id="graph" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    business
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Graph
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <!-- <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter placeholder="Search for a brand">
+                </div>
+            </div> -->
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <!-- <button mat-raised-button
+                    [routerLink]="'/configurations/brands/create'"
+                    class="add-brand-button fuse-white mt-24 mt-md-0">
+                <span>ADD NEW BRAND</span>
+            </button> -->
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                        [@animateStagger]="{value:'50'}">
+                        <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100">
+                            <div class="fuse-widget-front">
+                                <div class="px-16 border-bottom" fxLayout="row wrap"
+                                    fxLayoutAlign="space-between center">
+                                    <div fxFlex class="py-16 h3">Campaigns active</div>
+                                </div>
+                                <div class="row wrap">
+                                    <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+                                        <ngx-charts-bar-vertical-stacked
+                                            [scheme]="colorScheme"
+                                            [results]="graphData"
+                                            [gradient]="gradient"
+                                            [xAxis]="showXAxis"
+                                            [yAxis]="showYAxis"
+                                            [legend]="showLegend"
+                                            [showXAxisLabel]="showXAxisLabel"
+                                            [showYAxisLabel]="showYAxisLabel"
+                                            [xAxisLabel]="xAxisLabel"
+                                            [yAxisLabel]="yAxisLabel"
+                                            [animations]="animations"
+                                            >
+                                            <!-- (select)="onSelect($event)" -->
+                                            <!-- [view]="view" -->
+                                      </ngx-charts-bar-vertical-stacked>
+                                    </div>
+                                </div>
+                            </div>
+                        </fuse-widget>
+                    </div>
+         
+           
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

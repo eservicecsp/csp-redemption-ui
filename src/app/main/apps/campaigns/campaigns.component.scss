@@ -85,66 +85,133 @@ campaigns {
                 height: 64px;
             }
         }
-        .camapign-table {
+       
+    }
+    .camapign-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
 
-            .mat-column-name {
-                flex: 0 1 300px;
-            }
-            .mat-column-description {
-                flex: 0 1 400px;
-            }
-            .mat-column-camapignType {
-                flex: 0 1 300px;
-            }
-            .mat-column-startDate {
-                flex: 0 1 200px;
-            }
-    
-            .mat-column-total {
-                flex: 0 1 200px;
-            }
-            .mat-column-action {
-                flex: 0 1 250px;
-            }
-    
+        .mat-header-row {
+            min-height: 64px;
         }
-        .camapign-table-actived {
 
-            .mat-column-name {
-                flex: 0 1 250px;
+        .camapign {
+            position: relative;
+            cursor: pointer;
+            height: 84px;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+        .mat-column-name {
+            flex: 0 1 300px;
+        }
+        .mat-column-description {
+            flex: 0 1 400px;
+        }
+        .mat-column-camapignType {
+            flex: 0 1 300px;
+        }
+        .mat-column-startDate {
+            flex: 0 1 200px;
+        }
+
+        .mat-column-total {
+            flex: 0 1 200px;
+        }
+        .mat-column-action {
+            flex: 0 1 250px;
+        }
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
             }
-            .mat-column-description {
-                flex: 0 1 250px;
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+    }
+    .camapign-table-actived {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        
+        .camapign {
+            position: relative;
+            cursor: pointer;
+            height: 84px;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+        .mat-column-name {
+            flex: 0 1 250px;
+        }
+        .mat-column-description {
+            flex: 0 1 250px;
+        }
+        .mat-column-camapignType {
+            flex: 0 1 250px;
+        }
+        .mat-column-startDate {
+            flex: 0 1 150px;
+        }
+        .mat-column-campaignStatusType {
+            flex: 0 1 150px;
+        }
+
+        .mat-column-fail {
+            flex: 0 1 150px;
+        }
+        .mat-column-empty {
+            flex: 0 1 150px;
+        }
+        .mat-column-dupplicate {
+            flex: 0 1 150px;
+        }
+        .mat-column-success {
+            flex: 0 1 150px;
+        }
+        .mat-column-total {
+            flex: 0 1 150px;
+        }
+        .mat-column-action {
+            flex: 0 1 250px;
+        }
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
             }
-            .mat-column-camapignType {
-                flex: 0 1 250px;
-            }
-            .mat-column-startDate {
-                flex: 0 1 150px;
-            }
-            .mat-column-campaignStatusType {
-                flex: 0 1 150px;
-            }
-    
-            .mat-column-fail {
-                flex: 0 1 150px;
-            }
-            .mat-column-empty {
-                flex: 0 1 150px;
-            }
-            .mat-column-dupplicate {
-                flex: 0 1 150px;
-            }
-            .mat-column-success {
-                flex: 0 1 150px;
-            }
-            .mat-column-total {
-                flex: 0 1 150px;
-            }
-            .mat-column-action {
-                flex: 0 1 250px;
-            }
-    
+        }
+
+        .active-icon {
+            border-radius: 50%;
         }
     }
     mat-row {
@@ -177,6 +244,6 @@ campaigns {
 
         .mat-icon-button.mat-success {
         color:#155724;
-        }
+        }   
 
 }

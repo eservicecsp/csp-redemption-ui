@@ -22,6 +22,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { CampaignsComponent, DialogDelete } from './campaigns.component';
 import { CampaignsService } from './campaigns.service';
 import { AuthenticationGuard } from 'app/main/pages/authentication/authentication.guard';
+import { DashboardsCampaignsService } from '../dashboards/campaigns/dashboards-campaigns.service';
 
 const routes: Routes = [
     {
@@ -78,7 +79,8 @@ const routes: Routes = [
     ],
     providers   : [
         AuthenticationGuard,
-        CampaignsService
+        CampaignsService,
+        DashboardsCampaignsService
     ],
     entryComponents: [
         DialogDelete 
@@ -86,6 +88,5 @@ const routes: Routes = [
 })
 export class CampaignsModule
 {
-    //CampaignsService
 }
 
