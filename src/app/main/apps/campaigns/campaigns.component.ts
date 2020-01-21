@@ -167,17 +167,7 @@ export class CampaignsComponent implements OnInit
               }
 
           });
-    }
-
-    getCampaignDetail(campaign): void
-    {
-        console.log(campaign);
-        // this._router.navigate(['/apps/dashboards/campaigns/' + campaignId]);
-        this._dashboardsCampaignsService.onSelectedCampaignChanged.next(campaign);
-        this._router.navigate(['/apps/dashboards/campaigns', { id: campaign.id }]);
-        // apps/dashboards/campaigns
-    }
-   
+    }   
 }
 
 @Component({

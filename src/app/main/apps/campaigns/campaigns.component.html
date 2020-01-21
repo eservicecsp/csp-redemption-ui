@@ -19,7 +19,7 @@
                     list
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Campaign list
+                    Campaigns
                 </span>
             </div>
             <!-- / APP TITLE -->
@@ -27,7 +27,7 @@
             <!-- SEARCH -->
             <form  name="searchForm" [formGroup]="searchForm">
                 <div fxLayout="row" fxLayoutAlign="end center" >
-                    <div class="search-wrapper sm-16 mx-md-0" >
+                    <div class="search-wrapper mr-12" >
                         <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center" >
                             <input (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)" matInput [matDatepicker]="startdayDatePicker" name="startDate" formControlName="startDate" placeholder="Start date" readonly>
                             <mat-datepicker-toggle matSuffix [for]="startdayDatePicker"></mat-datepicker-toggle>
@@ -224,7 +224,8 @@
                                 <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
                                 <mat-cell *matCellDef="let campaign">
                                     <div class="example-button-row">
-                                        <button mat-flat-button color="primary" (click)="getCampaignDetail(campaign)">Detail</button>
+                                        <button mat-flat-button color="primary" 
+                                        [routerLink]="'/apps/campaigns/'+campaign.id+'/'+ campaign.name">Detail</button>
                                         <button mat-flat-button color="success">Rollback</button>
                                     </div>
                                 </mat-cell>
@@ -335,9 +336,10 @@
 
                             <ng-container matColumnDef="action">
                                 <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                                <mat-cell *matCellDef="let campaign">
                                     <div class="example-button-row">
-                                        <button mat-flat-button color="primary" *ngIf="camapign.campaignStatusType === 'Expire'" (click)="getCampaignDetail(camapign)">Detail</button>
+                                        <button mat-flat-button color="primary" *ngIf="campaign.campaignStatusType === 'Expire'" 
+                                        [routerLink]="'/apps/campaigns/'+campaign.id+'/'+ campaign.name">Detail</button>
                                     </div>
                                 </mat-cell>
                             </ng-container>
