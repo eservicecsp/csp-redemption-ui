@@ -21,7 +21,15 @@ const routes = [
         loadChildren: './campaigns/campaigns.module#CampaignsModule'
     },
     {
-        path        : 'dashboards/graph',
+        path        : 'campaign-create',
+        loadChildren: './campaign-create/campaign-create.module#CampaignCreateModule'
+    },
+    // {
+    //     path        : 'dashboards/graph',
+    //     loadChildren: './dashboards/graph/graph.module#GraphModule'
+    // }
+    {
+        path        : 'graph',
         loadChildren: './dashboards/graph/graph.module#GraphModule'
     }
 ];

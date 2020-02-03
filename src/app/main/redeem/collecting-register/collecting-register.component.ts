@@ -48,6 +48,7 @@ export class CollectingRegisterComponent implements OnInit
     isWinner: boolean;
 
     productTypes: any[];
+    routerLink: string;
 
     /**
      * Constructor
@@ -220,6 +221,11 @@ export class CollectingRegisterComponent implements OnInit
             this.pieces = response.pieces;
             this.totalPieces = response.totalPieces;
             this.message = response.message;
+            this.routerLink = 'https://etax.chanwanich.com/csp-redemption-front-ui/apps/home?phone=' + this._route.snapshot.queryParams['phone'] + '&brandId=' + response.brandId;
         });
+    }
+    closeResponse(): void{
+        this.collectingRegisterForm.reset();
+        this.isRewardShow = false;
     }
 }

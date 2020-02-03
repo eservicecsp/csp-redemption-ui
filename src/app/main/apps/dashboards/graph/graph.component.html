@@ -19,18 +19,50 @@
                     business
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Graph
+                    Inside
                 </span>
             </div>
             <!-- / APP TITLE -->
 
             <!-- SEARCH -->
             <!-- <div class="search-wrapper mx-32 mx-md-0">
-                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon>search</mat-icon>
-                    <input #filter placeholder="Search for a brand">
-                </div>
+                
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-form-field>
+                            <mat-select class="selectDays">
+                                <mat-option>None</mat-option>
+                                <mat-option value="30">Campaign active 30 days ago</mat-option>
+                                <mat-option value="60">Campaign active 60 days ago</mat-option>
+                                <mat-option value="90">Campaign active 90 days ago</mat-option>
+                                <mat-option value="120">Campaign active 120 days ago</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                    </div>
+                
             </div> -->
+
+            <form  name="searchForm" [formGroup]="searchForm">
+              
+
+                <div fxLayout="row" fxLayoutAlign="end center" >
+                    <div class="search-wrapper mr-12" >
+                        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center" >
+                            <input (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)" matInput [matDatepicker]="startdayDatePicker" name="startDate" formControlName="startDate" placeholder="Start date" >
+                            <mat-datepicker-toggle matSuffix [for]="startdayDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #startdayDatePicker></mat-datepicker>
+                        </div>
+                    </div>
+                    <div class="search-wrapper sm-16 mx-md-0">
+                        <div class="search search-date" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                            <input  (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)" matInput [matDatepicker]="endDatePicker" name="endDate" formControlName="endDate" placeholder="End date" >
+                            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endDatePicker></mat-datepicker>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
             <!-- / SEARCH -->
 
             <!-- ADD BUTTON -->
@@ -47,16 +79,16 @@
         <!-- CONTENT CARD -->
         <div class="content-card">
             <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
-                        [@animateStagger]="{value:'50'}">
+                        [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
                         <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100">
                             <div class="fuse-widget-front">
                                 <div class="px-16 border-bottom" fxLayout="row wrap"
                                     fxLayoutAlign="space-between center">
-                                    <div fxFlex class="py-16 h3">Campaigns active</div>
+                                    <div fxFlex class="py-16 h3">Overview</div>
                                 </div>
                                 <div class="row wrap">
                                     <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
-                                        <ngx-charts-bar-vertical-stacked
+                                        <!-- <ngx-charts-bar-vertical-stacked
                                             [scheme]="colorScheme"
                                             [results]="graphData"
                                             [gradient]="gradient"
@@ -69,13 +101,69 @@
                                             [yAxisLabel]="yAxisLabel"
                                             [animations]="animations"
                                             >
+                                      </ngx-charts-bar-vertical-stacked> -->
+                                      <!-- [scheme]="colorScheme" -->
+                                        <ngx-charts-line-chart
+                                            [scheme]="colorScheme"
+                                            [results]="graphData"
+                                            [gradient]="gradient"
+                                            [xAxis]="showXAxis"
+                                            [yAxis]="showYAxis"
+                                            [legend]="showLegend"
+                                            [showXAxisLabel]="showXAxisLabel"
+                                            [showYAxisLabel]="showYAxisLabel"
+                                            [xAxisLabel]="xAxisLabel"
+                                            [yAxisLabel]="yAxisLabel"
+                                            [animations]="animations"
+                                            [curve]="curve"
+                                            tooltipTemplate = "seriesTooltipTemplate"
+                                           
+                                            (activate)="onActivate($event)"
+                                            (deactivate)="onDeactivate($event)"
+                                            >
                                             <!-- (select)="onSelect($event)" -->
                                             <!-- [view]="view" -->
-                                      </ngx-charts-bar-vertical-stacked>
+                                            <!-- <ng-template #seriesTooltipTemplate  let-model="model.name">
+                                                <pre>{{model|json}}</pre>        
+                                            </ng-template> -->
+                                      </ngx-charts-line-chart>
                                     </div>
                                 </div>
+                                <div *ngIf="selectedData ">
+                                    <mat-table [dataSource]="selectedData" class="mat-elevation-z8" style=" width: 80%; margin-left: 20px;">
+                                        <!-- Position Column -->
+                                        <ng-container matColumnDef="total">
+                                          <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+                                          <mat-cell *matCellDef="let data"> {{data.total | number}} </mat-cell>
+                                        </ng-container>
+                                      
+                                        <!-- Name Column -->
+                                        <ng-container matColumnDef="unused">
+                                          <mat-header-cell *matHeaderCellDef> Unused </mat-header-cell>
+                                          <mat-cell *matCellDef="let data"> {{data.unused | number}} </mat-cell>
+                                        </ng-container>
+                                      
+                                        <!-- Weight Column -->
+                                        <ng-container matColumnDef="success">
+                                          <mat-header-cell *matHeaderCellDef> Success </mat-header-cell>
+                                          <mat-cell *matCellDef="let data"> {{data.success | number}} </mat-cell>
+                                        </ng-container>
+                                      
+                                        <!-- Symbol Column -->
+                                        <ng-container matColumnDef="notSuccess">
+                                          <mat-header-cell *matHeaderCellDef> Not success </mat-header-cell>
+                                          <mat-cell *matCellDef="let data"> {{data.notSuccess | number}} </mat-cell>
+                                        </ng-container>
+                                      
+                                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                      </mat-table>
+
+                                </div>
                             </div>
+                            
                         </fuse-widget>
+                        
                     </div>
          
            

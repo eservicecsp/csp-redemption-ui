@@ -34,6 +34,7 @@ export class PointRegisterComponent implements OnInit
     message: string;
 
     productTypes: any[];
+    routerLink: string;
 
     /**
      * Constructor
@@ -196,6 +197,11 @@ export class PointRegisterComponent implements OnInit
         this._redeemService.register(requestData).then(response => {
             this.isRewardShow = true;
             this.message = response.message;
+            this.routerLink = 'https://etax.chanwanich.com/csp-redemption-front-ui/apps/home?phone=' + this._route.snapshot.queryParams['phone'] + '&brandId=' + response.brandId;
         });
+    }
+    closeResponse(): void{
+        this.pointRegisterForm.reset();
+        this.isRewardShow = false;
     }
 }

@@ -18,13 +18,7 @@ import { CreateCampaignsComponent } from './create-campaigns.component';
 import { ConfigurationsContactUsService } from 'app/main/configurations/contact-us/contact-us.service';
 
 const routes = [
-    {
-        path     : 'detail',
-        component: CreateCampaignComponent,
-        canActivate: [
-            AuthenticationGuard
-        ]
-    },
+   
     {
         path     : '**',
         component: CreateCampaignsComponent,
@@ -35,12 +29,13 @@ const routes = [
             data: CreateCampaignsService
         },
     }
+  
 ];
 
 @NgModule({
     declarations: [
         CreateCampaignsComponent,
-        CreateCampaignComponent
+        CreateCampaignComponent,
     ],
     imports     : [
         RouterModule.forChild(routes),

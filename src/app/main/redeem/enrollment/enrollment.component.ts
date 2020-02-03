@@ -24,6 +24,8 @@ export class EnrollmentComponent implements OnInit
 
     isRewardShow: boolean;
     message: string;
+    routerLink: string;
+    isConsumerId: boolean;
 
     /**
      * Constructor
@@ -91,7 +93,11 @@ export class EnrollmentComponent implements OnInit
         });
 
     }
-
+    closeResponse(): void{
+        this.enrollmentForm.reset();
+        this.isRewardShow = false;
+        this.isConsumerId = false;
+    }
     enrollment(): void
     {
         const requestData = {
@@ -109,7 +115,11 @@ export class EnrollmentComponent implements OnInit
         this._redeemService.registerEnrollment(requestData).then(response => {
             this.isRewardShow = true;
             this.message = response.message;
-
+            if (response.consumerId > 0){
+                this.isConsumerId = true;
+                this.routerLink = 'https://etax.chanwanich.com/csp-redemption-front-ui/apps/home?phone=' + this.enrollmentForm.value.phone + '&brandId=' + response.brandId;
+            }
+            
             // if (response.isExist)
             // {
             //     this.isRewardShow = true;

@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit
 
         // get return url from route parameters or default to '/'
         //this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/apps/dashboards/campaigns';
-        this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || 'apps/campaigns';
+        this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || 'apps/graph';
         //this.returnUrl = this._route.snapshot.queryParams['returnUrl'] === undefined ? 'apps/campaigns' : this._route.snapshot.queryParams['returnUrl'];
     }
 

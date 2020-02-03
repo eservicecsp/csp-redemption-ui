@@ -2,12 +2,13 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef, Inject } f
 
 
 import { fuseAnimations } from '@fuse/animations';
-import { MatTabChangeEvent, MatDatepickerInputEvent, PageEvent, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatTabChangeEvent, MatDatepickerInputEvent, PageEvent, MatDialog, MatDialogRef, MAT_DIALOG_DATA, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { CampaignsService } from './campaigns.service';
 import * as moment from 'moment';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DashboardsCampaignsService } from '../dashboards/campaigns/dashboards-campaigns.service';
+import { AppDateAdapter, APP_DATE_FORMATS } from 'app/date.adapter';
 
 
 @Component({
@@ -15,13 +16,21 @@ import { DashboardsCampaignsService } from '../dashboards/campaigns/dashboards-c
     templateUrl  : './campaigns.component.html',
     styleUrls    : ['./campaigns.component.scss'],
     animations   : fuseAnimations,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    providers: [
+        {
+            provide: DateAdapter, useClass: AppDateAdapter
+        },
+        {
+            provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+        }
+    ]
 })
 export class CampaignsComponent implements OnInit
 {
     newCampaignColumns = [ 'name', 'description', 'camapignType', 'startDate', 'total', 'action'];
-    activeCampaignColumns = [ 'name', 'description', 'camapignType', 'startDate', 'fail', 'empty', 'dupplicate', 'success', 'total', 'action'];
-    expireCampaignColumns = [ 'name', 'description', 'camapignType', 'startDate', 'campaignStatusType', 'fail', 'empty', 'dupplicate', 'success', 'total', 'action'];
+    activeCampaignColumns = [ 'name', 'description', 'camapignType', 'startDate', 'total', 'enroll', 'success', 'fail', 'empty', 'dupplicate', 'action'];
+    expireCampaignColumns = [ 'name', 'description', 'camapignType', 'startDate', 'campaignStatusType', 'total', 'enroll', 'success', 'fail', 'empty', 'dupplicate',   'action'];
     dataSource: any[];
     tabIndex: number;
     searchValue: string;
@@ -80,6 +89,15 @@ export class CampaignsComponent implements OnInit
     {
         console.log(`${type}: ${event.value}`);
         this.getCampaigns();
+    }
+
+    getCampaignDetail(campaign): void
+    {
+        console.log(campaign);
+        // this._router.navigate(['/apps/dashboards/campaigns/' + campaignId]);
+        this._dashboardsCampaignsService.onSelectedCampaignChanged.next(campaign);
+        this._router.navigate(['/apps/dashboards/campaigns', { id: campaign.id }]);
+        // apps/dashboards/campaigns
     }
 
     getCampaigns(): void
@@ -144,6 +162,7 @@ export class CampaignsComponent implements OnInit
 
           });
     }
+
     updateStatus(camapign: any, status: number): void
     {
         // console.log(camapign);

@@ -9,6 +9,8 @@ import * as moment from 'moment';
 import { CreateCampaignsService } from '../../create-campaigns/create-campaigns.service';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 import { fuseAnimations } from '@fuse/animations';
+import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
+import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
 
 @Component({
     selector   : 'campaign-detail',
@@ -19,6 +21,11 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class CampaignDetailComponent implements OnInit, OnDestroy
 {
+    dealerList: [];
+    collectingData: any[];
+    collectingType: number;
+    campaignTypeId: number;
+    products: any[];
     campaign = {
         id: 0,
         name: '',
@@ -58,18 +65,38 @@ export class CampaignDetailComponent implements OnInit, OnDestroy
         private readonly _route: ActivatedRoute,
         private readonly _router: Router,
         private readonly _createCampaignsService: CreateCampaignsService,
-        private readonly _snackBar: MatSnackBar
+        private readonly _snackBar: MatSnackBar,
+        private _configurationsDealersService: ConfigurationsDealersService,
+        private _configurationsProductsService: ConfigurationsProductsService,
     )
     {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+        this._configurationsDealersService.getDealers().then(response => {
+            if (response.isSuccess) {
+                this.dealerList = response.dealers;
+            }
+        });
     }
 
     ngOnInit(): void
     {
+        this._configurationsProductsService.getProducts().then(res => {
+            if (res.isSuccess){
+                this.products = res.products;
+            }
+        });
         const campaignId = this._route.snapshot.params['id'];
         this._campaignsService.getCampaign(campaignId).then(response => {
             this.campaign = response.campaign;
+            this.campaignTypeId = this.campaign['campaignTypeId'];
+
+            if (this.campaignTypeId === 1){
+                this.collectingType = this.campaign['collectingType'];
+                this.collectingData = this.campaign['collectingData'];
+            }
+
+
             this.campaignForm = this._campaignFormBuilder.group({
                 name : [this.campaign['name']],
                 waste : [this.campaign['waste']],
@@ -87,6 +114,12 @@ export class CampaignDetailComponent implements OnInit, OnDestroy
                 line: [this.campaign['line']],
                 web : [this.campaign['web']],
             });
+
+            let dealers = [];
+            this.campaign['dealers'].forEach(element => {
+                dealers.push(element.id);
+            });
+            this.campaignForm.controls['dealers'].setValue(dealers); 
         });
     }
 

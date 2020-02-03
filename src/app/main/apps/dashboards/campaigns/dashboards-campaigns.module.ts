@@ -22,7 +22,7 @@ import { MatPaginatorModule, MatSortModule, MatToolbarModule, MatProgressBarModu
 import { QRCodeModule } from 'angular2-qrcode';
 import { CommonModule, DatePipe } from '@angular/common';
 import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
-import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
+//import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
 import { ConsumersService } from '../../consumers/consumers.service';
 import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
 import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
@@ -56,7 +56,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         DashboardsCampaignsComponent,
-        EnrollmentUploadDialogComponent
+        //EnrollmentUploadDialogComponent
     ],
     imports     : [
         CommonModule,
@@ -103,7 +103,7 @@ const routes: Routes = [
         CreateCampaignsService
     ],
     entryComponents: [
-        EnrollmentUploadDialogComponent
+        //EnrollmentUploadDialogComponent
     ]
 })
 export class DashboardsCampaignsModule

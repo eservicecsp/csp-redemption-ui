@@ -63,7 +63,9 @@ configurations-roles {
         .mat-header-row {
             min-height: 64px;
         }
-
+        .mat-header-cell{
+            font-size: 16px !important;
+        }
         .role {
             position: relative;
             cursor: pointer;

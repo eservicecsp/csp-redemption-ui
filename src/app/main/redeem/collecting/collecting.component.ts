@@ -40,6 +40,7 @@ export class CollectingComponent implements OnInit
     msgWinner = '';
     isWinner: boolean;
     message: string;
+    routerLink: string;
 
 
     /**
@@ -106,7 +107,10 @@ export class CollectingComponent implements OnInit
             phone   : ['', [Validators.required]]
         });
     }
-
+    closeResponse(): void{
+        this.collectingForm.reset();
+        this.isRewardShow = false;
+    }
     collecting(): void
     {
         // this.isRewardShow = true;
@@ -141,6 +145,11 @@ export class CollectingComponent implements OnInit
                 this.pieces = response.pieces;
                 this.totalPieces = response.totalPieces;
                 this.message = response.message;
+                this.routerLink = 'https://etax.chanwanich.com/csp-redemption-front-ui/apps/home?phone=' + this.collectingForm.value.phone + '&brandId=' + response.brandId;
+
+                //this.collectingForm.value.phone
+                //response.brandId
+
 
                 // this.isShowReward01 = true;
             }

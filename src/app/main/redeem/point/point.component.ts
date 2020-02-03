@@ -19,11 +19,13 @@ export class PointComponent implements OnInit
 
     token: string;
     campaignId: string;
+    statusTypeCode: string;
 
     isRewardShow: boolean;
     message: string;
     latitude: string;
     longitude: string;
+    routerLink: string;
 
     /**
      * Constructor
@@ -98,8 +100,13 @@ export class PointComponent implements OnInit
         this._redeemService.isExist(requestData).then(response => {
             if (response.isExist)
             {
+                // FAIL
+                // EMPTY, DUPLICATE
+                // SUCCESS
                 this.isRewardShow = true;
                 this.message = response.message;
+                this.statusTypeCode = response.statusTypeCode;
+                this.routerLink = 'https://etax.chanwanich.com/csp-redemption-front-ui/apps/home?phone=' + this.pointForm.value.phone + '&brandId=' + response.brandId;
             }
             else
             {
@@ -120,6 +127,10 @@ export class PointComponent implements OnInit
                 
             }
         });
+    }
+    closeResponse(): void{
+        this.pointForm.reset();
+        this.isRewardShow = false;
     }
 
 }

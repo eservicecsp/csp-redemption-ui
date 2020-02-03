@@ -1,6 +1,6 @@
-<div id="dashboards-campaigns" class="page-layout simple right-sidebar" fxLayout="row">
+<div id="campaign-summary" class="page-layout simple right-sidebar" fxLayout="row">
     <div class="center" fusePerfectScrollbar>
-        <div class="header accent p-24 pb-0" fxLayout="row" fxLayoutAlign="space-between">
+        <!-- <div class="header accent p-24 pb-0" fxLayout="row" fxLayoutAlign="space-between">
             <div fxLayout="column" fxLayoutAlign="space-between start">
                 <div fxLayout="row" fxLayoutAlign="space-between start">
                     <span class="mat-display-1 my-0 my-sm-24 welcome-message"
@@ -22,6 +22,23 @@
                     </mat-menu>
                 </div>
             </div>
+        </div> -->
+        <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div fxLayout="row" fxLayoutAlign="start center">
+    
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/apps/campaigns'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+    
+                <div fxLayout="column" fxLayoutAlign="start start"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        Campaign Summary
+                    </div>
+                </div>
+            </div>
+    
         </div>
         <div class="content">
             <mat-tab-group dynamicHeight (selectedTabChange)="tabChanged($event)" #tabGroup>
@@ -660,7 +677,7 @@
                 </mat-tab>
 
                 <!-- Enrollment -->
-                <mat-tab label="Enrollment" *ngIf="selectedCampaign.campaignTypeId === 3">
+                <mat-tab label="Enrollment" *ngIf="campaignTypeId === 3">
                     <div class="widget-group" fxLayout="row wrap" fxFlex="100" [@animateStagger]="{value:'50'}">
                         <fuse-widget class="widget" fxLayout="row" fxFlex="100"
                             [@animate]="{value:'*',params:{y:'100%'}}">

@@ -1,0 +1,14 @@
+@import "src/@fuse/scss/fuse";
+
+campaign-summary {
+
+    .content {
+
+        
+    }
+    .transactions-table,.qrCode-table,.enrollments-table {
+        .mat-header-cell{
+            font-size: 16px !important;
+        }
+    }
+}

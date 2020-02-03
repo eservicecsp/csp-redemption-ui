@@ -64,6 +64,10 @@ configurations-promotions {
 
         .mat-header-row {
             min-height: 64px;
+            
+        }
+        .mat-header-cell{
+            font-size: 16px !important;
         }
 
         .promotion {

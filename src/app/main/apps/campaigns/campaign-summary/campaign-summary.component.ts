@@ -5,7 +5,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import * as moment from 'moment';
 
-import { DashboardsCampaignsService } from './dashboards-campaigns.service';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 import { ConsumersService } from '../../consumers/consumers.service';
 
@@ -14,20 +13,22 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
 
-import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
-import { QRDialogComponent } from './qr-dialog/qr-dialog.component';
+// import { EnrollmentUploadDialogComponent } from './enrollment-upload/enrollment-upload.component';
 import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
 import { DatePipe } from '@angular/common';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'app/date.adapter';
 import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
 import { CampaignsService } from '../../campaigns/campaigns.service';
 import { CreateCampaignsService } from '../../create-campaigns/create-campaigns.service';
+import { DashboardsCampaignsService } from '../../dashboards/campaigns/dashboards-campaigns.service';
+import { QRDialogComponent } from '../../dashboards/campaigns/qr-dialog/qr-dialog.component';
+import { EnrollmentUploadDialogComponent } from '../../dashboards/campaigns/enrollment-upload/enrollment-upload.component';
 
 
 @Component({
-    selector     : 'dashboards-campaigns',
-    templateUrl  : './dashboards-campaigns.component.html',
-    styleUrls    : ['./dashboards-campaigns.component.scss'],
+    selector     : 'campaign-summary',
+    templateUrl  : './campaign-summary.component.html',
+    styleUrls    : ['./campaign-summary.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations,
     providers: [
@@ -39,7 +40,7 @@ import { CreateCampaignsService } from '../../create-campaigns/create-campaigns.
         }
     ]
 })
-export class DashboardsCampaignsComponent implements OnInit, OnDestroy
+export class CampaignSummaryComponent implements OnInit, OnDestroy
 {
     private _unsubscribeAll: Subject<any>;
 
@@ -51,7 +52,7 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
     form: FormGroup;
     products: any[];
     disableSelect = new FormControl(false);
-    campaignTypeId: number;
+    campaignTypeId = 1;
     collectingType: number;
     setRows: number;
     setColumns: number;
@@ -237,37 +238,41 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
         private datePipe: DatePipe,
         private _createCampaignsService: CreateCampaignsService,
         private _configurationsDealersService: ConfigurationsDealersService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private readonly _route: ActivatedRoute,
     )
     {
         this._unsubscribeAll = new  Subject();
-        
-        this.campaigns = this._dashboardsCampaignsService.campaigns.filter(x => x.campaignStatusId === 2);
+        this.campaignId = this._route.snapshot.params['id'];
+        this._dashboardsCampaignsService.getCampaignDetail(this.campaignId).then(response => {
+            if (response.isSuccess)
+            {
+                this.selectedCampaign = response.campaign;
+                this.campaignTypeId = this.selectedCampaign.campaignTypeId;
+                console.log(this.selectedCampaign);
+                console.log(this.campaignTypeId);
+            }else{
+                this._router.navigate(['apps/campaigns']);
+            }
+        });
+        this.getCampaignDetail(this.campaignId);
+        this.getCharts();
+
+        if (this.campaigns && this.campaigns.length > 0)
+        {
+            this.selectedCampaign = this.campaigns[0];
+            this.campaignTypeId = this.selectedCampaign.campaignTypeId;
+            this.getCharts();
+        }
+        else
+        {
+            //this._router.navigate(['apps/campaigns']);
+        }
+        //this.campaigns = this._dashboardsCampaignsService.campaigns.filter(x => x.campaignStatusId === 2);
         this.firstName = this._authenticationService.getRawAccessToken('firstName');
         // this.campaignId = this.route.snapshot.paramMap.get('id');
 
-        // this._dashboardsCampaignsService.getCampaignDetail(this.campaignId).then(response => {
-        //     if (response.isSuccess)
-        //     {
-        //         this.selectedCampaign = response.campaign;
-        //         this.campaignTypeId = this.selectedCampaign.campaignTypeId;
-        //     }else{
-        //         this._router.navigate(['apps/campaigns']);
-        //     }
-        // });
-        // this.getCampaignDetail(this.campaignId);
-        // this.getCharts();
-
-        // if (this.campaigns && this.campaigns.length > 0)
-        // {
-        //     this.selectedCampaign = this.campaigns[0];
-        //     this.campaignTypeId = this.selectedCampaign.campaignTypeId;
-        //     this.getCharts();
-        // }
-        // else
-        // {
-        //     //this._router.navigate(['apps/campaigns']);
-        // }
+        
 
         this._configurationsDealersService.getDealers().then(response => {
             if (response.isSuccess) {
@@ -300,18 +305,20 @@ export class DashboardsCampaignsComponent implements OnInit, OnDestroy
 
     ngOnInit(): void 
     {
+       
         this._unsubscribeAll = new Subject();
 
-        this._dashboardsCampaignsService.onSelectedCampaignChanged
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe(response => {
-            // console.log(response.campaign)
-            this.selectedCampaign = response.campaign;
-            this.campaignId = this.selectedCampaign.id;
-            //this.selectedCampaignChanged(response.campaign);
-            this.getCharts();
+        // this._dashboardsCampaignsService.onSelectedCampaignChanged
+        // .pipe(takeUntil(this._unsubscribeAll))
+        // .subscribe(response => {
+        //     // console.log(response.campaign)
+        //     this.selectedCampaign = response.campaign;
+        //     this.campaignId = this.selectedCampaign.id;
+        //     //this.selectedCampaignChanged(response.campaign);
+        //     this.getCharts();
             
-        });
+        // });
+        
 
         this.searchInput.valueChanges
         .pipe(

@@ -192,62 +192,62 @@
                                     </div>
                                 </div>
                                 <div *ngIf="promotionForm.get('promotionTypeId').value === 1">
-                                    <table id="promotion-detail-table" border="1" style="align-content: center;">
-                                        <!-- *ngIf="promotionForm.get('promotionSubTypeId').value!='3' " -->
-                                        <tr>
-                                            <!-- || getControl(promotionForm, 'image1').value.name -->
-                                            <td  colspan="2">
-                                                <!-- {{getControl(promotionForm, 'image1').value.file}} -->
-                                                <div class="image-cell" >
-                                                    <!-- *ngIf="promotion.image1.name" -->
-                                                    <img src="{{getControl(promotionForm, 'backgroundImage').value.file}}">
-                                                    <!-- <img [src]="getControl(promotionForm, 'image1').value.file"> -->
-                                                    <div class="position">1</div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                    <div fxLayout="column" fxFlex="50" fxLayoutAlign="start center">
+                                        <div fxLayout="row" fxLayoutAlign="start start" style="padding-bottom: 6px;" *ngIf="promotionForm.get('promotionSubTypeId').value!='3' ">
+                                            <div  style="width:30vw; min-height: 150px; border: lightgray solid 1px;"
+                                            >
+                                                <img style="max-width:30vw;" src="{{getControl(promotionForm, 'backgroundImage').value.file}}">
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                             
                                 </div>
                                 <div *ngIf="promotionForm.get('promotionTypeId').value === 2 || promotionForm.get('promotionTypeId').value === 6">
                                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                                        <div fxLayout="column" fxFlex="50" class="pr-12">
+                                        <div fxLayout="column" fxFlex="50" fxLayoutAlign="start center">
+                                            <div fxLayout="row" fxLayoutAlign="start start" style="padding-bottom: 6px;" *ngIf="promotionForm.get('promotionSubTypeId').value!='3' ">
+                                                <div  style="width:30vw; min-height: 150px; border: lightgray solid 1px;"
+                                                >
+                                                    <img style="max-width:30vw;" src="{{getControl(promotionForm, 'image1').value.file}}">
+                                                </div>
+                                                
+                                            </div>
+                                            <div fxLayout="row" fxFlex="1 0 auto" fxLayoutAlign="start start" *ngIf="promotionForm.get('promotionSubTypeId').value!='2' ">
+                                                <div  style="width:14.75vw; min-height: 150px; border: lightgray solid 1px; margin-right: 0.5vw;" >
+                                                    <img style="max-width:14.75vw;" src="{{getControl(promotionForm, 'image2').value.file}}">
+                                                </div>
+                                                <div  style="width:14.75vw; min-height: 150px; border: lightgray solid 1px;">
+                                                    <img style="max-width:14.75vw;" src="{{getControl(promotionForm, 'image3').value.file}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div fxLayout="column" fxFlex="50" class="pr-12">
                                             <table id="promotion-detail-table" border="1" style="align-content: center;">
-                                                <!-- *ngIf="promotionForm.get('promotionSubTypeId').value!='3' " -->
                                                 <tr *ngIf="promotionForm.get('promotionSubTypeId').value!='3' ">
-                                                    <!-- || getControl(promotionForm, 'image1').value.name -->
                                                     <td  colspan="2">
-                                                        <!-- {{getControl(promotionForm, 'image1').value.file}} -->
                                                         <div class="image-cell" >
-                                                            <!-- *ngIf="promotion.image1.name" -->
                                                             <img src="{{getControl(promotionForm, 'image1').value.file}}">
-                                                            <!-- <img [src]="getControl(promotionForm, 'image1').value.file"> -->
                                                             <div class="position">1</div>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <!-- *ngIf="promotionForm.get('promotionSubTypeId').value!='2' " -->
                                                 <tr *ngIf="promotionForm.get('promotionSubTypeId').value!='2' ">
-                                                    <!-- || getControl(promotionForm, 'image2').value.name" -->
                                                     <td> 
-                                                        <div class="image-cell" >
-                                                            <!-- *ngIf="promotion.image2.name" -->
+                                                        <div class="image-cell-sub" >
                                                             <img src="{{getControl(promotionForm, 'image2').value.file}}">
-                                                            <!-- <img [src]="getControl(promotionForm, 'image2').value.file"> -->
                                                             <div class="position">2</div>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="image-cell" >
-                                                            <!-- *ngIf="promotion.image3.name" -->
+                                                        <div class="image-cell-sub" >
                                                             <img src="{{getControl(promotionForm, 'image3').value.file}}">
-                                                            <!-- <img [src]="getControl(promotionForm, 'image3').value.file"> -->
                                                             <div class="position">3</div>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             </table>
-                                        </div>
-                                        <!-- {{getControl(promotionForm, 'image2').value.file}} -->
+                                        </div> -->
                                         <div  fxLayout="column" fxFlex="50">
                                             <mat-form-field appearance="outline">
                                                 <mat-label>EDM Type</mat-label>
@@ -262,7 +262,7 @@
                                             <div fxLayout="column" *ngIf="promotionForm.get('promotionSubTypeId').value != '0'">
                                                 <div formGroupName="image1" *ngIf="promotionForm.get('promotionSubTypeId').value!='3'">
                                                     <!-- || getControl(promotionForm, 'image1').value.name -->
-                                                    <mat-form-field appearance="outline" fxFlex="100">
+                                                    <mat-form-field appearance="outline" fxFlex="100" style="margin-right: 6px;">
                                                         <mat-label>Image1</mat-label>
                                                         <input matInput  placeholder="Background Image" formControlName="name" readonly>
                                                         <input #fileInput1 hidden type="file" accept="image/x-png,image/jpeg"
@@ -283,7 +283,7 @@
                                                 </div>
                                                 <div formGroupName="image2" *ngIf="promotionForm.get('promotionSubTypeId').value!='2' ">
                                                     <!-- || getControl(promotionForm, 'image2').value.name -->
-                                                    <mat-form-field appearance="outline" fxFlex="100">
+                                                    <mat-form-field appearance="outline" fxFlex="100" style="margin-right: 6px;">
                                                         <mat-label>Image2</mat-label>
                                                         <input matInput  placeholder="Background Image" formControlName="name" readonly>
                                                         <input #fileInput2 hidden type="file" accept="image/x-png,image/jpeg"
@@ -303,7 +303,7 @@
                                                     </mat-form-field>
                                                 </div>
                                                 <div formGroupName="image3" *ngIf="promotionForm.get('promotionSubTypeId').value!='2'">
-                                                    <mat-form-field appearance="outline" fxFlex="100">
+                                                    <mat-form-field appearance="outline" fxFlex="100" style="margin-right: 6px;">
                                                         <mat-label>Image3</mat-label>
                                                         <input matInput  placeholder="Background Image" formControlName="name" readonly>
                                                         <input #fileInput3 hidden type="file" accept="image/x-png,image/jpeg"

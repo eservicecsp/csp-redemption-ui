@@ -56,10 +56,10 @@ export class DasboardGraphService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    GetGraph(): Promise<any>
+    GetGraph(data): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.get(`${environment.apiBaseUrl}/charts/graph`)
+            this._httpClient.post(`${environment.apiBaseUrl}/charts/graph`, data)
                 .subscribe((response: any) => {
                     resolve(response);
                 }, reject);

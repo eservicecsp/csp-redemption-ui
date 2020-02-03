@@ -74,6 +74,9 @@ consumers {
         .mat-header-row {
             min-height: 64px;
         }
+        .mat-header-cell{
+            font-size: 16px !important;
+        }
 
         .mat-column-checkbox {
             flex: 0 1 100px;

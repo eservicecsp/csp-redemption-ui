@@ -96,6 +96,9 @@ campaigns {
         .mat-header-row {
             min-height: 64px;
         }
+        .mat-header-cell{
+            font-size: 16px !important;
+        }
 
         .camapign {
             position: relative;
@@ -156,7 +159,9 @@ campaigns {
             cursor: pointer;
             height: 84px;
         }
-
+        .mat-header-cell{
+            font-size: 16px !important;
+        }
         .mat-cell {
             min-width: 0;
             display: flex;
@@ -169,29 +174,32 @@ campaigns {
             flex: 0 1 250px;
         }
         .mat-column-camapignType {
-            flex: 0 1 250px;
+            flex: 0 1 180px;
         }
         .mat-column-startDate {
-            flex: 0 1 150px;
+            flex: 0 1 120px;
         }
         .mat-column-campaignStatusType {
-            flex: 0 1 150px;
+            flex: 0 1 100px;
         }
 
         .mat-column-fail {
-            flex: 0 1 150px;
+            flex: 0 1 100px;
+        }
+        .mat-column-enroll {
+            flex: 0 1 100px;
         }
         .mat-column-empty {
-            flex: 0 1 150px;
+            flex: 0 1 100px;
         }
         .mat-column-dupplicate {
-            flex: 0 1 150px;
+            flex: 0 1 100px;
         }
         .mat-column-success {
-            flex: 0 1 150px;
+            flex: 0 1 100px;
         }
         .mat-column-total {
-            flex: 0 1 150px;
+            flex: 0 1 100px;
         }
         .mat-column-action {
             flex: 0 1 250px;

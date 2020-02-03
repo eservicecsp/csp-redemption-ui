@@ -20,40 +20,34 @@ import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
 import { AgmCoreModule } from '@agm/core';
 import { MatPaginatorModule, MatSortModule, MatToolbarModule, MatProgressBarModule, MatDialogModule, MatTooltipModule, MatSnackBarModule, MatCheckboxModule, MatInputModule, MatDatepickerModule, MatRadioModule } from '@angular/material';
 import { CommonModule, DatePipe } from '@angular/common';
-import { CampaignsComponent, DialogDelete } from './campaigns.component';
-import { CampaignsService } from './campaigns.service';
 import { AuthenticationGuard } from 'app/main/pages/authentication/authentication.guard';
 import { DashboardsCampaignsService } from '../dashboards/campaigns/dashboards-campaigns.service';
-import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
 import { CreateCampaignsService } from '../create-campaigns/create-campaigns.service';
 import { ConfigurationsDealersService } from 'app/main/configurations/dealers/dealers.service';
 import { ConfigurationsProductsService } from 'app/main/configurations/products/products.service';
-import { CampaignSummaryComponent } from './campaign-summary/campaign-summary.component';
 
 import { EnrollmentUploadDialogComponent } from '../dashboards/campaigns/enrollment-upload/enrollment-upload.component';
 import { ConsumersService } from '../consumers/consumers.service';
+import { CampaignsService } from '../campaigns/campaigns.service';
+import { CampaignCreateComponent } from './campaign-create.component';
+import { CampaignDetailFromComponent } from './campaign-create-form/campaign-create-form.component';
+import { ConfigurationsContactUsService } from 'app/main/configurations/contact-us/contact-us.service';
+// import { CampaignDetailComponent } from './campaign-create-form/campaign-create-form.component';
 
 const routes: Routes = [
 
     {
-        path    : 'summary/:id',
-        component: CampaignSummaryComponent,
-        canActivate: [
-            AuthenticationGuard
-        ]
-    },
-    {
-        path    : ':id/:name',
-        component: CampaignDetailComponent,
+        path     : 'form',
+        component: CampaignDetailFromComponent,
         canActivate: [
             AuthenticationGuard
         ]
     },
     {
         path     : '**',
-        component: CampaignsComponent,
+        component: CampaignCreateComponent,
         resolve  : {
-            data: CampaignsService
+            data: CreateCampaignsService
         },
         canActivate: [
             AuthenticationGuard
@@ -64,12 +58,10 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        CampaignsComponent,
-        DialogDelete,
-        CampaignDetailComponent,
-        CampaignSummaryComponent,
         //QRDialogComponent,
-        //EnrollmentUploadDialogComponent,
+        CampaignCreateComponent,
+        EnrollmentUploadDialogComponent,
+        CampaignDetailFromComponent
     ],
     imports     : [
         CommonModule,
@@ -117,13 +109,14 @@ const routes: Routes = [
         ConfigurationsDealersService,
         ConfigurationsProductsService,
         ConsumersService,
+        ConfigurationsContactUsService
     ],
     entryComponents: [
-        DialogDelete,
-        //EnrollmentUploadDialogComponent,
+        EnrollmentUploadDialogComponent,
+        CampaignDetailFromComponent
     ]
 })
-export class CampaignsModule
+export class CampaignCreateModule
 {
 }
 

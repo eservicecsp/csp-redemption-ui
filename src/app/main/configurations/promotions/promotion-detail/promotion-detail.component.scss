@@ -114,6 +114,7 @@
     }
 
     #promotion-detail-table {
+        width: 35vw;
         td {
             // width: 150px;
             height: 120px;
@@ -122,7 +123,13 @@
                 position: relative;
 
                 img {
-                    max-width: 120px; 
+                    max-width: 30vw; 
+                }
+            }
+            .image-cell-sub {
+                position: relative;
+                img {
+                    max-width: 15vw; 
                 }
             }
             // .black-white {

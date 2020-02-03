@@ -52,11 +52,11 @@
             <!-- / SEARCH -->
 
             <!-- ADD BUTTON -->
-            <!-- <button mat-raised-button
-                    [routerLink]="'/configurations/products/create'"
+            <button mat-raised-button
+                    [routerLink]="'/apps/campaign-create'"
                     class="add-product-button fuse-white mt-24 mt-md-0">
-                <span>ADD NEW PRODUCT</span>
-            </button> -->
+                <span>NEW</span>
+            </button>
             <!-- / ADD BUTTON -->
 
         </div>
@@ -64,11 +64,11 @@
 
         <!-- CONTENT CARD -->
         <div class="content-card" >
-            <mat-tab-group #tabGroup (selectedTabChange)="tabChanged($event)">
+            <mat-tab-group #tabGroup (selectedTabChange)="tabChanged($event)" fusePerfectScrollbar>
 
-                <mat-tab label="New Campaigns">
+                <mat-tab label="New Campaigns" >
 
-                    <div class="tab-content p-24" fusePerfectScrollbar>
+                    <div class="tab-content p-24" >
 
                         <mat-table class="camapign-table"
                            #table [dataSource]="dataSource"
@@ -76,29 +76,29 @@
                            fusePerfectScrollbar>
     
                             <ng-container matColumnDef="name">
-                                <mat-header-cell *matHeaderCellDef >Campaign name</mat-header-cell>
+                                <mat-header-cell *matHeaderCellDef  >Campaign name</mat-header-cell>
                                 <mat-cell *matCellDef="let camapign">
                                     <p class="text-truncate">{{camapign.name}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="description">
-                                <mat-header-cell *matHeaderCellDef >Description</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xl>Description</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-xl>
                                     <p class="text-truncate">{{camapign.description}}</p>
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="camapignType">
-                                <mat-header-cell *matHeaderCellDef >Camapign Type</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                            <ng-container matColumnDef="camapignType" >
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Camapign Type</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-md>
                                     <p class="text-truncate">{{camapign.campaignType}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="startDate">
-                                <mat-header-cell *matHeaderCellDef >Start - End</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Start - End</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-md>
                                     <p class="text-truncate">
                                         {{camapign.startDate | date:'dd/MM/yyyy'}}
                                     <br/>
@@ -108,9 +108,9 @@
                             </ng-container>
 
                             <ng-container matColumnDef="total">
-                                <mat-header-cell *matHeaderCellDef >Total</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalQrCode}}</p>
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Total</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-xs>
+                                    <p class="text-truncate">{{camapign.totalQrCode | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
@@ -118,8 +118,11 @@
                                 <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
                                 <mat-cell *matCellDef="let camapign">
                                     <div class="example-button-row">
-                                        <button mat-flat-button color="primary" (click)="updateStatus(camapign, 3)">Delete</button>
-                                        <button mat-flat-button color="success" (click)="updateStatus(camapign, 2)">Approve</button>
+                                        <!-- <button mat-flat-button color="primary" (click)="updateStatus(camapign, 3)">Delete</button> -->
+                                        <button mat-icon-button (click)="updateStatus(camapign, 3)" matTooltip="Delete"><mat-icon>delete</mat-icon></button>
+                                        <button mat-icon-button [routerLink]="'/apps/campaigns/'+camapign.id+'/'+ camapign.name" matTooltip="Edit"><mat-icon>edit</mat-icon></button>
+                                        <button mat-icon-button (click)="updateStatus(camapign, 2)" matTooltip="Approve"><mat-icon>check_circle</mat-icon></button>
+                                        <!-- <button mat-flat-button color="success" (click)="updateStatus(camapign, 2)">Approve</button> -->
                                     </div>
                                 </mat-cell>
                             </ng-container>
@@ -146,7 +149,7 @@
                 </mat-tab>
                 <mat-tab label="Actived Campaigns">
 
-                    <div class="tab-content p-24" fusePerfectScrollbar>
+                    <div class="tab-content p-24" >
 
                         <mat-table class="camapign-table-actived"
                            #table [dataSource]="dataSource"
@@ -161,22 +164,22 @@
                             </ng-container>
 
                             <ng-container matColumnDef="description">
-                                <mat-header-cell *matHeaderCellDef >Description</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xl>Description</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-xl>
                                     <p class="text-truncate">{{camapign.description}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="camapignType">
-                                <mat-header-cell *matHeaderCellDef >Camapign Type</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.campaignType}}</p>
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Camapign Type</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-md>
+                                    <p class="text-truncate" >{{camapign.campaignType}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="startDate">
-                                <mat-header-cell *matHeaderCellDef >Start - End</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Start - End</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-md>
                                     <p class="text-truncate">
                                         {{camapign.startDate | date:'dd/MM/yyyy'}}
                                     <br/>
@@ -185,38 +188,45 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="total">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Total</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-xs>
+                                    <p class="text-truncate">{{camapign.totalQrCode | number}}</p>
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="fail">
-                                <mat-header-cell *matHeaderCellDef >Fail</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalFail}}</p>
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>Fail</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-sm>
+                                    <p class="text-truncate">{{camapign.totalFail | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="empty">
-                                <mat-header-cell *matHeaderCellDef >Empty</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalEmpty}}</p>
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>Invalid</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-sm>
+                                    <p class="text-truncate">{{camapign.totalEmpty | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="dupplicate">
-                                <mat-header-cell *matHeaderCellDef >Dupplicate</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalDuplicate}}</p>
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>Dupplicate</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-sm>
+                                    <p class="text-truncate">{{camapign.totalDuplicate | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="success">
-                                <mat-header-cell *matHeaderCellDef >Success</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalSuccess}}</p>
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Success</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-xs>
+                                    <p class="text-truncate">{{camapign.totalSuccess | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="total">
-                                <mat-header-cell *matHeaderCellDef >Total</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalTran}}</p>
+                            <ng-container matColumnDef="enroll">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Enroll</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-xs>
+                                    <p class="text-truncate">{{camapign.totalTran | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
@@ -224,9 +234,13 @@
                                 <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
                                 <mat-cell *matCellDef="let campaign">
                                     <div class="example-button-row">
-                                        <button mat-flat-button color="primary" 
+                                        <!-- <button mat-flat-button color="primary" 
                                         [routerLink]="'/apps/campaigns/'+campaign.id+'/'+ campaign.name">Detail</button>
-                                        <button mat-flat-button color="success">Rollback</button>
+                                        <button mat-flat-button color="success">Rollback</button> -->
+                                        <!-- <button mat-icon-button (click)="getCampaignDetail(campaign)" matTooltip="Detail"><mat-icon>info</mat-icon></button> -->
+                                        <button mat-icon-button [routerLink]="'/apps/campaigns/summary/'+campaign.id" matTooltip="Detail"><mat-icon>info</mat-icon></button>
+                                        <button mat-icon-button [routerLink]="'/apps/campaigns/'+campaign.id+'/'+ campaign.name" matTooltip="Edit"><mat-icon>edit</mat-icon></button>
+                                        <button mat-icon-button matTooltip="Rollback"><mat-icon>replay</mat-icon></button>
                                     </div>
                                 </mat-cell>
                             </ng-container>
@@ -253,7 +267,7 @@
                 </mat-tab>
                 <mat-tab label="Expire Campaigns">
 
-                    <div class="tab-content p-24" fusePerfectScrollbar>
+                    <div class="tab-content p-24" >
 
                         <mat-table class="camapign-table-actived"
                            #table [dataSource]="dataSource"
@@ -268,22 +282,22 @@
                             </ng-container>
 
                             <ng-container matColumnDef="description">
-                                <mat-header-cell *matHeaderCellDef >Description</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xl>Description</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-xl>
                                     <p class="text-truncate">{{camapign.description}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="camapignType">
-                                <mat-header-cell *matHeaderCellDef >Camapign Type</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Camapign Type</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-md>
                                     <p class="text-truncate">{{camapign.campaignType}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="startDate">
-                                <mat-header-cell *matHeaderCellDef >Start - End</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Start - End</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-md>
                                     <p class="text-truncate">
                                         {{camapign.startDate | date:'dd/MM/yyyy'}}
                                     <br/>
@@ -293,44 +307,51 @@
                             </ng-container>
 
                             <ng-container matColumnDef="campaignStatusType">
-                                <mat-header-cell *matHeaderCellDef >Status</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Status</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-md>
                                     <p class="text-truncate">{{camapign.campaignStatusType}}</p>
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="total">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Total</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-xs>
+                                    <p class="text-truncate">{{camapign.totalQrCode | number}}</p>
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="fail">
-                                <mat-header-cell *matHeaderCellDef >Fail</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalFail}}</p>
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>Fail</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-sm>
+                                    <p class="text-truncate">{{camapign.totalFail | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="empty">
-                                <mat-header-cell *matHeaderCellDef >Empty</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalEmpty}}</p>
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>Invalid</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-sm>
+                                    <p class="text-truncate">{{camapign.totalEmpty | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="dupplicate">
-                                <mat-header-cell *matHeaderCellDef >Dupplicate</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalDuplicate}}</p>
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>Dupplicate</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-sm>
+                                    <p class="text-truncate">{{camapign.totalDuplicate | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="success">
-                                <mat-header-cell *matHeaderCellDef >Success</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalSuccess}}</p>
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Success</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-xs>
+                                    <p class="text-truncate">{{camapign.totalSuccess | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="total">
-                                <mat-header-cell *matHeaderCellDef >Total</mat-header-cell>
-                                <mat-cell *matCellDef="let camapign">
-                                    <p class="text-truncate">{{camapign.totalTran}}</p>
+                            <ng-container matColumnDef="enroll">
+                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Enroll</mat-header-cell>
+                                <mat-cell *matCellDef="let camapign" fxHide fxShow.gt-xs>
+                                    <p class="text-truncate">{{camapign.totalTran | number}}</p>
                                 </mat-cell>
                             </ng-container>
 
@@ -338,8 +359,12 @@
                                 <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
                                 <mat-cell *matCellDef="let campaign">
                                     <div class="example-button-row">
-                                        <button mat-flat-button color="primary" *ngIf="campaign.campaignStatusType === 'Expire'" 
-                                        [routerLink]="'/apps/campaigns/'+campaign.id+'/'+ campaign.name">Detail</button>
+                                        <!-- <button mat-flat-button color="primary" *ngIf="campaign.campaignStatusType === 'Expire'" 
+                                        [routerLink]="'/apps/campaigns/'+campaign.id+'/'+ campaign.name">Detail</button> -->
+                                        <!-- <button mat-icon-button (click)="getCampaignDetail(campaign)" matTooltip="Detail"><mat-icon>info</mat-icon></button> -->
+                                        <button mat-icon-button [routerLink]="'/apps/campaigns/summary/'+campaign.id" matTooltip="Detail"><mat-icon>info</mat-icon></button>
+                                        <button mat-icon-button [routerLink]="'/apps/campaigns/'+campaign.id+'/'+ campaign.name" matTooltip="Edit"><mat-icon>edit</mat-icon></button>
+                                        <button mat-icon-button matTooltip="Rollback"><mat-icon>replay</mat-icon></button>
                                     </div>
                                 </mat-cell>
                             </ng-container>
