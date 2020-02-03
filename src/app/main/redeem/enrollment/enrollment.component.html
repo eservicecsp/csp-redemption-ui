@@ -1,4 +1,59 @@
-<div id="enrollment" fxLayout="column">
+<div id="validate-qr" fxLayout="column" *ngIf="!isValidated">
+    <div
+        id="authenticate-wrapper"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+    >
+        <div class="top-message"></div>
+        <div
+            class="logo"
+            [@animate]="{
+                value: '*',
+                params: { duration: '300ms', y: '100px' }
+            }"
+        >
+            <img
+                *ngIf="statusTypeCode === 'FAIL'"
+                src="assets/images/backgrounds/beattention.png"
+            />
+            <img
+                *ngIf="statusTypeCode === 'WARNING'"
+                src="assets/images/backgrounds/warning.png"
+            />
+            <img
+                *ngIf="statusTypeCode === 'SUCCESS'"
+                src="assets/images/backgrounds/authenticproduct.png"
+            />
+        </div>
+        <div class="center-message">
+            <span *ngIf="statusTypeCode === 'WARNING' && scanDate">
+                {{ message }}<br />{{ scanDate }}
+            </span>
+            <span *ngIf="statusTypeCode === 'WARNING' && !scanDate">
+                {{ message }}
+            </span>
+            <span
+                *ngIf="
+                    statusTypeCode === 'FAIL'
+                "
+            >
+                {{ message }}
+            </span>
+        </div>
+        <div class="bottom-message">
+            <span *ngIf="statusTypeCode != 'FAIL'">
+                THANK YOU <br />
+                FOR CHOOSING OUR PRODUCT
+            </span>
+            <span *ngIf="statusTypeCode === 'FAIL' && tel">
+                PLEASE GIVE US INFORMATION <br />
+                CALL CENTER: {{ tel }}
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="enrollment" fxLayout="column" *ngIf="isValidated">
 
     <div id="enrollment-form-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="!isRewardShow">
         <div id="logo-wrapper">
@@ -9,7 +64,7 @@
 
         <div id="enrollment-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
 
-            
+
             <div class="title">Get promotion</div>
 
             <form name="enrollmentForm" [formGroup]="enrollmentForm" novalidate>
@@ -60,7 +115,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <button type="button" mat-raised-button color="accent" class="submit-button" aria-label="Redeem" 
+                <button type="button" mat-raised-button color="accent" class="submit-button" aria-label="Redeem"
                 [disabled]="enrollmentForm.invalid"
                 (click)="enrollment()">
                     Submit
@@ -69,13 +124,13 @@
             </form>
 
         </div>
-        
+
     </div>
     <div id="enrollment-reward-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="isRewardShow">
         <div id="enrollment-reward" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
             <div  style="color: green;">
                 <h2>{{message}}</h2>
-                
+
             </div>
             <div *ngIf="isRewardShow" style="color: green; "  fxLayout="row" fxLayoutAlign="space-between center" >
                 <a [href]="routerLink" target="_blank"><button mat-raised-button style="background-color:#0064FD;color: cornsilk;" class="submit-button" *ngIf="isConsumerId">click เพื่อดูโปรโมชั่นหรือคะแนนสะสม</button></a>

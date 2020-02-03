@@ -145,14 +145,30 @@ export class RedeemService {
         });
     }
 
-    checkQrCode(): Promise<any> {
+    checkQrCode(requestData: any): Promise<any> {
+
         return new Promise((resolve, reject) => {
-            resolve({
-                message: 'This QR Code has been verified on',
-                statusTypeCode: 'FAIL',
-                scanDate: '2019-10-10 10:10:10',
-                tel: '08x-xxxxxxx'
-            });
+            this._httpClient
+                .post(
+                    environment.apiBaseUrl + '/consumers/validate',
+                    requestData
+                )
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
+        });
+    }
+    checkQrCodeEnroll(requestData: any): Promise<any> {
+
+        return new Promise((resolve, reject) => {
+            this._httpClient
+                .post(
+                    environment.apiBaseUrl + '/consumers/validateEnroll',
+                    requestData
+                )
+                .subscribe((response: any) => {
+                    resolve(response);
+                }, reject);
         });
     }
 }

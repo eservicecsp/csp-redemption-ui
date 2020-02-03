@@ -1,4 +1,59 @@
-<div id="collecting" fxLayout="column">
+<div id="validate-qr" fxLayout="column" *ngIf="!isValidated">
+    <div
+        id="authenticate-wrapper"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+    >
+        <div class="top-message"></div>
+        <div
+            class="logo"
+            [@animate]="{
+                value: '*',
+                params: { duration: '300ms', y: '100px' }
+            }"
+        >
+            <img
+                *ngIf="statusTypeCode === 'FAIL'"
+                src="assets/images/backgrounds/beattention.png"
+            />
+            <img
+                *ngIf="statusTypeCode === 'WARNING'"
+                src="assets/images/backgrounds/warning.png"
+            />
+            <img
+                *ngIf="statusTypeCode === 'SUCCESS'"
+                src="assets/images/backgrounds/authenticproduct.png"
+            />
+        </div>
+        <div class="center-message">
+            <span *ngIf="statusTypeCode === 'WARNING' && scanDate">
+                {{ message }}<br />{{ scanDate }}
+            </span>
+            <span *ngIf="statusTypeCode === 'WARNING' && !scanDate">
+                {{ message }}
+            </span>
+            <span
+                *ngIf="
+                    statusTypeCode === 'FAIL'
+                "
+            >
+                {{ message }}
+            </span>
+        </div>
+        <div class="bottom-message">
+            <span *ngIf="statusTypeCode != 'FAIL'">
+                THANK YOU <br />
+                FOR CHOOSING OUR PRODUCT
+            </span>
+            <span *ngIf="statusTypeCode === 'FAIL' && tel">
+                PLEASE GIVE US INFORMATION <br />
+                CALL CENTER: {{ tel }}
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="collecting" fxLayout="column" *ngIf="isValidated">
 
         <div id="collecting-form-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="!isRewardShow">
             <div id="logo-wrapper">
@@ -8,12 +63,12 @@
             </div>
 
             <div id="collecting-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
-    
-                
+
+
                 <div class="title">Get promotion</div>
-    
+
                 <form name="collectingForm" [formGroup]="collectingForm" novalidate>
-    
+
                     <mat-form-field appearance="outline">
                         <mat-label>Mobile No.</mat-label>
                         <input matInput formControlName="phone">
@@ -22,17 +77,17 @@
                             Mobile No. is required
                         </mat-error>
                     </mat-form-field>
-    
-                    <button type="button" mat-raised-button color="accent" class="submit-button" aria-label="Redeem" 
+
+                    <button type="button" mat-raised-button color="accent" class="submit-button" aria-label="Redeem"
                     [disabled]="collectingForm.invalid"
                     (click)="collecting()">
                         Submit
                     </button>
-    
+
                 </form>
 
             </div>
-            
+
         </div>
 
         <div id="collecting-reward-wrapper" fxLayout="column" fxLayoutAlign="center center" *ngIf="isRewardShow">
@@ -40,12 +95,12 @@
 
                 <div *ngIf="!isWinner" style="color: green;">
                     <h2>{{message}}</h2>
-                    
+
                 </div>
-                
+
                 <div *ngIf="campaignTypeId == 1">
                     <div fxLayout="column" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
-                        <div fxFlex="40" class="pr-16">     
+                        <div fxFlex="40" class="pr-16">
                             <div class="example-image-card">
                                 <div fxLayout="column" fxLayoutAlign="space-between center"  class="p-16">
                                     <table *ngIf="collectingType == 1">
@@ -75,7 +130,7 @@
                                                 <div class="collecting-image-cell">
                                                     <img class="product-image" [src]="collectingData[2].extension + ',' + collectingData[2].file"/>
                                                 </div>
-                                                
+
                                             </td>
                                             <td [class]="collectingData[3].isCollected">
                                                 <div class="collecting-image-cell">
@@ -102,7 +157,7 @@
                                                 <div class="collecting-image-cell">
                                                     <img [src]="collectingData[2].extension + ',' + collectingData[2].file">
                                                 </div>
-                                                
+
                                             </td>
                                             <td [class]="collectingData[3].isCollected">
                                                 <div class="collecting-image-cell">
@@ -115,7 +170,7 @@
                                                 <div class="collecting-image-cell">
                                                     <img [src]="collectingData[4].extension + ',' + collectingData[4].file">
                                                 </div>
-                                                
+
                                             </td>
                                             <td [class]="collectingData[5].isCollected">
                                                 <div class="collecting-image-cell">
@@ -125,20 +180,19 @@
                                         </tr>
                                     </table>
                                 </div>
-                            </div>   
+                            </div>
                         </div>
-                       
+
                     </div>
-                    
+
                 </div>
                 <div *ngIf="isRewardShow" style="color: green; margin-bottom: 1vw;margin-left: 1vw;margin-right: 1vw;"  fxLayout="row" fxLayoutAlign="space-between center" >
                     <a [href]="routerLink" target="_blank"><button mat-raised-button style="background-color:#0064FD;color: cornsilk;" class="submit-button">click เพื่อดูโปรโมชั่นหรือคะแนนสะสม</button></a>
                     <button mat-raised-button style="background-color:#FFAC1C;color: cornsilk;"  class="submit-button"  (click)="closeResponse()">Close</button>
                 </div>
-                
+
             </div>
-            
+
         </div>
-    
+
     </div>
-    

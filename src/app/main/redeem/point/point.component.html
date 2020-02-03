@@ -29,10 +29,12 @@
             <span *ngIf="statusTypeCode === 'WARNING' && scanDate">
                 {{ message }}<br />{{ scanDate }}
             </span>
+            <span *ngIf="statusTypeCode === 'WARNING' && !scanDate">
+                {{ message }}
+            </span>
             <span
                 *ngIf="
-                    statusTypeCode === 'FAIL' ||
-                    (statusTypeCode === 'WARNING' && scanDate)
+                    statusTypeCode === 'FAIL'
                 "
             >
                 {{ message }}
@@ -43,7 +45,7 @@
                 THANK YOU <br />
                 FOR CHOOSING OUR PRODUCT
             </span>
-            <span *ngIf="statusTypeCode === 'FAIL'">
+            <span *ngIf="statusTypeCode === 'FAIL' && tel">
                 PLEASE GIVE US INFORMATION <br />
                 CALL CENTER: {{ tel }}
             </span>

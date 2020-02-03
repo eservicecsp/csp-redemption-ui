@@ -27,6 +27,12 @@ export class EnrollmentComponent implements OnInit
     routerLink: string;
     isConsumerId: boolean;
 
+    // Validate params
+    isValidated: boolean;
+    scanDate: string;
+    tel: string;
+    statusTypeCode: string;
+
     /**
      * Constructor
      *
@@ -75,15 +81,6 @@ export class EnrollmentComponent implements OnInit
      */
     ngOnInit(): void
     {
-        this._redeemService.getPosition().then(position =>
-            {
-                this.latitude = position.coords.latitude;
-                this.longitude = position.coords.longitude;
-            }, error => {
-                this.latitude = null;
-                this.longitude = null;
-        });
-
         this.enrollmentForm = this._formBuilder.group({
             phone   : ['', [Validators.required]],
             code   : ['', [Validators.required]],
@@ -92,6 +89,32 @@ export class EnrollmentComponent implements OnInit
             email : ['', [Validators.required, Validators.email]],
         });
 
+        if (!this.isValidated) {
+            const data = {
+                token: this.token,
+                campaignId: this.campaignId,
+            };
+            this._redeemService.checkQrCodeEnroll(data).then(response => {
+                this.message = response.message;
+                this.statusTypeCode = response.statusTypeCode;
+                this.scanDate = response.scanDate;
+                this.tel = response.tel;
+
+                if (this.statusTypeCode === 'SUCCESS') {
+                    setTimeout(() => {
+                        this.isValidated = true;
+                        this._redeemService.getPosition().then(position =>
+                            {
+                                this.latitude = position.coords.latitude;
+                                this.longitude = position.coords.longitude;
+                            }, error => {
+                                this.latitude = null;
+                                this.longitude = null;
+                        });
+                    }, 3000);
+                }
+            });
+        }
     }
     closeResponse(): void{
         this.enrollmentForm.reset();
@@ -119,7 +142,7 @@ export class EnrollmentComponent implements OnInit
                 this.isConsumerId = true;
                 this.routerLink = 'https://etax.chanwanich.com/csp-redemption-front-ui/apps/home?phone=' + this.enrollmentForm.value.phone + '&brandId=' + response.brandId;
             }
-            
+
             // if (response.isExist)
             // {
             //     this.isRewardShow = true;
@@ -137,7 +160,7 @@ export class EnrollmentComponent implements OnInit
 
                 // }
                 // else{
-                   
+
                 //     let consumerId = 0;
                 //     let FirstName = null;
                 //     let LastName = null;
@@ -151,8 +174,8 @@ export class EnrollmentComponent implements OnInit
                 //     }
                 //     this._router.navigate(['redeem/enrollment/register'], {queryParams: {
                 //                                                                         phone: this.enrollmentForm.value.phone,
-                //                                                                         token: this.token, 
-                //                                                                         campaignId: this.campaignId, 
+                //                                                                         token: this.token,
+                //                                                                         campaignId: this.campaignId,
                 //                                                                         code: this.enrollmentForm.value.code,
                 //                                                                         consumerId : consumerId,
                 //                                                                         firstName: FirstName,
@@ -160,7 +183,7 @@ export class EnrollmentComponent implements OnInit
                 //                                                                         email: Email,
                 //                                                                     }});
                 // }
-                
+
            // }
         });
     }

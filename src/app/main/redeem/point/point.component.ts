@@ -83,7 +83,11 @@ export class PointComponent implements OnInit, OnDestroy {
         });
 
         if (!this.isValidated) {
-            this._redeemService.checkQrCode().then(response => {
+            const data = {
+                token: this.token,
+                campaignId: this.campaignId,
+            };
+            this._redeemService.checkQrCode(data).then(response => {
                 this.message = response.message;
                 this.statusTypeCode = response.statusTypeCode;
                 this.scanDate = response.scanDate;

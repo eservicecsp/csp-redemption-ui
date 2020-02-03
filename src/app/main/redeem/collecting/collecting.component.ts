@@ -43,6 +43,11 @@ export class CollectingComponent implements OnInit
     routerLink: string;
 
 
+     // Validate params
+     isValidated: boolean;
+     scanDate: string;
+     tel: string;
+     statusTypeCode: string;
     /**
      * Constructor
      *
@@ -95,17 +100,36 @@ export class CollectingComponent implements OnInit
      */
     ngOnInit(): void
     {
-        this._redeemService.getPosition().then(position =>
-            {
-                this.latitude = position.coords.latitude;
-                this.longitude = position.coords.longitude;
-            }, error => {
-                this.latitude = null;
-                this.longitude = null;
-        });
+
         this.collectingForm = this._formBuilder.group({
             phone   : ['', [Validators.required]]
         });
+        if (!this.isValidated) {
+            const data = {
+                token: this.token,
+                campaignId: this.campaignId,
+            };
+            this._redeemService.checkQrCode(data).then(response => {
+                this.message = response.message;
+                this.statusTypeCode = response.statusTypeCode;
+                this.scanDate = response.scanDate;
+                this.tel = response.tel;
+
+                if (this.statusTypeCode === 'SUCCESS') {
+                    setTimeout(() => {
+                        this.isValidated = true;
+                        this._redeemService.getPosition().then(position =>
+                            {
+                                this.latitude = position.coords.latitude;
+                                this.longitude = position.coords.longitude;
+                            }, error => {
+                                this.latitude = null;
+                                this.longitude = null;
+                        });
+                    }, 3000);
+                }
+            });
+        }
     }
     closeResponse(): void{
         this.collectingForm.reset();
@@ -165,7 +189,7 @@ export class CollectingComponent implements OnInit
                 else{
                     this._router.navigate(['redeem/collecting/register'], {queryParams: {token: this.token, campaignId: this.campaignId, phone: this.collectingForm.value.phone}});
                 }
-                
+
             }
         });
     }

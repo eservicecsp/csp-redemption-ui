@@ -1,6 +1,57 @@
 @import "src/@fuse/scss/fuse";
 
 collecting {
+    #validate-qr {
+        width: 100%;
+        background: url('~/assets/images/backgrounds/screendesktop.png')
+            no-repeat;
+        background-size: cover;
+        position: relative;
+
+        @include media-breakpoint('xs') {
+            background: url('~/assets/images/backgrounds/screenbg.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #authenticate-wrapper {
+            flex: 1 0 auto;
+            padding: 32px;
+
+            @include media-breakpoint('xs') {
+                padding: 16px;
+            }
+            .top-message {
+                margin: 288px auto 24px auto;
+
+                @include media-breakpoint('xs') {
+                    margin: 160px auto 24px auto;
+                }
+            }
+            .logo {
+                width: 256px;
+                margin: 32px auto;
+            }
+            .center-message {
+                text-align: center;
+                margin: 32px auto 24px auto;
+
+                @include media-breakpoint('xs') {
+                    margin: 32px auto 24px auto;
+                }
+            }
+            .bottom-message {
+                text-align: center;
+                font-weight: 600;
+                font-size: large;
+                margin: 128px auto 24px auto;
+                @include media-breakpoint('xs') {
+                    margin: 128px auto 24px auto;
+                }
+            }
+        }
+    }
+
     .logo {
         width: 128px;
         // margin: 32px auto;
@@ -26,7 +77,7 @@ collecting {
                 width: 128px;
                 float: right;
             }
-            
+
         }
         #collecting-reward-wrapper {
             // flex: 1 0 auto;
@@ -35,7 +86,7 @@ collecting {
             // @include media-breakpoint('xs') {
             //     margin-bottom: 50px;
             // }
-            
+
             // #collecting-reward {
             //     width: 384px;
             //     max-width: 384px;
@@ -224,17 +275,17 @@ collecting {
         table, th, td {
             border: 1px solid black;
         }
-    
+
         table {
             td {
                 width: 150px;
                 height: 150px;
-                
+
                 .collecting-image-cell{
                     position: relative;
-    
+
                     img {
-                        max-width: 150px; 
+                        max-width: 150px;
                     }
                 }
                 // .black-white {
@@ -242,21 +293,21 @@ collecting {
                 //     filter: grayscale(100%);
                 // }
                 .position {
-                    padding-top: 7px;	
+                    padding-top: 7px;
                     padding-right: 7px;
                     position: absolute;
                     right: 0;
                     top: 0;
                     // display: none;
                 }
-                
+
             }
             .img_grayscale {
                 -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
                 filter: grayscale(100%);
             }
-    
-            
+
+
         }
     }
 }

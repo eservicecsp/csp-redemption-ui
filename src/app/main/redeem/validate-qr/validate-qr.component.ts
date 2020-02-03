@@ -70,18 +70,18 @@ export class ValidateQrComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this._redeemService.checkQrCode().then(response => {
-            this.message = response.message;
-            this.statusTypeCode = response.statusTypeCode;
-            this.scanDate = response.scanDate;
-            this.tel = response.tel;
+        // this._redeemService.checkQrCode().then(response => {
+        //     this.message = response.message;
+        //     this.statusTypeCode = response.statusTypeCode;
+        //     this.scanDate = response.scanDate;
+        //     this.tel = response.tel;
 
-            if (this.statusTypeCode === 'SUCCESS') {
-                setTimeout(() => {
-                    // this._redeemService.onValidatedChanged.next(true);
-                }, 3000);
-            }
-        });
+        //     if (this.statusTypeCode === 'SUCCESS') {
+        //         setTimeout(() => {
+        //             // this._redeemService.onValidatedChanged.next(true);
+        //         }, 3000);
+        //     }
+        // });
     }
 
     ngOnDestroy(): void {
