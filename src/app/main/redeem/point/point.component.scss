@@ -1,6 +1,57 @@
-@import "src/@fuse/scss/fuse";
+@import 'src/@fuse/scss/fuse';
 
 point {
+    #validate-qr {
+        width: 100%;
+        background: url('~/assets/images/backgrounds/screendesktop.png')
+            no-repeat;
+        background-size: cover;
+        position: relative;
+
+        @include media-breakpoint('xs') {
+            background: url('~/assets/images/backgrounds/screenbg.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #authenticate-wrapper {
+            flex: 1 0 auto;
+            padding: 32px;
+
+            @include media-breakpoint('xs') {
+                padding: 16px;
+            }
+            .top-message {
+                margin: 288px auto 24px auto;
+
+                @include media-breakpoint('xs') {
+                    margin: 160px auto 24px auto;
+                }
+            }
+            .logo {
+                width: 256px;
+                margin: 32px auto;
+            }
+            .center-message {
+                text-align: center;
+                margin: 32px auto 24px auto;
+
+                @include media-breakpoint('xs') {
+                    margin: 32px auto 24px auto;
+                }
+            }
+            .bottom-message {
+                text-align: center;
+                font-weight: 600;
+                font-size: large;
+                margin: 128px auto 24px auto;
+                @include media-breakpoint('xs') {
+                    margin: 128px auto 24px auto;
+                }
+            }
+        }
+    }
+
     .logo {
         width: 128px;
         // margin: 32px auto;
@@ -11,7 +62,7 @@ point {
         background-size: cover;
         position: relative;
 
-        #logo-wrapper{
+        #logo-wrapper {
             // position: absolute;
             width: 384px;
             margin-bottom: -30px;
@@ -26,23 +77,22 @@ point {
                 width: 128px;
                 float: right;
             }
-            
         }
         #point-reward-wrapper {
             flex: 1 0 auto;
             padding: 16px; // ------ size
-           
+
             margin-bottom: 80px;
             @include media-breakpoint('xs') {
                 margin-bottom: 50px;
             }
-            
+
             #point-reward {
                 //background: url('assets/images/backgrounds/screendesktop.png') no-repeat;
                 width: 384px;
                 max-width: 384px;
                 padding: 32px;
-                //height: 300px; 
+                //height: 300px;
                 text-align: center;
                 //background: url('assets/images/backgrounds/screendesktop.png') no-repeat center center;
                 position: absolute;
@@ -58,11 +108,8 @@ point {
                     width: 184px;
                     height: 103px;
                 }
-                
             }
         }
-
-
 
         #point-form-wrapper {
             flex: 1 0 auto;
@@ -120,13 +167,13 @@ point {
                         margin-top: 8px;
 
                         .remember-me {
-                            margin-bottom: 16px
+                            margin-bottom: 16px;
                         }
 
                         .forgot-password {
                             font-size: 13px;
                             font-weight: 600;
-                            margin-bottom: 16px
+                            margin-bottom: 16px;
                         }
                     }
 
@@ -185,12 +232,11 @@ point {
                 }
 
                 button {
-
                     &.google,
                     &.facebook {
                         width: 192px;
                         text-transform: none;
-                        color: #FFFFFF;
+                        color: #ffffff;
                         font-size: 13px;
                     }
 
@@ -199,7 +245,7 @@ point {
                     }
 
                     &.google {
-                        background-color: #D73D32;
+                        background-color: #d73d32;
                         margin-bottom: 8px;
                     }
 

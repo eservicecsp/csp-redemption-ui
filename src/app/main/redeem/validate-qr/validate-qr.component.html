@@ -1,0 +1,52 @@
+<div id="validate-qr" fxLayout="column">
+    <div
+        id="authenticate-wrapper"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+    >
+        <div class="top-message"></div>
+        <div
+            class="logo"
+            [@animate]="{
+                value: '*',
+                params: { duration: '300ms', y: '100px' }
+            }"
+        >
+            <img
+                *ngIf="statusTypeCode === 'FAIL'"
+                src="assets/images/backgrounds/beattention.png"
+            />
+            <img
+                *ngIf="statusTypeCode === 'WARNING'"
+                src="assets/images/backgrounds/warning.png"
+            />
+            <img
+                *ngIf="statusTypeCode === 'SUCCESS'"
+                src="assets/images/backgrounds/authenticproduct.png"
+            />
+        </div>
+        <div class="center-message">
+            <span *ngIf="statusTypeCode === 'WARNING' && scanDate">
+                {{ message }}<br />{{ scanDate }}
+            </span>
+            <span
+                *ngIf="
+                    statusTypeCode === 'FAIL' ||
+                    (statusTypeCode === 'WARNING' && scanDate)
+                "
+            >
+                {{ message }}
+            </span>
+        </div>
+        <div class="bottom-message">
+            <span *ngIf="statusTypeCode != 'FAIL'">
+                THANK YOU <br />
+                FOR CHOOSING OUR PRODUCT
+            </span>
+            <span *ngIf="statusTypeCode === 'FAIL'">
+                PLEASE GIVE US INFORMATION <br />
+                CALL CENTER: {{ tel }}
+            </span>
+        </div>
+    </div>
+</div>

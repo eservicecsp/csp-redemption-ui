@@ -1,0 +1,54 @@
+@import 'src/@fuse/scss/fuse';
+
+validate-qr {
+    #validate-qr {
+        width: 100%;
+        background: url('~/assets/images/backgrounds/screendesktop.png')
+            no-repeat;
+        background-size: cover;
+        position: relative;
+
+        @include media-breakpoint('xs') {
+            background: url('~/assets/images/backgrounds/screenbg.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #authenticate-wrapper {
+            flex: 1 0 auto;
+            padding: 32px;
+
+            @include media-breakpoint('xs') {
+                padding: 16px;
+            }
+            .top-message {
+                margin: 288px auto 24px auto;
+
+                @include media-breakpoint('xs') {
+                    margin: 160px auto 24px auto;
+                }
+            }
+            .logo {
+                width: 256px;
+                margin: 32px auto;
+            }
+            .center-message {
+                text-align: center;
+                margin: 32px auto 24px auto;
+
+                @include media-breakpoint('xs') {
+                    margin: 32px auto 24px auto;
+                }
+            }
+            .bottom-message {
+                text-align: center;
+                font-weight: 600;
+                font-size: large;
+                margin: 128px auto 24px auto;
+                @include media-breakpoint('xs') {
+                    margin: 128px auto 24px auto;
+                }
+            }
+        }
+    }
+}

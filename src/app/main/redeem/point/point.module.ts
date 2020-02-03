@@ -10,26 +10,28 @@ import { FuseSharedModule } from '@fuse/shared.module';
 
 import { PointComponent } from './point.component';
 import { PointRegisterComponent } from '../point-register/point-register.component';
-import { MatSelectModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import {
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+} from '@angular/material';
 import { DatePipe } from '@angular/common';
+import { ValidateQrComponent } from '../validate-qr/validate-qr.component';
 
 const routes = [
     {
-        path     : 'point',
+        path: 'point',
         component: PointComponent
     },
     {
-        path     : 'point/register',
+        path: 'point/register',
         component: PointRegisterComponent
     }
 ];
 
 @NgModule({
-    declarations: [
-        PointComponent,
-        PointRegisterComponent,
-    ],
-    imports     : [
+    declarations: [PointComponent, PointRegisterComponent],
+    imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
         MatCheckboxModule,
@@ -42,15 +44,9 @@ const routes = [
         // BrowserModule ,
         // BrowserAnimationsModule,
         // CommonModule,
-        
 
         FuseSharedModule
-    ]
-    ,
-    providers: [
-        DatePipe,
-    ]
+    ],
+    providers: [DatePipe]
 })
-export class PointModule
-{
-}
+export class PointModule {}

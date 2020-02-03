@@ -1,167 +1,158 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import {
+    ActivatedRouteSnapshot,
+    Resolve,
+    RouterStateSnapshot
+} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'environments/environment';
 import { AuthenticationService } from 'app/main/pages/authentication/authentication.service';
 
 @Injectable()
-export class RedeemService
-{
-    // dealers: any[];
-    // onDealersChanged: BehaviorSubject<any>;
-
-    /**
-     * Constructor
-     *
-     * @param {HttpClient} _httpClient
-     */
+export class RedeemService {
     constructor(
         private _httpClient: HttpClient,
-        private _authenticationService: AuthenticationService,
-    )
-    {
-        // Set the defaults
-        // this.onDealersChanged = new BehaviorSubject({});
-    }
+        private _authenticationService: AuthenticationService
+    ) {}
 
-    /**
-     * Check is existing
-     *
-     * @returns {Promise<any>}
-     */
-    isExist(requestData): Promise<any>
-    {
+    isExist(requestData): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._httpClient.post(environment.apiBaseUrl + '/redemption/isexist', requestData)
+            this._httpClient
+                .post(
+                    environment.apiBaseUrl + '/redemption/isexist',
+                    requestData
+                )
                 .subscribe((response: any) => {
-                    if (response.isSuccess)
-                    {
+                    if (response.isSuccess) {
                         // this.dealers = response.dealers;
                         // this.onDealersChanged.next(this.dealers);
                         resolve(response);
-                    }
-                    else{
+                    } else {
                         reject(response);
                     }
                 }, reject);
         });
     }
 
-    getProvinces(): Promise<any>
-    {
+    getProvinces(): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._httpClient.get(environment.apiBaseUrl + '/address/provinces')
+            this._httpClient
+                .get(environment.apiBaseUrl + '/address/provinces')
                 .subscribe((response: any) => {
-                    if (response.isSuccess)
-                    {
+                    if (response.isSuccess) {
                         resolve(response);
-                    }
-                    else
-                    {
+                    } else {
                         reject(response);
                     }
                 }, reject);
         });
     }
 
-    getAmphurs(provinceCode: number): Promise<any>
-    {
+    getAmphurs(provinceCode: number): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._httpClient.get(environment.apiBaseUrl + '/address/amphurs/' + provinceCode)
+            this._httpClient
+                .get(
+                    environment.apiBaseUrl + '/address/amphurs/' + provinceCode
+                )
                 .subscribe((response: any) => {
-                    if (response.isSuccess)
-                    {
+                    if (response.isSuccess) {
                         resolve(response);
-                    }
-                    else
-                    {
+                    } else {
                         reject(response);
                     }
                 }, reject);
         });
     }
 
-    getTumbols(amphurCode: number): Promise<any>
-    {
+    getTumbols(amphurCode: number): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._httpClient.get(environment.apiBaseUrl + '/address/tumbols/' + amphurCode)
+            this._httpClient
+                .get(environment.apiBaseUrl + '/address/tumbols/' + amphurCode)
                 .subscribe((response: any) => {
-                    if (response.isSuccess)
-                    {
+                    if (response.isSuccess) {
                         resolve(response);
-                    }
-                    else
-                    {
+                    } else {
                         reject(response);
                     }
                 }, reject);
         });
     }
 
-    register(requestData): Promise<any>
-    {
+    register(requestData): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._httpClient.post(environment.apiBaseUrl + '/redemption', requestData)
+            this._httpClient
+                .post(environment.apiBaseUrl + '/redemption', requestData)
                 .subscribe((response: any) => {
-                    if (response.isSuccess)
-                    {
+                    if (response.isSuccess) {
                         resolve(response);
-                    }
-                    else
-                    {
+                    } else {
                         reject(response);
                     }
                 }, reject);
         });
     }
-    getProductTypesByCampaignId(id: number): Promise<any>
-    {
+    getProductTypesByCampaignId(id: number): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._httpClient.get(environment.apiBaseUrl + '/campaigns/productType/' + id)
+            this._httpClient
+                .get(environment.apiBaseUrl + '/campaigns/productType/' + id)
                 .subscribe((response: any) => {
                     resolve(response.productTypes);
                 }, reject);
-
         });
     }
 
-    registerEnrollment(requestData): Promise<any>
-    {
+    registerEnrollment(requestData): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._httpClient.post(environment.apiBaseUrl + '/redemption/enrollment', requestData)
+            this._httpClient
+                .post(
+                    environment.apiBaseUrl + '/redemption/enrollment',
+                    requestData
+                )
                 .subscribe((response: any) => {
                     resolve(response);
                 }, reject);
         });
     }
-    registerConsumerEnrollment(requestData): Promise<any>
-    {
+    registerConsumerEnrollment(requestData): Promise<any> {
         return new Promise((resolve, reject) => {
-            this._httpClient.post(environment.apiBaseUrl + '/redemption/consumer', requestData)
+            this._httpClient
+                .post(
+                    environment.apiBaseUrl + '/redemption/consumer',
+                    requestData
+                )
                 .subscribe((response: any) => {
                     resolve(response);
                 }, reject);
         });
     }
-    getPosition(): Promise<any>
-    {
+    getPosition(): Promise<any> {
         return new Promise((resolve, reject) => {
             console.log(navigator.geolocation);
-            if (navigator.geolocation)
-            {
-                navigator.geolocation.getCurrentPosition(position => {
-                    console.log(position)
-                    resolve(position);
-                },
-                err => {
-                    reject(err);
-                });
-            }
-            else
-            {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        console.log(position);
+                        resolve(position);
+                    },
+                    err => {
+                        reject(err);
+                    }
+                );
+            } else {
                 reject();
             }
+        });
+    }
+
+    checkQrCode(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            resolve({
+                message: 'This QR Code has been verified on',
+                statusTypeCode: 'FAIL',
+                scanDate: '2019-10-10 10:10:10',
+                tel: '08x-xxxxxxx'
+            });
         });
     }
 }

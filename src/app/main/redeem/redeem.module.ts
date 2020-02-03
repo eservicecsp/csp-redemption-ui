@@ -1,7 +1,17 @@
 import { NgModule } from '@angular/core';
 
-
-import { MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatButtonModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatOptionModule, MatSelectModule, MatSnackBarModule } from '@angular/material';
+import {
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule,
+    MatSlideToggleModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSnackBarModule
+} from '@angular/material';
 
 import { CollectingModule } from './collecting/collecting.module';
 import { RedeemService } from './redeem.service';
@@ -13,13 +23,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PointRegisterComponent } from './point-register/point-register.component';
 import { ConfigurationsProductTypesService } from '../configurations/product-types/product-types.service';
 
-
-
 @NgModule({
     imports: [
         CollectingModule,
         PointModule,
-        EnrollmentModule,
+        EnrollmentModule
         // MatDatepickerModule,
         // MatFormFieldModule ,
         // MatNativeDateModule,
@@ -29,14 +37,7 @@ import { ConfigurationsProductTypesService } from '../configurations/product-typ
         // MatInputModule,
         // BrowserModule,
         // BrowserAnimationsModule,
-
-
     ],
-    providers: [
-        RedeemService
-    ]
+    providers: [RedeemService]
 })
-export class RedeemModule
-{
-
-}
+export class RedeemModule {}
